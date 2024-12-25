@@ -6,14 +6,14 @@ import Navbar from "@/lib/components/Navbar";
 import Footer from "@/lib/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Digital Product Jam Starter Kit",
+  title: "FinanStep",
   description:
-    "A starter kit for wiritng code in the Digital Product Jam course.",
+    "האפליקציה שלך לניהול פיננסי",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html>
+    <html lang="he" dir="rtl">
       <head>
         {/* Browser Favicon */}
         <link rel="icon" href="/icons/favicon.png" />
