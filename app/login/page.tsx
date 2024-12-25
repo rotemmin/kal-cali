@@ -17,6 +17,13 @@ export default function Login({
     if (!emailRegex.test(email)) {
       return redirect("/login?message=Invalid email format");
     }
+
+    if (password.length < 6) {
+      return redirect(
+        "/signup?message=Password must be at least 6 characters long"
+      );
+    }
+
     const cookieStore = cookies();
     const supabase = createClient(cookieStore);
     const { error } = await supabase.auth.signInWithPassword({
