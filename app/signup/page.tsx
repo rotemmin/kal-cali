@@ -53,7 +53,7 @@ export default function SignUp({
       );
     } catch (err) {
       console.error("Unexpected Error:", err);
-      return redirect("/signup?message=Server error occurred");
+      return redirect("/homePage?message=Server error occurred");
     }
   };
 

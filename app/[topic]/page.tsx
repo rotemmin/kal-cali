@@ -11,7 +11,7 @@ const TopicPage: React.FC = () => {
   try {
     content = require(`@/lib/content/topics/${topic}.json`);
   } catch (error) {
-    return <div>הנושא לא נמצא</div>; 
+    return <div>הנושא לא נמצא</div>;
   }
 
   return (
@@ -24,7 +24,9 @@ const TopicPage: React.FC = () => {
             <h2>{milestone.title}</h2>
             <p>{milestone.description}</p>
             {milestone.link && (
-              <button onClick={() => alert(`סיימת את המשימה: ${milestone.title}`)}>
+              <button
+                onClick={() => alert(`סיימת את המשימה: ${milestone.title}`)}
+              >
                 {milestone.link}
               </button>
             )}

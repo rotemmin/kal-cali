@@ -20,7 +20,7 @@ export default function Login({
 
     if (password.length < 6) {
       return redirect(
-        "/signup?message=Password must be at least 6 characters long"
+        "/login?message=Password must be at least 6 characters long"
       );
     }
 
@@ -32,9 +32,11 @@ export default function Login({
     });
     if (error) {
       console.log("error", error);
-      return redirect("/login?message=Could not authenticate user");
+      return redirect(
+        "/login?message=Wrong password or email, please try again."
+      );
     }
-    return redirect("/");
+    return redirect("/homePage");
   };
 
   return (
