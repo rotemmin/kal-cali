@@ -3,6 +3,8 @@
 import React from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import NavigationButton from '@/components/NavigationButton';
+
 
 interface Milestone {
   title: string;
@@ -35,6 +37,8 @@ const TopicPage: React.FC = () => {
           </Link>
         </div>
       ))}
+      <NavigationButton label="מילון" link="/dictionary" position="right" />
+      <NavigationButton label="תפריט" link="/burger_menu" position="left" />
     </div>
   );
 };
