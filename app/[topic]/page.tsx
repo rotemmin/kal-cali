@@ -1,38 +1,40 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { useParams } from "next/navigation";
+
+interface Milestone {
+  title: string;
+  link: string;
+}
+
+interface TopicData {
+  title: string;
+  description: {
+    male: string;
+    female: string;
+  };
+  milestones: Milestone[];
+}
 
 const TopicPage: React.FC = () => {
   const params = useParams();
   const { topic } = params as { topic: string };
 
-  let content;
-  try {
-    content = require(`@/lib/content/topics/${topic}.json`);
-  } catch (error) {
-    return <div>הנושא לא נמצא</div>;
-  }
+  const data: TopicData = require(`@/lib/content/topics/${topic}.json`);
 
   return (
     <div>
-      <h1>{content.title}</h1>
-      <div dangerouslySetInnerHTML={{ __html: content.description }} />
-      <ul>
-        {content.milestones.map((milestone: any, index: number) => (
-          <li key={index}>
-            <h2>{milestone.title}</h2>
-            <p>{milestone.description}</p>
-            {milestone.link && (
-              <button
-                onClick={() => alert(`סיימת את המשימה: ${milestone.title}`)}
-              >
-                {milestone.link}
-              </button>
-            )}
-          </li>
-        ))}
-      </ul>
+      <h1>{data.title}</h1>
+      <p>{data.description.female}</p>
+      {data.milestones.map((milestone, index) => (
+        <div key={index}>
+          <Link href={`/${topic}/${milestone.title}`}>
+            <button>{milestone.title}</button>
+          </Link>
+        </div>
+      ))}
     </div>
   );
 };
