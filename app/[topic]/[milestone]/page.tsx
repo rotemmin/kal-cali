@@ -2,6 +2,8 @@
 
 import React from "react";
 import { useParams, useRouter } from "next/navigation";
+import NavigationButton from '@/components/NavigationButton';
+
 
 interface Milestone {
   title: string;
@@ -72,6 +74,8 @@ const MilestonePage: React.FC = () => {
       )}
       {/* כפתור סיימתי */}
       <button onClick={() => window.history.back()}>{currentMilestone.button}</button>
+      <NavigationButton label="מילון" link="/dictionary" position="right" />
+      <NavigationButton label="תפריט" link="/burger_menu" position="left" />
     </div>
   );
 };
