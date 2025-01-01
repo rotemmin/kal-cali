@@ -6,7 +6,7 @@ import styles from "./page.module.css";
 export default function SignUp({
   searchParams,
 }: {
-  searchParams?: { message?: string }; // Updated to handle optional `searchParams` safely
+  searchParams?: { message?: string }; // Handle optional searchParams safely
 }) {
   const signUp = async (formData: FormData) => {
     "use server"; // Indicates server-only code
@@ -35,7 +35,7 @@ export default function SignUp({
     const supabase = createClient(cookieStore);
 
     try {
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -44,16 +44,39 @@ export default function SignUp({
       });
 
       if (error) {
-        console.error("Supabase Sign-Up Error:", error);
-        return redirect("/signup?message=Could not authenticate user");
+        console.error("Supabase Sign-Up Error:", error.message);
+        return redirect(`/signup?message=${encodeURIComponent(error.message)}`);
       }
 
-      return redirect(
-        "/signup?message=Check email to continue sign up process"
-      );
+      if (data?.user) {
+        const userId = data.user.id;
+
+        // Add initial activity with 10 coins
+        const { error: activityError } = await supabase
+          .from("user_activity")
+          .insert([
+            {
+              id: userId,
+              activity_type: "initial_signup",
+              activity_data: { coins: 10 },
+            },
+          ]);
+
+        if (activityError) {
+          console.error(
+            "Error initializing user activity:",
+            activityError.message
+          );
+          return redirect(
+            `/signup?message=${encodeURIComponent(activityError.message)}`
+          );
+        }
+
+        return redirect("/homePage");
+      }
     } catch (err) {
-      console.error("Unexpected Error:", err);
-      return redirect("/homePage?message=Server error occurred");
+      console.error("Unexpected Error:", err.message || err);
+      return redirect("/signup?message=Server error occurred");
     }
   };
 
@@ -81,6 +104,7 @@ export default function SignUp({
         </label>
 
         <button type="submit">Sign Up</button>
+
         {searchParams?.message && (
           <p className={styles.errorMessage}>{searchParams.message}</p>
         )}
