@@ -5,6 +5,9 @@ const DictionaryPage = () => {
   const [dictionaryData, setDictionaryData] = useState<any>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState<any>([]);
+  const [expandedEntries, setExpandedEntries] = useState<Set<string>>(
+    new Set()
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +38,16 @@ const DictionaryPage = () => {
     }
   };
 
+  const toggleEntry = (title: string) => {
+    const newExpandedEntries = new Set(expandedEntries);
+    if (newExpandedEntries.has(title)) {
+      newExpandedEntries.delete(title);
+    } else {
+      newExpandedEntries.add(title);
+    }
+    setExpandedEntries(newExpandedEntries);
+  };
+
   return (
     <div>
       <h1>מילון פיננסי</h1>
@@ -52,8 +65,15 @@ const DictionaryPage = () => {
         {filteredData.length > 0 ? (
           filteredData.map((entry: { title: string; description: string }) => (
             <div key={entry.title}>
-              <h2>{entry.title}</h2>
-              <p>{entry.description}</p>
+              <div>
+                <h3
+                  style={{ cursor: "pointer", color: "black" }}
+                  onClick={() => toggleEntry(entry.title)}
+                >
+                  {entry.title}
+                </h3>
+                {expandedEntries.has(entry.title) && <p>{entry.description}</p>}
+              </div>
             </div>
           ))
         ) : (
