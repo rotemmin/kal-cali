@@ -10,8 +10,12 @@ const DictionaryPage = () => {
     const fetchData = async () => {
       const response = await fetch("/dictionary.json");
       const data = await response.json();
-      setDictionaryData(data.dictionary);
-      setFilteredData(data.dictionary);
+      const sortedData = data.dictionary.sort(
+        (a: { title: string }, b: { title: string }) =>
+          a.title.localeCompare(b.title, "he", { sensitivity: "base" })
+      );
+      setDictionaryData(sortedData);
+      setFilteredData(sortedData);
     };
     fetchData();
   }, []);
