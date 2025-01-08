@@ -10,9 +10,10 @@
     "info": "next info"
   },
   "dependencies": {
+    "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/ssr": "^0.0.10",
-    "@supabase/supabase-js": "^2.39.1",
-    "next": "^14.0.4",
+    "@supabase/supabase-js": "^2.47.12",
+    "next": "^14.2.23",
     "nodemailer": "^6.9.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
