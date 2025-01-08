@@ -33,11 +33,6 @@ export default function EmailVerification() {
 
     // If verified, redirect to the homepage
     router.push("/homePage");
-
-    if (userError || !userData?.user) {
-      setMessage("No user found. Please try again.");
-      return;
-    }
   };
 
   return (
