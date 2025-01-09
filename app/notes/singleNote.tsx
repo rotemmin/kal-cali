@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { isResponseEmpty } from "@/lib/supabase/utils";
 import { createClient } from "@/lib/supabase/client";
 import { SupabaseClient } from "@supabase/supabase-js";
+import { debounce } from "lodash";
 
 const supabase: SupabaseClient = createClient();
 
@@ -60,39 +61,41 @@ const NoteComponent: React.FC<NoteComponentProps> = ({ topicId }) => {
     }
   }, [fetchNote, userId]);
 
-  const handleNoteChange = async (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
+  const handleNoteChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newNote = event.target.value;
     setNote(newNote);
 
-    if (userId && topicId) {
-      if (newNote.trim() === "") {
-        const { error } = await supabase
-          .from("notes")
-          .delete()
-          .eq("user_id", userId)
-          .eq("topic_id", topicId);
+    const updateDb = debounce(async (newNote: string) => {
+      if (userId && topicId) {
+        if (newNote.trim() === "") {
+          const { error } = await supabase
+            .from("notes")
+            .delete()
+            .eq("user_id", userId)
+            .eq("topic_id", topicId);
+
+          if (error) {
+            setErrorMessage("לא הצלחנו למחוק את ההערה שלך");
+          }
+          return;
+        }
+
+        const { error } = await supabase.from("notes").upsert(
+          {
+            user_id: userId,
+            topic_id: topicId,
+            note: newNote,
+          },
+          { onConflict: "user_id, topic_id" }
+        );
 
         if (error) {
-          setErrorMessage("לא הצלחנו למחוק את ההערה שלך");
+          setErrorMessage("לא הצלחנו לשמור את ההערה שלך");
         }
-        return;
       }
+    }, 500);
 
-      const { error } = await supabase.from("notes").upsert(
-        {
-          user_id: userId,
-          topic_id: topicId,
-          note: newNote,
-        },
-        { onConflict: "user_id, topic_id" }
-      );
-
-      if (error) {
-        setErrorMessage("לא הצלחנו לשמור את ההערה שלך");
-      }
-    }
+    updateDb(newNote);
   };
 
   return (
