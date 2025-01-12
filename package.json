@@ -12,14 +12,9 @@
   "dependencies": {
     "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/ssr": "^0.0.10",
-<<<<<<< HEAD
     "@supabase/supabase-js": "^2.47.12",
-    "next": "^14.2.23",
-=======
-    "@supabase/supabase-js": "^2.47.11",
     "lodash": "^4.17.21",
-    "next": "^14.0.4",
->>>>>>> 6a858896b0148ab537d3403db19b2dc528e5b1e0
+    "next": "^14.2.23",
     "nodemailer": "^6.9.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
