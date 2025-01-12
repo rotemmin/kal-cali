@@ -7,8 +7,7 @@ import Footer from "@/lib/components/Footer";
 
 export const metadata: Metadata = {
   title: "FinanStep",
-  description:
-    "האפליקציה שלך לניהול פיננסי",
+  description: "האפליקציה שלך לניהול פיננסי",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

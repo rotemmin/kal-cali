@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import NoteComponent from "@/app/notes/singleNote";
 
 interface Plan {
   title: string;
@@ -52,7 +53,6 @@ const CreditAccountPlans: React.FC = () => {
     <div>
       <h1>{data.title}</h1>
       <p>{data.description[userGender]}</p>
-
       <h2>סוגי מסלולי אשראי</h2>
       {data.plans.map((plan, index) => (
         <div key={index}>
@@ -64,8 +64,8 @@ const CreditAccountPlans: React.FC = () => {
           <p>{plan.fees[userGender]}</p>
         </div>
       ))}
-
       <button onClick={() => window.history.back()}>חזרה</button>
+      <NoteComponent />{" "}
     </div>
   );
 };

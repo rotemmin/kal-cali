@@ -6,10 +6,11 @@ import styles from "./page.module.css";
 export default function SignUp({
   searchParams,
 }: {
-  searchParams?: { message?: string }; // Handle optional searchParams safely
+  searchParams?: { message?: string };
 }) {
   const signUp = async (formData: FormData) => {
-    "use server"; // Indicates server-only code
+    "use server"; // Server-side only
+
     const origin = headers().get("origin");
     if (!origin) {
       console.error("Origin header is missing");
@@ -20,8 +21,7 @@ export default function SignUp({
     const password = formData.get("password") as string | null;
 
     // Validate email and password
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailRegex.test(email)) {
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return redirect("/signup?message=Invalid email format");
     }
 
@@ -31,27 +31,24 @@ export default function SignUp({
       );
     }
 
-    const cookieStore = cookies();
-    const supabase = createClient(cookieStore);
+    const supabase = createClient(cookies());
 
     try {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
-        options: {
-          emailRedirectTo: `${origin}/auth/callback`, // Ensure proper string interpolation
-        },
+        options: { emailRedirectTo: `${origin}/auth/callback` },
       });
 
       if (error) {
-        console.error("Supabase Sign-Up Error:", error.message);
+        console.error("Sign-Up Error:", error.message);
         return redirect(`/signup?message=${encodeURIComponent(error.message)}`);
       }
 
       if (data?.user) {
         const userId = data.user.id;
 
-        // Add initial activity with 10 coins
+        // Initialize user activity
         const { error: activityError } = await supabase
           .from("user_activity")
           .insert([
@@ -64,7 +61,7 @@ export default function SignUp({
 
         if (activityError) {
           console.error(
-            "Error initializing user activity:",
+            "Activity Initialization Error:",
             activityError.message
           );
           return redirect(
@@ -72,11 +69,11 @@ export default function SignUp({
           );
         }
 
-        return redirect("/homePage");
+        // Redirect to email verification page
+        return redirect("/email_verification");
       }
     } catch (err) {
-      console.error("Unexpected Error:", err.message || err);
-      return redirect("/signup?message=Server error occurred");
+      return redirect("/email_verification");
     }
   };
 
@@ -84,7 +81,7 @@ export default function SignUp({
     <div className="content">
       <form className={styles.loginForm} action={signUp}>
         <label htmlFor="email">
-          Email{" "}
+          Email
           <input
             type="email"
             name="email"
@@ -94,7 +91,7 @@ export default function SignUp({
         </label>
 
         <label htmlFor="password">
-          Password{" "}
+          Password
           <input
             type="password"
             name="password"

@@ -2,8 +2,8 @@
 
 import React from "react";
 import { useParams, useRouter } from "next/navigation";
-import NavigationButton from '@/components/NavigationButton';
-
+import NavigationButton from "@/components/NavigationButton";
+import NoteComponent from "@/app/notes/singleNote";
 
 interface Milestone {
   title: string;
@@ -22,7 +22,7 @@ interface Milestone {
   };
   button: string;
   additionalbutton?: string; // כפתור נוסף
-  additionalLink?: string;   // קישור נוסף
+  additionalLink?: string; // קישור נוסף
 }
 
 interface TopicData {
@@ -66,16 +66,17 @@ const MilestonePage: React.FC = () => {
       )}
       {/* כפתור למידע נוסף */}
       {currentMilestone.additionalLink && currentMilestone.additionalbutton && (
-        <button
-          onClick={() => router.push(currentMilestone.additionalLink!)}
-        >
+        <button onClick={() => router.push(currentMilestone.additionalLink!)}>
           {currentMilestone.additionalbutton}
         </button>
       )}
       {/* כפתור סיימתי */}
-      <button onClick={() => window.history.back()}>{currentMilestone.button}</button>
+      <button onClick={() => window.history.back()}>
+        {currentMilestone.button}
+      </button>
       <NavigationButton label="מילון" link="/dictionary" position="right" />
       <NavigationButton label="תפריט" link="/burger_menu" position="left" />
+      <NoteComponent />{" "}
     </div>
   );
 };
