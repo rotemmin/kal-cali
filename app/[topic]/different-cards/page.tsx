@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import NoteComponent from "@/app/notes/singleNote";
 
 interface CardType {
   title: string;
@@ -52,7 +53,6 @@ const CreditCardOptions: React.FC = () => {
     <div>
       <h1>{data.title}</h1>
       <p>{data.description[userGender]}</p>
-
       <h2>סוגי כרטיסי אשראי</h2>
       {data.types.map((type, index) => (
         <div key={index}>
@@ -64,8 +64,8 @@ const CreditCardOptions: React.FC = () => {
           <p>{type.fees[userGender]}</p>
         </div>
       ))}
-
       <button onClick={() => window.history.back()}>חזרה</button>
+      <NoteComponent />{" "}
     </div>
   );
 };

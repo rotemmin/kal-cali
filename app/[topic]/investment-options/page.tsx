@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import NoteComponent from "@/app/notes/singleNote";
 
 interface InvestmentType {
   title: string;
@@ -72,6 +73,7 @@ const InvestmentOptions: React.FC = () => {
         ))}
       </ul>
       <button onClick={() => window.history.back()}>חזרה</button>
+      <NoteComponent />{" "}
     </div>
   );
 };
