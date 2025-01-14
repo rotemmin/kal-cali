@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import NavigationButton from "@/components/NavigationButton";
 import NoteComponent from "@/app/notes/singleNote";
+import Modal from "@/components/modal";
 
 interface Milestone {
   title: string;
@@ -39,17 +40,53 @@ const MilestonePage: React.FC = () => {
     (m) => m.title.toLowerCase() === decodeURIComponent(milestone).toLowerCase()
   );
 
+  const [dictionary, setDictionary] = useState<{ [key: string]: string }>({});
+  const [selectedTerm, setSelectedTerm] = useState<{ title: string; description: string } | null>(null);
+
+  useEffect(() => {
+    import('@/public/dictionary.json').then((dictionaryData) => {
+      const dict: { [key: string]: string } = {};
+      dictionaryData.dictionary.forEach((entry: { title: string; description: string }) => {
+        dict[entry.title] = entry.description;
+      });
+      setDictionary(dict);
+    });
+  }, []);
+
   if (!currentMilestone) {
     return <div>המיילסטון לא נמצא!</div>;
   }
 
   const userGender: "male" | "female" = "female";
 
+  const processTextWithTerms = (text: string): string => {
+    return text.replace(/<span data-term='([^']+)'>[^<]+<\/span>/g, (match, term) => {
+      const cleanTerm = term.replace(/^ש?ב/, '');
+      return `<span style="color: purple; cursor: pointer;" data-term="${cleanTerm}">${match.match(/>([^<]+)</)?.[1] || cleanTerm}</span>`;
+    });
+  };
+
+  const handleTermClick = (event: React.MouseEvent) => {
+    const target = event.target as HTMLElement;
+    if (target.hasAttribute("data-term")) {
+      const term = target.getAttribute("data-term");
+      if (term && dictionary[term]) {
+        setSelectedTerm({
+          title: term,
+          description: dictionary[term],
+        });
+      }
+    }
+  };
+
   return (
     <div>
       <h1>{currentMilestone.title}</h1>
       {currentMilestone.title2 && <h2>{currentMilestone.title2}</h2>}
-      <p>{currentMilestone.description[userGender]}</p>
+      <div 
+        onClick={handleTermClick} 
+        dangerouslySetInnerHTML={{ __html: processTextWithTerms(currentMilestone.description[userGender]) }}
+      />
       {currentMilestone.note && <p>{currentMilestone.note[userGender]}</p>}
       {currentMilestone.help && (
         <div>
@@ -76,6 +113,12 @@ const MilestonePage: React.FC = () => {
       </button>
       <NavigationButton label="מילון" link="/dictionary" position="right" />
       <NavigationButton label="תפריט" link="/burger_menu" position="left" />
+      <Modal
+        isOpen={!!selectedTerm}
+        onClose={() => setSelectedTerm(null)}
+        title={selectedTerm?.title || ""}>
+        <p>{selectedTerm?.description}</p>
+      </Modal>
       <NoteComponent />{" "}
     </div>
   );

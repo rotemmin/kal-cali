@@ -10,11 +10,11 @@ const topics = [
 
 const HomePage: React.FC = () => {
   return (
-    <div>
+    <main>
       {topics.map((topic) => (
         <TopicButton key={topic.title} {...topic} />
       ))}
-    </div>
+    </main>
   );
 };
 
