@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import NavigationButton from '@/components/NavigationButton';
-import Modal from '@/components/modal';
-import dictionaryData from '@/public/dictionary.json';
+import NavigationButton from "@/components/NavigationButton";
+import Modal from "@/components/modal";
+import dictionaryData from "@/public/dictionary.json";
 import NoteComponent from "@/app/notes/singleNote";
 
 interface Milestone {
@@ -26,9 +26,12 @@ const TopicPage = () => {
   const params = useParams();
   const { topic } = params as { topic: string };
   const data: TopicData = require(`@/lib/content/topics/${topic}.json`);
-  
+
   const [dictionary, setDictionary] = useState<{ [key: string]: string }>({});
-  const [selectedTerm, setSelectedTerm] = useState<{title: string, description: string} | null>(null);
+  const [selectedTerm, setSelectedTerm] = useState<{
+    title: string;
+    description: string;
+  } | null>(null);
 
   useEffect(() => {
     const dict: { [key: string]: string } = {};
@@ -39,20 +42,25 @@ const TopicPage = () => {
   }, []);
 
   const processTextWithTerms = (text: string): string => {
-    return text.replace(/<span data-term='([^']+)'>[^<]+<\/span>/g, (match, term) => {
-      const cleanTerm = term.replace(/^ש?ב/, '');
-      return `<span style="color: purple; cursor: pointer;" data-term="${cleanTerm}">${match.match(/>([^<]+)</)?.[1] || cleanTerm}</span>`;
-    });
+    return text.replace(
+      /<span data-term='([^']+)'>[^<]+<\/span>/g,
+      (match, term) => {
+        const cleanTerm = term.replace(/^ש?ב/, "");
+        return `<span style="color: purple; cursor: pointer;" data-term="${cleanTerm}">${
+          match.match(/>([^<]+)</)?.[1] || cleanTerm
+        }</span>`;
+      }
+    );
   };
 
   const handleTermClick = (event: React.MouseEvent) => {
     const target = event.target as HTMLElement;
-    if (target.hasAttribute('data-term')) {
-      const term = target.getAttribute('data-term');
+    if (target.hasAttribute("data-term")) {
+      const term = target.getAttribute("data-term");
       if (term && dictionary[term]) {
         setSelectedTerm({
           title: term,
-          description: dictionary[term]
+          description: dictionary[term],
         });
       }
     }
@@ -61,7 +69,11 @@ const TopicPage = () => {
   return (
     <div onClick={handleTermClick}>
       <h1>{data.title}</h1>
-      <div dangerouslySetInnerHTML={{ __html: processTextWithTerms(data.description.female) }} />
+      <div
+        dangerouslySetInnerHTML={{
+          __html: processTextWithTerms(data.description.female),
+        }}
+      />
       {data.milestones.map((milestone, index) => (
         <div key={index}>
           <Link href={`/${topic}/${milestone.title}`}>
@@ -71,14 +83,14 @@ const TopicPage = () => {
       ))}
       <NavigationButton label="מילון" link="/dictionary" position="right" />
       <NavigationButton label="תפריט" link="/burger_menu" position="left" />
-      <Modal 
+      <Modal
         isOpen={!!selectedTerm}
         onClose={() => setSelectedTerm(null)}
-        title={selectedTerm?.title || ''}
+        title={selectedTerm?.title || ""}
       >
         <p>{selectedTerm?.description}</p>
       </Modal>
-      <NoteComponent />{" "}
+      <NoteComponent topicId={topic} />
     </div>
   );
 };
@@ -116,7 +128,7 @@ export default TopicPage;
 //   const params = useParams();
 //   const { topic } = params as { topic: string };
 //   const data: TopicData = require(`@/lib/content/topics/${topic}.json`);
-  
+
 //   const [dictionary, setDictionary] = useState<{ [key: string]: string }>({});
 //   const [selectedTerm, setSelectedTerm] = useState<{title: string, description: string} | null>(null);
 
@@ -160,18 +172,18 @@ export default TopicPage;
 //   return (
 //     <div className="p-4 max-w-4xl mx-auto" onClick={handleTermClick}>
 //       <h1 className="text-2xl font-bold mb-4 text-right">{data.title}</h1>
-      
-//       <div 
-//         className="mb-6 text-right" 
-//         dangerouslySetInnerHTML={{ 
-//           __html: processTextWithTerms(data.description.female) 
-//         }} 
+
+//       <div
+//         className="mb-6 text-right"
+//         dangerouslySetInnerHTML={{
+//           __html: processTextWithTerms(data.description.female)
+//         }}
 //       />
 
 //       <div className="grid gap-4">
 //         {data.milestones.map((milestone, index) => (
-//           <Link 
-//             key={index} 
+//           <Link
+//             key={index}
 //             href={milestone.link.replace('[topic]', topic)}
 //             className="block"
 //           >
@@ -187,7 +199,7 @@ export default TopicPage;
 //         <NavigationButton label="מילון" link="/dictionary" position="right" />
 //       </div>
 
-//       <Modal 
+//       <Modal
 //         isOpen={!!selectedTerm}
 //         onClose={() => setSelectedTerm(null)}
 //         title={selectedTerm?.title || ''}
@@ -199,4 +211,3 @@ export default TopicPage;
 // };
 
 // export default TopicPage;
-

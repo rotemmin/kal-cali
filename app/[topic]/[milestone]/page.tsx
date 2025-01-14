@@ -76,7 +76,7 @@ const MilestonePage: React.FC = () => {
       </button>
       <NavigationButton label="מילון" link="/dictionary" position="right" />
       <NavigationButton label="תפריט" link="/burger_menu" position="left" />
-      <NoteComponent />{" "}
+      <NoteComponent topicId={topic} />
     </div>
   );
 };

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import NoteComponent from "@/app/notes/singleNote";
+import { useParams } from "next/navigation";
 
 interface InvestmentType {
   title: string;
@@ -28,6 +29,9 @@ interface InvestmentOptionsData {
 }
 
 const InvestmentOptions: React.FC = () => {
+  const params = useParams();
+  const { topic } = params as { topic: string };
+
   const [data, setData] = useState<InvestmentOptionsData | null>(null);
   const userGender: "male" | "female" = "female"; // ברירת מחדל
 
@@ -73,7 +77,7 @@ const InvestmentOptions: React.FC = () => {
         ))}
       </ul>
       <button onClick={() => window.history.back()}>חזרה</button>
-      <NoteComponent />{" "}
+      <NoteComponent topicId={topic} />
     </div>
   );
 };
