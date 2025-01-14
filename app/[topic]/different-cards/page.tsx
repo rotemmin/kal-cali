@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import NoteComponent from "@/app/notes/singleNote";
+import { useParams } from "next/navigation";
 
 interface CardType {
   title: string;
@@ -29,6 +30,9 @@ interface CreditCardOptionsData {
 }
 
 const CreditCardOptions: React.FC = () => {
+  const params = useParams();
+  const { topic } = params as { topic: string };
+
   const [data, setData] = useState<CreditCardOptionsData | null>(null);
   const userGender: "male" | "female" = "female";
 
@@ -65,7 +69,7 @@ const CreditCardOptions: React.FC = () => {
         </div>
       ))}
       <button onClick={() => window.history.back()}>חזרה</button>
-      <NoteComponent />{" "}
+      <NoteComponent topicId={topic} />
     </div>
   );
 };

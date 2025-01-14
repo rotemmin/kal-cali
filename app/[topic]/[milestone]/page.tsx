@@ -119,7 +119,8 @@ const MilestonePage: React.FC = () => {
         title={selectedTerm?.title || ""}>
         <p>{selectedTerm?.description}</p>
       </Modal>
-      <NoteComponent />{" "}
+      {/* <NoteComponent />{" "} */}
+      <NoteComponent topicId={topic} />
     </div>
   );
 };
