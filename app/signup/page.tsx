@@ -70,10 +70,10 @@ export default function SignUp({
         }
 
         // Redirect to email verification page
-        return redirect("/email_verification");
+        return redirect("/homePage");
       }
     } catch (err) {
-      return redirect("/email_verification");
+      return redirect("/homePage");
     }
   };
 
