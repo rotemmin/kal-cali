@@ -1,4 +1,4 @@
-// export const APP_NAME = "Starter Kit";
+export const APP_NAME = "Starter Kit";
 export const COURSE_GITHUB = "https://github.com/product-jam-2025";
 export const COURSE_CREDITS = "Product Jam 2025";
 
@@ -46,6 +46,8 @@ export const PUBLIC_SUPABASE_ANON_KEY =
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
 export const PRIVATE_SUPABASE_SERVICE_KEY =
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+export const NEXT_PUBLIC_GOOGLE_CLIENT_ID =
+  process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "";
 
 export const SUPABASE_ENABLED =
   PUBLIC_SUPABASE_URL &&

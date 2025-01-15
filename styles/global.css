@@ -4,13 +4,13 @@
 
 /* what is :root? https://developer.mozilla.org/en-US/docs/Web/CSS/:root */
 :root {
-  --color-primary: #C1FF7E;
-  --color-secondary: #E6E4FF;
-  --color-accent: #9895F4;
+  --color-primary: #c1ff7e;
+  --color-secondary: #e6e4ff;
+  --color-accent: #9895f4;
 
-  --color-background: #FFFFFF;
+  --color-background: #ffffff;
   --color-text: #000000;
-  --color-disabled: #CDCDCD;
+  --color-disabled: #cdcdcd;
   --color-border: rgba(0, 0, 0, 0.12); /*לבדוק אם נחוץ*/
 
   --color-hover: rgba(193, 255, 126, 0.1); /*לבדוק אם נחוץ*/
@@ -18,39 +18,39 @@
 
   --border-radius: 0.5rem;
 
-  --font-family-primary: 'SimplerPro', sans-serif;
-  --font-family-secondary: 'Sunday', serif;
+  --font-family-priamry: "SimplerPro", sans-serif;
+  --font-family-secondary: "Sunday", serif;
 
-   --text-xs: 0.75rem;   /* 12px */
-   --text-sm: 0.875rem;  /* 14px */
-   --text-base: 1rem;    /* 16px */
-   --text-lg: 1.125rem;  /* 18px */
-   --text-xl: 1.25rem;   /* 20px */
-   --text-2xl: 1.5rem;   /* 24px */
-   --text-3xl: 1.875rem; /* 30px */
-   
-   --leading-tight: 1.1;
-   --leading-normal: 1.5;
-   --leading-loose: 1.75;
-   
-   --spacing-1: 0.25rem;  /* 4px */
-   --spacing-2: 0.5rem;   /* 8px */
-   --spacing-3: 0.75rem;  /* 12px */
-   --spacing-4: 1rem;     /* 16px */
-   --spacing-6: 1.5rem;   /* 24px */
-   --spacing-8: 2rem;     /* 32px */
-   
-   /* Layout */
-   --container-padding: 1.5rem;
-   --max-width-sm: 24rem;     /* 384px */
-   --max-width-md: 28rem;     /* 448px */
-   --max-width-lg: 32rem;     /* 512px */
-   
-   /* Border Radius */
-   --radius-sm: 0.25rem;
-   --radius-md: 0.5rem;
-   --radius-lg: 1rem;
-   --radius-full: 9999px;
+  --text-xs: 0.75rem; /* 12px */
+  --text-sm: 0.875rem; /* 14px */
+  --text-base: 1rem; /* 16px */
+  --text-lg: 1.125rem; /* 18px */
+  --text-xl: 1.25rem; /* 20px */
+  --text-2xl: 1.5rem; /* 24px */
+  --text-3xl: 1.875rem; /* 30px */
+
+  --leading-tight: 1.1;
+  --leading-normal: 1.5;
+  --leading-loose: 1.75;
+
+  --spacing-1: 0.25rem; /* 4px */
+  --spacing-2: 0.5rem; /* 8px */
+  --spacing-3: 0.75rem; /* 12px */
+  --spacing-4: 1rem; /* 16px */
+  --spacing-6: 1.5rem; /* 24px */
+  --spacing-8: 2rem; /* 32px */
+
+  /* Layout */
+  --container-padding: 1.5rem;
+  --max-width-sm: 24rem; /* 384px */
+  --max-width-md: 28rem; /* 448px */
+  --max-width-lg: 32rem; /* 512px */
+
+  /* Border Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  --radius-full: 9999px;
 
   /* --font-titles: "Rubik", serif;
   --font-body: system-ui, sans-serif; */
@@ -143,7 +143,6 @@ footer {
   .rtl {
     direction: rtl;
   }
-
 }
 
 @media (max-width: 480px) {
@@ -172,7 +171,6 @@ footer {
     height: 1.5rem;
     font-size: 0.8rem;
   }
-
 }
 
 .rtl {
@@ -294,78 +292,78 @@ fieldset {
 
 /*rotem*/
 @font-face {
-  font-family: 'SimplerPro';
-  src: url('./fonts/SimplerPro-Regular.otf') format('opentype');
+  font-family: "SimplerPro";
+  src: url("./fonts/SimplerPro-Regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'SimplerPro';
-  src: url('./fonts/SimplerPro-Light.otf') format('opentype');
+  font-family: "SimplerPro";
+  src: url("./fonts/SimplerPro-Light.otf") format("opentype");
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'SimplerPro';
-  src: url('./fonts/SimplerPro-Bold.otf') format('opentype');
+  font-family: "SimplerPro";
+  src: url("./fonts/SimplerPro-Bold.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Sunday';
-  src: url('./fonts/Sunday-Black.otf') format('opentype');
+  font-family: "Sunday";
+  src: url("./fonts/Sunday-Black.otf") format("opentype");
   font-weight: 900;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Sunday';
-  src: url('./fonts/Sunday-BlackItalic.otf') format('opentype');
+  font-family: "Sunday";
+  src: url("./fonts/Sunday-BlackItalic.otf") format("opentype");
   font-weight: 900;
   font-style: italic;
 }
 
 @font-face {
-  font-family: 'Sunday';
-  src: url('./fonts/Sunday-Bold.otf') format('opentype');
+  font-family: "Sunday";
+  src: url("./fonts/Sunday-Bold.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Sunday';
-  src: url('./fonts/Sunday-BoldItalic.otf') format('opentype');
+  font-family: "Sunday";
+  src: url("./fonts/Sunday-BoldItalic.otf") format("opentype");
   font-weight: 700;
   font-style: italic;
 }
 
 @font-face {
-  font-family: 'Sunday';
-  src: url('./fonts/Sunday-Light.otf') format('opentype');
+  font-family: "Sunday";
+  src: url("./fonts/Sunday-Light.otf") format("opentype");
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Sunday';
-  src: url('./fonts/Sunday-LightItalic.otf') format('opentype');
+  font-family: "Sunday";
+  src: url("./fonts/Sunday-LightItalic.otf") format("opentype");
   font-weight: 300;
   font-style: italic;
 }
 
 @font-face {
-  font-family: 'Sunday';
-  src: url('./fonts/Sunday-Medium.otf') format('opentype');
+  font-family: "Sunday";
+  src: url("./fonts/Sunday-Medium.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Sunday';
-  src: url('./fonts/Sunday-MediumItalic.otf') format('opentype');
+  font-family: "Sunday";
+  src: url("./fonts/Sunday-MediumItalic.otf") format("opentype");
   font-weight: 500;
   font-style: italic;
 }
