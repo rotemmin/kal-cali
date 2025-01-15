@@ -47,18 +47,28 @@ export default function SignUp({
 
       if (data?.user) {
         const userId = data.user.id;
+        console.log("User ID:", userId);
 
-        // Initialize user activity
+        // Initialize topics and milestones JSON
+        const initialTopicsAndMilestones = {
+          topic_1: 0,
+          topic_2: 0,
+          topic_3: 0,
+        };
+
+        // Insert initial user activity
         const { error: activityError } = await supabase
           .from("user_activity")
           .insert([
             {
               id: userId,
               activity_type: "initial_signup",
-              activity_data: { coins: 10 },
+              topics_and_milestones: initialTopicsAndMilestones,
+              curr_topic: 0,
+              curr_milestone: 0,
             },
           ]);
-
+        console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
         if (activityError) {
           console.error(
             "Activity Initialization Error:",
@@ -69,10 +79,11 @@ export default function SignUp({
           );
         }
 
-        // Redirect to email verification page
+        // Redirect to home page after successful signup
         return redirect("/homePage");
       }
     } catch (err) {
+      console.error("Unexpected error:", err);
       return redirect("/homePage");
     }
   };
