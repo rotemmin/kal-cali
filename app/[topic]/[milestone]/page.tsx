@@ -6,14 +6,25 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import NavigationButton from "@/components/NavigationButton";
 import NoteComponent from "@/app/notes/singleNote";
 import Modal from "@/components/modal";
+import "./MilestonePage.css";
+
+interface MilestoneDescription {
+  text: string;
+  type: 'regular' | 'indented';
+}
 
 interface Milestone {
   title: string;
   description: {
-    male: string;
-    female: string;
+    male: MilestoneDescription[] | string;
+    female: MilestoneDescription[] | string;
   };
   button: string;
+<<<<<<< HEAD
+=======
+  additionalbutton?: string;
+  additionalLink?: string;
+>>>>>>> 2cd28dc3f037bcd32b256bfe57fd9c5e0e2506a1
 }
 
 interface TopicData {
@@ -56,6 +67,7 @@ const MilestonePage: React.FC = () => {
   const userGender: "male" | "female" = "female";
 
   const processTextWithTerms = (text: string): string => {
+<<<<<<< HEAD
     return text.replace(
       /<span data-term='([^']+)'>[^<]+<\/span>/g,
       (match, term) => {
@@ -65,6 +77,12 @@ const MilestonePage: React.FC = () => {
         }</span>`;
       }
     );
+=======
+    return text.replace(/<span data-term='([^']+)'>[^<]+<\/span>/g, (match, term) => {
+      const cleanTerm = term.replace(/^ש?ב/, '');
+      return `<span class="term-highlight" data-term="${cleanTerm}">${match.match(/>([^<]+)</)?.[1] || cleanTerm}</span>`;
+    });
+>>>>>>> 2cd28dc3f037bcd32b256bfe57fd9c5e0e2506a1
   };
 
   const handleTermClick = (event: React.MouseEvent) => {
@@ -80,6 +98,7 @@ const MilestonePage: React.FC = () => {
     }
   };
 
+<<<<<<< HEAD
   // ########################################
   // Function to complete the milestone and send a POST request
   const completeMilestone = async () => {
@@ -136,6 +155,90 @@ const MilestonePage: React.FC = () => {
       <button onClick={completeMilestone}>{currentMilestone.button}</button>
       <NavigationButton label="מילון" link="/dictionary" position="right" />
       <NavigationButton label="תפריט" link="/burger_menu" position="left" />
+=======
+  const renderDescription = (description: MilestoneDescription[] | string) => {
+    if (Array.isArray(description)) {
+      return (
+        <div className="description-container">
+          {description.map((item, index) => (
+            <p 
+              key={index} 
+              className={`description-text ${item.type === 'indented' ? 'indented' : ''}`}
+            >
+              <div 
+                onClick={handleTermClick}
+                dangerouslySetInnerHTML={{ 
+                  __html: processTextWithTerms(item.text) 
+                }}
+              />
+            </p>
+          ))}
+        </div>
+      );
+    }
+
+    return (
+      <div 
+        className="description"
+        onClick={handleTermClick} 
+        dangerouslySetInnerHTML={{ 
+          __html: processTextWithTerms(description) 
+        }}
+      />
+    );
+  };
+
+  return (
+    <div className="milestone-page">
+      <div className="content-container">
+        <h1 className="title">{currentMilestone.title}</h1>
+        {currentMilestone.title2 && <h2 className="subtitle">{currentMilestone.title2}</h2>}
+        
+        {renderDescription(currentMilestone.description[userGender])}
+        
+        {currentMilestone.note && (
+          <p className="note">{currentMilestone.note[userGender]}</p>
+        )}
+        
+        {currentMilestone.help && (
+          <div className="help-section">
+            {currentMilestone.help.type === "chat" && (
+              <div className="chat-container">
+                {currentMilestone.help.content.map((chat, index) => (
+                  <p key={index} className="chat-message">
+                    <strong>{chat.from}:</strong> {chat.text}
+                  </p>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        <div className="button-container">
+          {currentMilestone.additionalLink && currentMilestone.additionalbutton && (
+            <button 
+              onClick={() => router.push(currentMilestone.additionalLink!)} 
+              className="additional-button"
+            >
+              {currentMilestone.additionalbutton}
+            </button>
+          )}
+          
+          <button 
+            onClick={() => window.history.back()}
+            className="main-button"
+          >
+            {currentMilestone.button}
+          </button>
+        </div>
+      </div>
+
+      <div className="navigation-buttons">
+        <NavigationButton label="מילון" link="/dictionary" position="right" />
+        <NavigationButton label="תפריט" link="/burger_menu" position="left" />
+      </div>
+
+>>>>>>> 2cd28dc3f037bcd32b256bfe57fd9c5e0e2506a1
       <Modal
         isOpen={!!selectedTerm}
         onClose={() => setSelectedTerm(null)}
@@ -143,6 +246,10 @@ const MilestonePage: React.FC = () => {
       >
         <p>{selectedTerm?.description}</p>
       </Modal>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2cd28dc3f037bcd32b256bfe57fd9c5e0e2506a1
       <NoteComponent topicId={topic} />
     </div>
   );
