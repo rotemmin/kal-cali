@@ -51,9 +51,38 @@ export default function SignUp({
 
         // Initialize topics and milestones JSON
         const initialTopicsAndMilestones = {
-          topic_1: 0,
-          topic_2: 0,
-          topic_3: 0,
+          pension: {
+            status: 0,
+            milestones: {
+              general_info: 0,
+              how_yoezt: 0,
+              the_market: 0,
+              speak_yoezt: 0,
+              open_foundation: 0,
+              first_deposit: 0,
+            },
+          },
+          national_insurence: {
+            status: 0,
+            milestones: {
+              general_info: 0,
+              how_to_pay: 0,
+              payment_exemption: 0,
+              payment_methods: 0,
+            },
+          },
+          banks_and_credis_cards: {
+            status: 0,
+            milestones: {
+              opening_account: 0,
+              choose_card: 0,
+              important_info: 0,
+              credit_manegment: 0,
+              amalot: 0,
+              finance_safty: 0,
+              bank_yoezt: 0,
+            },
+          },
         };
 
         // Insert initial user activity
@@ -68,7 +97,6 @@ export default function SignUp({
               curr_milestone: 0,
             },
           ]);
-        console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
         if (activityError) {
           console.error(
             "Activity Initialization Error:",
@@ -78,7 +106,6 @@ export default function SignUp({
             `/signup?message=${encodeURIComponent(activityError.message)}`
           );
         }
-
         // Redirect to home page after successful signup
         return redirect("/homePage");
       }
