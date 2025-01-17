@@ -7,15 +7,17 @@ import { updateMilestoneStatus } from "@/lib/supabase/userActivity";
  * @param milestone - The milestone to mark as complete.
  * @returns Success or failure result.
  */
+
 export async function handleMilestoneCompletion(
   userId: string,
   topic: string,
   milestone: string
 ) {
-  if (!userId || !topic || !milestone) {
-    return { success: false, message: "Invalid parameters" };
+  try {
+    const result = await updateMilestoneStatus(userId, topic, milestone);
+    return result;
+  } catch (error) {
+    console.error("Error handling milestone completion:", error);
+    return { success: false, message: "Failed to handle milestone completion" };
   }
-
-  const result = await updateMilestoneStatus(userId, topic, milestone);
-  return result;
 }
