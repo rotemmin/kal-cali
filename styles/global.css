@@ -11,40 +11,59 @@
   --color-background: #ffffff;
   --color-text: #000000;
   --color-disabled: #cdcdcd;
-  --color-border: rgba(0, 0, 0, 0.12); /*לבדוק אם נחוץ*/
+  --color-border: rgba(0, 0, 0, 0.12);
+  /*לבדוק אם נחוץ*/
 
-  --color-hover: rgba(193, 255, 126, 0.1); /*לבדוק אם נחוץ*/
-  --color-active: rgba(193, 255, 126, 0.2); /*לבדוק אם נחוץ*/
+  --color-hover: rgba(193, 255, 126, 0.1);
+  /*לבדוק אם נחוץ*/
+  --color-active: rgba(193, 255, 126, 0.2);
+  /*לבדוק אם נחוץ*/
 
   --border-radius: 0.5rem;
 
   --font-family-priamry: "SimplerPro", sans-serif;
   --font-family-secondary: "Sunday", serif;
 
-  --text-xs: 0.75rem; /* 12px */
-  --text-sm: 0.875rem; /* 14px */
-  --text-base: 1rem; /* 16px */
-  --text-lg: 1.125rem; /* 18px */
-  --text-xl: 1.25rem; /* 20px */
-  --text-2xl: 1.5rem; /* 24px */
-  --text-3xl: 1.875rem; /* 30px */
+  --text-xs: 0.75rem;
+  /* 12px */
+  --text-sm: 0.875rem;
+  /* 14px */
+  --text-base: 1rem;
+  /* 16px */
+  --text-lg: 1.125rem;
+  /* 18px */
+  --text-xl: 1.25rem;
+  /* 20px */
+  --text-2xl: 1.5rem;
+  /* 24px */
+  --text-3xl: 1.875rem;
+  /* 30px */
 
   --leading-tight: 1.1;
   --leading-normal: 1.5;
   --leading-loose: 1.75;
 
-  --spacing-1: 0.25rem; /* 4px */
-  --spacing-2: 0.5rem; /* 8px */
-  --spacing-3: 0.75rem; /* 12px */
-  --spacing-4: 1rem; /* 16px */
-  --spacing-6: 1.5rem; /* 24px */
-  --spacing-8: 2rem; /* 32px */
+  --spacing-1: 0.25rem;
+  /* 4px */
+  --spacing-2: 0.5rem;
+  /* 8px */
+  --spacing-3: 0.75rem;
+  /* 12px */
+  --spacing-4: 1rem;
+  /* 16px */
+  --spacing-6: 1.5rem;
+  /* 24px */
+  --spacing-8: 2rem;
+  /* 32px */
 
   /* Layout */
   --container-padding: 1.5rem;
-  --max-width-sm: 24rem; /* 384px */
-  --max-width-md: 28rem; /* 448px */
-  --max-width-lg: 32rem; /* 512px */
+  --max-width-sm: 24rem;
+  /* 384px */
+  --max-width-md: 28rem;
+  /* 448px */
+  --max-width-lg: 32rem;
+  /* 512px */
 
   /* Border Radius */
   --radius-sm: 0.25rem;
@@ -60,7 +79,9 @@
 body {
   color: var(--color-primary);
   background-color: var(--color-background);
-  font-family: var(--font-family-secondary);
+  <<<<<<< Updated upstream font-family: var(--font-family-secondary);
+  =======overflow: hidden;
+  >>>>>>>Stashed changes
 }
 
 /* Layout */
@@ -143,6 +164,8 @@ footer {
   .rtl {
     direction: rtl;
   }
+
+  <<<<<<< Updated upstream=======>>>>>>>Stashed changes
 }
 
 @media (max-width: 480px) {
@@ -171,6 +194,8 @@ footer {
     height: 1.5rem;
     font-size: 0.8rem;
   }
+
+  <<<<<<< Updated upstream=======>>>>>>>Stashed changes
 }
 
 .rtl {
@@ -288,6 +313,8 @@ fieldset {
   &:active {
     filter: brightness(80%);
   }
+
+  <<<<<<< Updated upstream
 }
 
 /*rotem*/
@@ -410,3 +437,8 @@ fieldset {
 .letter-spacing {
   letter-spacing: 0.2px;
 }
+
+=======
+}
+
+>>>>>>>Stashed changes

@@ -6,27 +6,27 @@ import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
 export const createClient = (cookieStore: ReturnType<typeof cookies>) => {
-  return createServerClient(PUBLIC_SUPABASE_URL, PRIVATE_SUPABASE_SERVICE_KEY, {
-    cookies: {
-      get(name: string) {
-        return cookieStore.get(name)?.value;
+  const supabaseClient = createServerClient(
+    PUBLIC_SUPABASE_URL,
+    PRIVATE_SUPABASE_SERVICE_KEY,
+    {
+      cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value || null;
+        },
+        set(name: string, value: string, options: CookieOptions) {
+          if (cookieStore.get(name)?.value !== value) {
+            cookieStore.set({ name, value, ...options });
+          }
+        },
+        remove(name: string, options: CookieOptions) {
+          if (cookieStore.get(name)?.value) {
+            cookieStore.set({ name, value: "", ...options });
+          }
+        },
       },
-      set(name: string, value: string, options: CookieOptions) {
-        try {
-          cookieStore.set({ name, value, ...options });
-        } catch (error) {
-          // we can get here when in a server component, and it is
-          // fine as long as we also have supabase middleware in place
-        }
-      },
-      remove(name: string, options: CookieOptions) {
-        try {
-          cookieStore.set({ name, value: "", ...options });
-        } catch (error) {
-          // we can get here when in a server component, and it is
-          // fine as long as we also have supabase middleware in place
-        }
-      },
-    },
-  });
+    }
+  );
+
+  return supabaseClient;
 };
