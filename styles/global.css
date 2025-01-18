@@ -21,7 +21,7 @@
 
   --border-radius: 0.5rem;
 
-  --font-family-priamry: "SimplerPro", sans-serif;
+  --font-family-primary: "SimplerPro", sans-serif;
   --font-family-secondary: "Sunday", serif;
 
   --text-xs: 0.75rem;
@@ -79,9 +79,8 @@
 body {
   color: var(--color-primary);
   background-color: var(--color-background);
-  <<<<<<< Updated upstream font-family: var(--font-family-secondary);
-  =======overflow: hidden;
-  >>>>>>>Stashed changes
+  font-family: var(--font-family-secondary);
+  overflow: hidden;
 }
 
 /* Layout */
@@ -164,8 +163,6 @@ footer {
   .rtl {
     direction: rtl;
   }
-
-  <<<<<<< Updated upstream=======>>>>>>>Stashed changes
 }
 
 @media (max-width: 480px) {
@@ -195,7 +192,6 @@ footer {
     font-size: 0.8rem;
   }
 
-  <<<<<<< Updated upstream=======>>>>>>>Stashed changes
 }
 
 .rtl {
@@ -314,7 +310,6 @@ fieldset {
     filter: brightness(80%);
   }
 
-  <<<<<<< Updated upstream
 }
 
 /*rotem*/
@@ -437,8 +432,3 @@ fieldset {
 .letter-spacing {
   letter-spacing: 0.2px;
 }
-
-=======
-}
-
->>>>>>>Stashed changes
