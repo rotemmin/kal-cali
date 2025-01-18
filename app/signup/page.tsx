@@ -49,41 +49,47 @@ export default function SignUp({
         const userId = data.user.id;
         console.log("User ID:", userId);
 
-        // Initialize topics and milestones JSON
         const initialTopicsAndMilestones = {
-          pension: {
-            status: 0,
-            milestones: {
-              general_info: 0,
-              how_yoezt: 0,
-              the_market: 0,
-              speak_yoezt: 0,
-              open_foundation: 0,
-              first_deposit: 0,
-            },
-          },
-          national_insurence: {
-            status: 0,
-            milestones: {
-              general_info: 0,
-              how_to_pay: 0,
-              payment_exemption: 0,
-              payment_methods: 0,
-            },
-          },
-          banks_and_credis_cards: {
-            status: 0,
-            milestones: {
-              opening_account: 0,
-              choose_card: 0,
-              important_info: 0,
-              credit_manegment: 0,
-              amalot: 0,
-              finance_safty: 0,
-              bank_yoezt: 0,
-            },
-          },
+          pension: 6, // 6 milestones remaining
+          national_insurance: 4, // 4 milestones remaining
+          bank_account: 7, // 7 milestones remaining
         };
+
+        // Initialize topics and milestones JSON
+        // const initialTopicsAndMilestones = {
+        //   pension: {
+        //     status: 0,
+        //     milestones: {
+        //       general_info: 0,
+        //       how_yoezt: 0,
+        //       the_market: 0,
+        //       speak_yoezt: 0,
+        //       open_foundation: 0,
+        //       first_deposit: 0,
+        //     },
+        //   },
+        //   national_insurence: {
+        //     status: 0,
+        //     milestones: {
+        //       general_info: 0,
+        //       how_to_pay: 0,
+        //       payment_exemption: 0,
+        //       payment_methods: 0,
+        //     },
+        //   },
+        //   banks_and_credis_cards: {
+        //     status: 0,
+        //     milestones: {
+        //       opening_account: 0,
+        //       choose_card: 0,
+        //       important_info: 0,
+        //       credit_manegment: 0,
+        //       amalot: 0,
+        //       finance_safty: 0,
+        //       bank_yoezt: 0,
+        //     },
+        //   },
+        // };
 
         // Insert initial user activity
         const { error: activityError } = await supabase
