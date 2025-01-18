@@ -188,6 +188,7 @@ const TopicPage = () => {
 };
 
 export default TopicPage;
+<<<<<<< Updated upstream
 
 // "use client";
 
@@ -303,3 +304,5 @@ export default TopicPage;
 // };
 
 // export default TopicPage;
+=======
+>>>>>>> Stashed changes

@@ -238,6 +238,7 @@ const MilestonePage: React.FC = () => {
 };
 
 export default MilestonePage;
+<<<<<<< Updated upstream
 
 // "use client";
 // import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
@@ -505,3 +506,5 @@ export default MilestonePage;
 // };
 
 // export default MilestonePage;
+=======
+>>>>>>> Stashed changes

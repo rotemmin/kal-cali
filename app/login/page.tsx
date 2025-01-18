@@ -32,36 +32,37 @@ export default function Login({
     });
     if (error) {
       console.log("error", error);
-      return redirect(
-        "/login?message=Wrong password or email, please try again."
-      );
+      return redirect("/login?message=Could not authenticate user");
     }
     return redirect("/homePage");
   };
 
   return (
-    <div className="content">
-      <form className={styles.loginForm} action={signIn}>
-        <label htmlFor="email">
-          Email <input name="email" placeholder="you@example.com" required />
-        </label>
-
-        <label htmlFor="password">
-          Password{" "}
+    <div className={styles.container}>
+      <div className={styles.main}>
+        <p className={styles.introText}>הזיני את הפרטים שלך כדי להתחיל!</p>
+        <form className={styles.loginForm} action={signIn}>
+          <input
+            name="email"
+            placeholder="כתובת מייל"
+            required
+            className={`${styles.inputContainer} ${
+              searchParams?.message ? styles.error : ""
+            }`}
+          />
           <input
             type="password"
             name="password"
-            placeholder="••••••••"
+            placeholder="סיסמה"
             required
+            className={`${styles.inputContainer} ${
+              searchParams?.message ? styles.error : ""
+            }`}
           />
-        </label>
 
-        <button>Log In</button>
-        {/* <button formAction={signUp}>Sign Up</button> */}
-        {searchParams?.message && (
-          <p className={styles.errorMessage}>{searchParams.message}</p>
-        )}
-      </form>
+          <button className={styles.loginButton}>כניסה</button>
+        </form>
+      </div>
     </div>
   );
 }

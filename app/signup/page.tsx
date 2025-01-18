@@ -6,11 +6,10 @@ import styles from "./page.module.css";
 export default function SignUp({
   searchParams,
 }: {
-  searchParams?: { message?: string };
+  searchParams?: { message?: string }; // Updated to handle optional `searchParams` safely
 }) {
   const signUp = async (formData: FormData) => {
-    "use server"; // Server-side only
-
+    "use server"; // Indicates server-only code
     const origin = headers().get("origin");
     if (!origin) {
       console.error("Origin header is missing");
@@ -21,7 +20,8 @@ export default function SignUp({
     const password = formData.get("password") as string | null;
 
     // Validate email and password
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
       return redirect("/signup?message=Invalid email format");
     }
 
@@ -116,34 +116,51 @@ export default function SignUp({
   };
 
   return (
-    <div className="content">
-      <form className={styles.loginForm} action={signUp}>
-        <label htmlFor="email">
-          Email
+    <div className={styles.container}>
+      <div className={styles.main}>
+        <p className={styles.introText}>מלאי את הפרטים הבאים כדי להתחיל</p>
+        <form className={styles.signupForm} action={signUp}>
+          <div className={styles.nameInputsRow}>
+            <input
+              type="text"
+              name="familyName"
+              placeholder="שם משפחה"
+              required
+              className={`${styles.inputContainer} ${
+                searchParams?.message ? styles.error : ""
+              }`}
+            />
+            <input
+              type="text"
+              name="firstName"
+              placeholder="שם פרטי"
+              required
+              className={`${styles.inputContainer} ${
+                searchParams?.message ? styles.error : ""
+              }`}
+            />
+          </div>
           <input
             type="email"
             name="email"
-            placeholder="you@example.com"
+            placeholder="כתובת מייל"
             required
+            className={`${styles.inputContainer} ${
+              searchParams?.message ? styles.error : ""
+            }`}
           />
-        </label>
-
-        <label htmlFor="password">
-          Password
           <input
             type="password"
             name="password"
-            placeholder="••••••••"
+            placeholder="סיסמה"
             required
+            className={`${styles.inputContainer} ${
+              searchParams?.message ? styles.error : ""
+            }`}
           />
-        </label>
-
-        <button type="submit">Sign Up</button>
-
-        {searchParams?.message && (
-          <p className={styles.errorMessage}>{searchParams.message}</p>
-        )}
-      </form>
+          <button type="submit">הרשמה</button>
+        </form>
+      </div>
     </div>
   );
 }
