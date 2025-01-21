@@ -81,6 +81,9 @@ body {
   background-color: var(--color-background);
   font-family: var(--font-family-secondary);
   overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Layout */
