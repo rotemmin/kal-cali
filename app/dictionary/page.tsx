@@ -88,31 +88,33 @@ const DictionaryPage = () => {
           <h1 className={styles.dictionaryTitle}>מילון מושגים</h1>
 
           {/* Dictionary List */}
-          <div className={styles.dictionaryList}>
-            {Object.keys(groupedData).length > 0 ? (
-              Object.entries(groupedData).map(([topic, entries]: any) => (
-                <div key={topic} className={styles.topicGroup}>
-                  <h2 className={styles.topicTitle}>{topic}</h2>
-                  <div className={styles.entriesContainer}>
-                    {entries.map(
-                      (entry: { title: string; description: string }) => (
-                        <div
-                          key={entry.title}
-                          className={styles.dictionaryEntry}
-                        >
-                          <h3 className={styles.entryTitle}>{entry.title}</h3>
-                          <p className={styles.entryDescription} dir="rtl">
-                            {entry.description}
-                          </p>
-                        </div>
-                      )
-                    )}
+          <div className={styles.dictionaryListContainer}>
+            <div className={styles.dictionaryList}>
+              {Object.keys(groupedData).length > 0 ? (
+                Object.entries(groupedData).map(([topic, entries]: any) => (
+                  <div key={topic} className={styles.topicGroup}>
+                    <h2 className={styles.topicTitle}>{topic}</h2>
+                    <div className={styles.entriesContainer}>
+                      {entries.map(
+                        (entry: { title: string; description: string }) => (
+                          <div
+                            key={entry.title}
+                            className={styles.dictionaryEntry}
+                          >
+                            <h3 className={styles.entryTitle}>{entry.title}</h3>
+                            <p className={styles.entryDescription} dir="rtl">
+                              {entry.description}
+                            </p>
+                          </div>
+                        )
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))
-            ) : (
-              <p className={styles.noResults}>לא נמצאו תוצאות.</p>
-            )}
+                ))
+              ) : (
+                <p className={styles.noResults}>לא נמצאו תוצאות.</p>
+              )}
+            </div>
           </div>
         </div>
       </div>
