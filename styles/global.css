@@ -79,9 +79,8 @@
 body {
   color: var(--color-primary);
   background-color: var(--color-background);
-  <<<<<<< Updated upstream font-family: var(--font-family-secondary);
-  =======overflow: hidden;
-  >>>>>>>Stashed changes
+  font-family: var(--font-family-secondary);
+  overflow: hidden;
 }
 
 /* Layout */
@@ -103,7 +102,6 @@ main {
   padding: var(--spacing-8);
   width: 100%;
   height: 100%;
-
 }
 
 header {
@@ -164,8 +162,6 @@ footer {
   .rtl {
     direction: rtl;
   }
-
-  <<<<<<< Updated upstream=======>>>>>>>Stashed changes
 }
 
 @media (max-width: 480px) {
@@ -194,8 +190,6 @@ footer {
     height: 1.5rem;
     font-size: 0.8rem;
   }
-
-  <<<<<<< Updated upstream=======>>>>>>>Stashed changes
 }
 
 .rtl {
@@ -313,8 +307,6 @@ fieldset {
   &:active {
     filter: brightness(80%);
   }
-
-  <<<<<<< Updated upstream
 }
 
 /*rotem*/
@@ -437,8 +429,3 @@ fieldset {
 .letter-spacing {
   letter-spacing: 0.2px;
 }
-
-=======
-}
-
->>>>>>>Stashed changes
