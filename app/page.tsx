@@ -26,7 +26,7 @@ const HomePage = () => {
             key={index}
             className="grid-item"
           >
-            <div className="icon-container">
+            <div className="icon-container" style={{ animationDelay: `${index * 0.2}s` }}>
               <Image
                 src={topic.icon}
                 alt={topic.title}
