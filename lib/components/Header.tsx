@@ -11,7 +11,7 @@ export default function Header() {
   };
 
   const handleMenuClick = () => {
-    console.log("Menu button clicked!");
+    router.push("/burger_menu");
   };
 
   return (
