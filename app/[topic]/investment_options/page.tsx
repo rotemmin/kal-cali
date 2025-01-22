@@ -37,7 +37,7 @@ const InvestmentOptions: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const jsonData: InvestmentOptionsData = require("@/lib/content/topics/investment-options.json");
+        const jsonData: InvestmentOptionsData = require("@/lib/content/topics/investment_options.json");
         setData(jsonData);
       } catch (error) {
         console.error("Failed to load data:", error);

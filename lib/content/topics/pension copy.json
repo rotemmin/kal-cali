@@ -58,7 +58,7 @@
         "button": "סיימתי!",
         "link": "/[topic]",
         "additionalbutton": "למידע נוסף על מסלולי ההשקעה",
-        "additionalLink": "/[topic]/investment-options"
+        "additionalLink": "/[topic]/investment_options"
       },
       {
         "title": "מה קורה היום בשוק",

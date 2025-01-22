@@ -74,7 +74,7 @@
       "button": "סיימתי!",
       "link": "/[topic]",
       "additionalbutton": "מידע נוסף על מסלולים שונים",
-      "additionalLink": "/[topic]/financial-plans"
+      "additionalLink": "/[topic]/financial_plans"
     },
     {
       "title": "שמירה על בטיחות פיננסית",

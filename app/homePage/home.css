@@ -15,7 +15,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  animation: wiggle 1s ease;
+  animation: wiggle 4s linear infinite;
   animation-fill-mode: backwards;
 }
 
@@ -52,9 +52,10 @@
   }
 
   @keyframes wiggle {
-    0% { transform: rotate(0deg); }
-    25% { transform: rotate(-7deg); }
-    50% { transform: rotate(0deg); }
-    75% { transform: rotate(7deg); }
+    0% { transform: rotate(0deg); animation-timing-function: ease-in-out;}
+    10% { transform: rotate(-7deg); }
+    20% { transform: rotate(0deg); }
+    30% { transform: rotate(7deg); animation-timing-function: ease-in-out;}
+    40% { transform: rotate(0deg); }
     100% { transform: rotate(0deg); }
   }

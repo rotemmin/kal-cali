@@ -37,7 +37,7 @@ const CreditAccountPlans: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const jsonData: CreditAccountPlansData = require("@/lib/content/topics/financial-plans.json");
+        const jsonData: CreditAccountPlansData = require("@/lib/content/topics/financial_plans.json");
         setData(jsonData);
       } catch (error) {
         console.error("Failed to load data:", error);
