@@ -6,11 +6,10 @@ import styles from "./page.module.css";
 export default function SignUp({
   searchParams,
 }: {
-  searchParams?: { message?: string };
+  searchParams?: { message?: string }; // Updated to handle optional `searchParams` safely
 }) {
   const signUp = async (formData: FormData) => {
-    "use server"; // Server-side only
-
+    "use server"; // Indicates server-only code
     const origin = headers().get("origin");
     if (!origin) {
       console.error("Origin header is missing");
@@ -21,7 +20,8 @@ export default function SignUp({
     const password = formData.get("password") as string | null;
 
     // Validate email and password
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
       return redirect("/signup?message=Invalid email format");
     }
 
@@ -49,12 +49,47 @@ export default function SignUp({
         const userId = data.user.id;
         console.log("User ID:", userId);
 
-        // Initialize topics and milestones JSON
         const initialTopicsAndMilestones = {
-          topic_1: 0,
-          topic_2: 0,
-          topic_3: 0,
+          pension: 6, // 6 milestones remaining
+          national_insurance: 4, // 4 milestones remaining
+          bank_account: 7, // 7 milestones remaining
         };
+
+        // Initialize topics and milestones JSON
+        // const initialTopicsAndMilestones = {
+        //   pension: {
+        //     status: 0,
+        //     milestones: {
+        //       general_info: 0,
+        //       how_yoezt: 0,
+        //       the_market: 0,
+        //       speak_yoezt: 0,
+        //       open_foundation: 0,
+        //       first_deposit: 0,
+        //     },
+        //   },
+        //   national_insurence: {
+        //     status: 0,
+        //     milestones: {
+        //       general_info: 0,
+        //       how_to_pay: 0,
+        //       payment_exemption: 0,
+        //       payment_methods: 0,
+        //     },
+        //   },
+        //   banks_and_credis_cards: {
+        //     status: 0,
+        //     milestones: {
+        //       opening_account: 0,
+        //       choose_card: 0,
+        //       important_info: 0,
+        //       credit_manegment: 0,
+        //       amalot: 0,
+        //       finance_safty: 0,
+        //       bank_yoezt: 0,
+        //     },
+        //   },
+        // };
 
         // Insert initial user activity
         const { error: activityError } = await supabase
@@ -68,7 +103,6 @@ export default function SignUp({
               curr_milestone: 0,
             },
           ]);
-        console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
         if (activityError) {
           console.error(
             "Activity Initialization Error:",
@@ -78,7 +112,6 @@ export default function SignUp({
             `/signup?message=${encodeURIComponent(activityError.message)}`
           );
         }
-
         // Redirect to home page after successful signup
         return redirect("/homePage");
       }
@@ -89,34 +122,51 @@ export default function SignUp({
   };
 
   return (
-    <div className="content">
-      <form className={styles.loginForm} action={signUp}>
-        <label htmlFor="email">
-          Email
+    <div className={styles.container}>
+      <div className={styles.main}>
+        <p className={styles.introText}>מלאי את הפרטים הבאים כדי להתחיל</p>
+        <form className={styles.signupForm} action={signUp}>
+          <div className={styles.nameInputsRow}>
+            <input
+              type="text"
+              name="familyName"
+              placeholder="שם משפחה"
+              required
+              className={`${styles.inputContainer} ${
+                searchParams?.message ? styles.error : ""
+              }`}
+            />
+            <input
+              type="text"
+              name="firstName"
+              placeholder="שם פרטי"
+              required
+              className={`${styles.inputContainer} ${
+                searchParams?.message ? styles.error : ""
+              }`}
+            />
+          </div>
           <input
             type="email"
             name="email"
-            placeholder="you@example.com"
+            placeholder="כתובת מייל"
             required
+            className={`${styles.inputContainer} ${
+              searchParams?.message ? styles.error : ""
+            }`}
           />
-        </label>
-
-        <label htmlFor="password">
-          Password
           <input
             type="password"
             name="password"
-            placeholder="••••••••"
+            placeholder="סיסמה"
             required
+            className={`${styles.inputContainer} ${
+              searchParams?.message ? styles.error : ""
+            }`}
           />
-        </label>
-
-        <button type="submit">Sign Up</button>
-
-        {searchParams?.message && (
-          <p className={styles.errorMessage}>{searchParams.message}</p>
-        )}
-      </form>
+          <button type="submit">הרשמה</button>
+        </form>
+      </div>
     </div>
   );
 }

@@ -6,8 +6,7 @@ import NavigationButton from "@/components/NavigationButton";
 import Modal from "@/components/modal";
 import dictionaryData from "@/public/dictionary.json";
 import NoteComponent from "@/app/notes/singleNote";
-import './[topic].css';
-
+import "./[topic].css";
 
 interface Milestone {
   title: string;
@@ -26,7 +25,8 @@ interface TopicData {
 const TopicPage = () => {
   const params = useParams();
   const { topic } = params as { topic: string };
-  const data: TopicData = require(`@/lib/content/topics/${topic}.json`);
+  const normalizedTopic = topic.replace(/-/g, "_"); // Replace hyphens with underscores
+  const data: TopicData = require(`@/lib/content/topics/${normalizedTopic}.json`);
 
   const [dictionary, setDictionary] = useState<{ [key: string]: string }>({});
   const [selectedTerm, setSelectedTerm] = useState<{
@@ -43,10 +43,13 @@ const TopicPage = () => {
   }, []);
 
   const processTextWithTerms = (text: string): string => {
-    return text.replace(/<span data-term=['"]([^'"]+)['"]>([^<]+)<\/span>/g, (match, term, content) => {
-      const cleanTerm = term.replace(/^ש?ב/, '');
-      return `<span class="dictionary-term" data-term="${cleanTerm}">${content}</span>`;
-    });
+    return text.replace(
+      /<span data-term=['"]([^'"]+)['"]>([^<]+)<\/span>/g,
+      (match, term, content) => {
+        const cleanTerm = term.replace(/^ש?ב/, "");
+        return `<span class="dictionary-term" data-term="${cleanTerm}">${content}</span>`;
+      }
+    );
     return text.replace(
       /<span data-term='([^']+)'>[^<]+<\/span>/g,
       (match, term) => {
@@ -74,29 +77,25 @@ const TopicPage = () => {
   return (
     <div className="topic-page">
       <main className="topic-content">
-        <h1 className="topic-title">
-          {data.title}
-        </h1>
-        
-        <div 
+        <h1 className="topic-title">{data.title}</h1>
+
+        <div
           className="topic-description"
           onClick={handleTermClick}
-          dangerouslySetInnerHTML={{ 
-            __html: processTextWithTerms(data.description.female) 
-          }} 
+          dangerouslySetInnerHTML={{
+            __html: processTextWithTerms(data.description.female),
+          }}
         />
-        
+
         <div className="milestones-container">
           {data.milestones.map((milestone, index) => (
-            <Link 
+            <Link
               key={index}
               href={`/${topic}/${milestone.title}`}
-              style={{ textDecoration: 'none' }}
+              style={{ textDecoration: "none" }}
             >
               <button className="milestone-button">
-                <span className="milestone-text">
-                  {milestone.title}
-                </span>
+                <span className="milestone-text">{milestone.title}</span>
               </button>
             </Link>
           ))}
@@ -115,7 +114,7 @@ const TopicPage = () => {
       >
         <p>{selectedTerm?.description}</p>
       </Modal>
-      
+
       <NoteComponent topicId={topic} />
     </div>
   );

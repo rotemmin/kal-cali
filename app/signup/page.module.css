@@ -1,21 +1,102 @@
-.loginForm {
-  width: 100%;
-  max-width: 20rem; /* Or whatever width you prefer */
-  margin: auto;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
+  .container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+    background-color: #FCFFFA;
+    /**todo: get from the girls*/
+  }
 
-.loginForm label {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+  .main {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 2.9rem;
+    padding: 0 var(--spacing-8);
+  }
 
-.errorMessage {
-  color: rgba(255, 0, 0, 0.805);
-  font-size: 0.8rem;
-  margin: 0.5rem 0;
-}
+  .introText {
+    font-family: var(--font-family-primary);
+    font-weight: 400;
+    font-size: var(--text-xl);
+    line-height: var(--text-xl);
+    color: black;
+
+    margin-left: 23px;
+    text-align: right;
+  }
+
+  .signupForm {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 35px;
+    width: 100%;
+  }
+
+  .nameInputsRow {
+    display: flex;
+    gap: var(--spacing-4);
+    width: 100%;
+  }
+
+  .nameInputsRow .inputContainer {
+    flex: 1;
+  }
+
+  .inputContainer {
+    width: 100%;
+    padding: 4px 16px 3px 0px;
+    border: 2px solid #E6E4FF;
+    border-radius: 24px;
+    background-color: #FFFFFF;
+    /**todo: correct color?*/
+
+    font-family: var(--font-family-primary);
+    font-weight: 400;
+    font-size: var(--text-xl);
+    line-height: var(--text-xl);
+  }
+
+  .inputContainer::placeholder {
+    color: black;
+  }
+
+  .inputContainer:focus {
+    border: 2px solid #A585E5;
+    outline: none;
+  }
+
+  .inputContainer:focus-visible {
+    border: 2px solid #A585E5;
+    outline: none;
+  }
+
+  .inputContainer.error {
+    /**todo: talk to avinoam about errors*/
+    border: 2px solid #FC4343;
+  }
+
+  .signupForm button {
+    padding: 4px 20px;
+    background-color: #A585E5;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+
+    font-family: var(--font-family-secondary);
+    font-weight: 400;
+    /**todo: why so thick?*/
+    font-size: var(--text-2xl);
+    line-height: 31px;
+    font-style: italic;
+    color: black;
+    transition: transform 0.2s ease;
+    margin-right: auto;
+  }
+
+  .signupForm button:hover {
+    /**todo: want hover?*/
+    transform: scale(1.05);
+  }
