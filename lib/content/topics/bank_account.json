@@ -33,7 +33,7 @@
       "button": "סיימתי!",
       "link": "/[topic]",
       "additionalbutton": "מידע נוסף על בחירת כרטיס אשראי",
-      "additionalLink": "/[topic]/different-cards"
+      "additionalLink": "/[topic]/different_cards"
     },
     {
       "title": "מושגים חשובים",
@@ -119,7 +119,7 @@
       "button": "סיימתי!",
       "link": "/[topic]",
       "additionalbutton": "למידע נוסף על כרטיסי אשראי שונים",
-      "additionalLink": "/[topic]/different-cards"
+      "additionalLink": "/[topic]/different_cards"
     }
   ]
 }
