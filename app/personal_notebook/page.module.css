@@ -1,0 +1,127 @@
+.notebookContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.sidebar {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    background-color: var(--color-text);
+
+    width: 54px;
+    /* background-color: var(--color-background); */
+}
+
+.topicGroup {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1;
+}
+
+.topic {
+    width: 60px;
+    /* Width of the topic block */
+    height: 140px;
+    /* Height of the topic block */
+    background-color: white;
+    border: 2px solid #d0d0ff;
+    /* Border color */
+    border-radius: 20px;
+    /* Rounded corners */
+    margin-bottom: -20px;
+    /* Overlap effect */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    writing-mode: vertical-rl;
+    /* Vertical text */
+    text-orientation: mixed;
+    font-size: 14px;
+    /* Font size for text */
+    font-weight: bold;
+    /* Bold text */
+    color: #333;
+    /* Text color */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for depth */
+    transition: all 0.2s ease-in-out;
+    /* Smooth hover effect */
+}
+
+.topic:hover {
+    background-color: #e8e8ff;
+    transform: translateX(10px);
+}
+
+.topic.selected {
+    background-color: #d8d8ff;
+    transform: translateX(15px);
+    font-weight: bold;
+}
+
+.topicLabel {
+    display: block;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.topicText {
+    display: block;
+    font-size: 1rem;
+}
+
+/* Content area */
+.content {
+    flex: 1;
+    padding: 2rem;
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 1.5rem;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-left: 0.5rem;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.notesSection {
+    margin-bottom: 2rem;
+}
+
+.notesTextarea {
+    width: 100%;
+    min-height: 150px;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    resize: vertical;
+}
+
+.infoList {
+    margin-bottom: 2rem;
+}
+
+.infoList p {
+    margin-bottom: 1rem;
+    line-height: 1.5;
+    font-size: 1rem;
+    color: #333;
+}

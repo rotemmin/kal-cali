@@ -1,0 +1,187 @@
+.mainContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: relative;
+    min-height: 100vh;
+    /* border-radius: 30px; */
+    /* todo: how?? width: 120vw; */
+    /* box-shadow: -1px 0px 15px 0px #00000026; */
+    background: #FCFFFA;
+    padding: 30px 40px 0px 40px;
+}
+
+.dictionaryContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 23px;
+    height: 100%;
+}
+
+.textContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: 13px;
+    overflow: auto;
+    padding-bottom: 66px;
+    height: 100%;
+}
+
+.dictionaryTitle {
+    font-family: var(--font-family-secondary);
+    font-size: 32px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 30.08px;
+    text-align: right;
+    color: var(--color-text);
+    margin: 0;
+
+    text-decoration-line: underline;
+    text-decoration-color: #9895F4;
+    text-decoration-skip-ink: none;
+    /**todo: make the rectangle slanted + wider*/
+}
+
+.searchBarContainer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    position: relative;
+    width: 40px;
+    height: 35px;
+    border: 1px solid black;
+    border-radius: 25px;
+    transition: width 0.3s ease-in-out;
+}
+
+.searchBarContainerActive {
+    width: 229px;
+}
+
+.searchBar {
+    margin-right: 20px;
+    border: none;
+    outline: none;
+    background: transparent;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.searchIcon {
+    position: absolute;
+    margin-right: 7px;
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+    color: var(--color-text);
+    transform: rotate(90deg);
+}
+
+.dictionaryListContainer {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    max-height: 100%;
+}
+
+.dictionaryList {
+    /* todo:height + on the right more*/
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+@media (min-width: 1px) {
+
+    .dictionaryListContainer::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .dictionaryListContainer::-webkit-scrollbar-track,
+    .scrollbar-visible::-webkit-scrollbar-track {
+        border-radius: 2px;
+        background: #C5C5C545;
+    }
+
+    .dictionaryListContainer::-webkit-scrollbar-thumb,
+    .scrollbar-visible::-webkit-scrollbar-thumb {
+        background: #CDCDCD;
+        border-radius: 2px;
+    }
+}
+
+.topicGroup {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: 38px;
+}
+
+.topicTitle {
+    font-family: var(--font-family-secondary);
+    font-size: 24px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 22.56px;
+    text-align: right;
+    color: var(--color-text);
+    margin: 0;
+
+    text-decoration-line: underline;
+    text-decoration-color: #9895F4;
+    text-decoration-skip-ink: none;
+
+}
+
+.entriesContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: 14px;
+}
+
+.dictionaryEntry {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+
+.entryTitle {
+    font-family: Sunday;
+    font-size: 22px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 24.42px;
+    letter-spacing: 0.01em;
+
+    color: #9895F4;
+    margin: 0;
+}
+
+.entryDescription {
+    /* todo: overwraps*/
+    font-family: SimplerPro;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 22.2px;
+    letter-spacing: 0.01em;
+
+    color: var(--color-text);
+    margin: 0;
+}
+
+/* todo: error?*/
+.noResults {
+    font-size: 16px;
+    color: #a0aec0;
+    text-align: center;
+}

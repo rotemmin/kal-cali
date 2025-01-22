@@ -7,6 +7,7 @@
     padding: 0;
     background-color: var(--color-background);
     overflow-x: hidden;
+    overflow-y: hidden;
     max-width: 393px;
 }
 
