@@ -3,7 +3,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import "./home.css";
+// import "./home.css";
 
 const topics = [
   { title: "חשבון בנק", icon: "/icons/bank.svg", link: "/bank-account" },
@@ -13,8 +13,8 @@ const topics = [
   { title: "תלושי שכר", icon: "/icons/salary.svg", link: "/salary" },
   {
     title: "ביטוח לאומי",
-    icon: "/icons/national-insurance.svg",
-    link: "/national-insurance",
+    icon: "/icons/national_insurance.svg",
+    link: "/national_insurance",
   },
 ];
 

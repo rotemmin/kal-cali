@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import NoteComponent from "@/app/notes/singleNote";
 import { useParams } from "next/navigation";
 
 interface Plan {
@@ -68,7 +67,6 @@ const CreditAccountPlans: React.FC = () => {
         </div>
       ))}
       <button onClick={() => window.history.back()}>חזרה</button>
-      <NoteComponent topicId={topic} />
     </div>
   );
 };

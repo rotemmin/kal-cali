@@ -3,7 +3,6 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import NavigationButton from "@/components/NavigationButton";
-import NoteComponent from "@/app/notes/singleNote";
 import Modal from "@/components/modal";
 import "./MilestonePage.css";
 
@@ -278,8 +277,6 @@ const MilestonePage: React.FC = () => {
       >
         <p>{selectedTerm?.description}</p>
       </Modal>
-
-      <NoteComponent topicId={topic} />
     </div>
   );
 };
