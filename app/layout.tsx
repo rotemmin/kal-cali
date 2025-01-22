@@ -4,9 +4,10 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Navbar from "@/lib/components/Navbar";
 import Footer from "@/lib/components/Footer";
+import Header from "@/lib/components/Header";
 
 export const metadata: Metadata = {
-  title: "FinanStep",
+  title: "Kal-Cali",
   description: "האפליקציה שלך לניהול פיננסי",
 };
 
@@ -32,7 +33,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body>
-        <Navbar />
+        <Header />
         {children}
         <Footer />
       </body>
