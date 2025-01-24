@@ -1,89 +1,38 @@
-"use client";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-// import "./home.css";
+import styles from "./page.module.css";
 
-const topics = [
-  { title: "חשבון בנק", icon: "/icons/bank.svg", link: "/bank-account" },
-  { title: "מס הכנסה", icon: "/icons/tax.svg", link: "/tax" },
-  { title: "פנסיה", icon: "/icons/pension.svg", link: "/pension" },
-  { title: "ביטוחים", icon: "/icons/insurance.svg", link: "/insurance" },
-  { title: "תלושי שכר", icon: "/icons/salary.svg", link: "/salary" },
-  {
-    title: "ביטוח לאומי",
-    icon: "/icons/national_insurance.svg",
-    link: "/national_insurance",
-  },
-];
-
-const HomePage = () => {
-  const supabase = createClientComponentClient();
-
-  const updateCurrentTopic = async (normalizedTopic: string) => {
-    try {
-      // Get session
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      if (!session?.user) {
-        console.error("User session not found");
-        return;
-      }
-
-      const userId = session.user.id;
-
-      // Update the `curr_topic` in the database
-      const { error } = await supabase
-        .from("user_activity")
-        .update({ curr_topic: normalizedTopic })
-        .eq("id", userId);
-
-      if (error) {
-        console.error("Error updating current topic:", error);
-      } else {
-        console.log("Current topic updated successfully:", normalizedTopic);
-      }
-    } catch (error) {
-      console.error("Error updating current topic:", error);
-    }
-  };
-
+export default function Home() {
   return (
-    <main className="main-container">
-      <div className="page-header">
-        <h1 className="main-title">היי!</h1>
-        <h2 className="sub-title">מה תרצי לעשות היום?</h2>
-      </div>
-      <div className="grid-container rtl">
-        {topics.map((topic, index) => {
-          const normalizedTopic = topic.link
-            .replace(/-/g, "_")
-            .replace("/", "");
-          return (
-            <Link
-              href={topic.link}
-              key={index}
-              className="grid-item"
-              onClick={() => updateCurrentTopic(normalizedTopic)}
-            >
-              <div className="icon-container">
-                <Image
-                  src={topic.icon}
-                  alt={topic.title}
-                  fill
-                  style={{ objectFit: "contain" }}
-                  priority={index < 2}
-                />
-              </div>
+    <div className={styles.background}>
+      <div className={styles.container}>
+        <div className={styles.content}>
+          <h1 className={styles.welcome}>ברוכ.ה הבא.ה ל-</h1>
+          
+          <Image
+            src="/icons/firstPageLogo.svg"
+            alt="FinanStep Logo"
+            width={349}
+            height={261}
+            priority
+            className={styles.logo}
+          />
+          
+          <p className={styles.description}>
+            מי שרוצה ללמוד על תהליך כלכלי נכון שירים את היד! (או ילחץ על הכפתור)
+          </p>
+          
+          <div className={styles.buttonContainer}>
+            <Link href="/login" className={styles.buttonLink}>
+              <button className={styles.loginButton}>לכניסה</button>
             </Link>
-          );
-        })}
+            
+            <Link href="/signup" className={styles.buttonLink}>
+              <button className={styles.signupButton}>להרשמה</button>
+            </Link>
+          </div>
+        </div>
       </div>
-    </main>
+    </div>
   );
-};
-
-export default HomePage;
+}
