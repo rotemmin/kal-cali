@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import NoteComponent from "@/app/notes/singleNote";
 import { useParams } from "next/navigation";
 
 interface InvestmentType {
@@ -38,7 +37,7 @@ const InvestmentOptions: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const jsonData: InvestmentOptionsData = require("@/lib/content/topics/investment-options.json");
+        const jsonData: InvestmentOptionsData = require("@/lib/content/topics/investment_options.json");
         setData(jsonData);
       } catch (error) {
         console.error("Failed to load data:", error);
@@ -77,7 +76,6 @@ const InvestmentOptions: React.FC = () => {
         ))}
       </ul>
       <button onClick={() => window.history.back()}>חזרה</button>
-      <NoteComponent topicId={topic} />
     </div>
   );
 };

@@ -1,10 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import NoteComponent from "@/app/notes/singleNote";
 import { useParams } from "next/navigation";
 
-interface Plan {
+interface CardType {
   title: string;
   description: {
     male: string;
@@ -20,25 +19,26 @@ interface Plan {
   };
 }
 
-interface CreditAccountPlansData {
+interface CreditCardOptionsData {
   title: string;
   description: {
     male: string;
     female: string;
   };
-  plans: Plan[];
+  types: CardType[];
 }
 
-const CreditAccountPlans: React.FC = () => {
+const CreditCardOptions: React.FC = () => {
   const params = useParams();
   const { topic } = params as { topic: string };
-  const [data, setData] = useState<CreditAccountPlansData | null>(null);
+
+  const [data, setData] = useState<CreditCardOptionsData | null>(null);
   const userGender: "male" | "female" = "female";
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const jsonData: CreditAccountPlansData = require("@/lib/content/topics/financial-plans.json");
+        const jsonData: CreditCardOptionsData = require("@/lib/content/topics/different_cards.json");
         setData(jsonData);
       } catch (error) {
         console.error("Failed to load data:", error);
@@ -56,21 +56,20 @@ const CreditAccountPlans: React.FC = () => {
     <div>
       <h1>{data.title}</h1>
       <p>{data.description[userGender]}</p>
-      <h2>סוגי מסלולי אשראי</h2>
-      {data.plans.map((plan, index) => (
+      <h2>סוגי כרטיסי אשראי</h2>
+      {data.types.map((type, index) => (
         <div key={index}>
-          <h3>{plan.title}</h3>
-          <p>{plan.description[userGender]}</p>
+          <h3>{type.title}</h3>
+          <p>{type.description[userGender]}</p>
           <h4>הטבות</h4>
-          <p>{plan.benefits[userGender]}</p>
+          <p>{type.benefits[userGender]}</p>
           <h4>עמלות</h4>
-          <p>{plan.fees[userGender]}</p>
+          <p>{type.fees[userGender]}</p>
         </div>
       ))}
       <button onClick={() => window.history.back()}>חזרה</button>
-      <NoteComponent topicId={topic} />
     </div>
   );
 };
 
-export default CreditAccountPlans;
+export default CreditCardOptions;

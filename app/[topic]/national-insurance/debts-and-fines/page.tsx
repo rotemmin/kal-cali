@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import nationalInsuranceData from "@/lib/content/national-insurance.json";
+import nationalInsuranceData from "@/lib/content/topics/national_insurance.json";
 
 const DebtsAndFinesPage: React.FC = () => {
   const milestoneData = nationalInsuranceData.milestones.find(

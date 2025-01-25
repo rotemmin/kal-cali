@@ -5,7 +5,6 @@ import { useParams } from "next/navigation";
 import NavigationButton from "@/components/NavigationButton";
 import Modal from "@/components/modal";
 import dictionaryData from "@/public/dictionary.json";
-import NoteComponent from "@/app/notes/singleNote";
 import "./[topic].css";
 
 interface Milestone {
@@ -115,7 +114,6 @@ const TopicPage = () => {
         <p>{selectedTerm?.description}</p>
       </Modal>
 
-      <NoteComponent topicId={topic} />
     </div>
   );
 };
