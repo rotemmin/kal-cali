@@ -18,7 +18,7 @@ export default function Header() {
     <header className={styles.header}>
       <button className={styles.menuButton} onClick={handleMenuClick}>
         <img
-          src="/icons/manu.svg"
+          src="/icons/menu.svg"
           alt="Menu Icon"
           className={styles.menuIcon}
         />
