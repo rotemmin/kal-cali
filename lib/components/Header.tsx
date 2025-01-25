@@ -7,7 +7,7 @@ export default function Header() {
   const router = useRouter();
 
   const handleLogoClick = () => {
-    router.push("/");
+    router.push("/homePage");
   };
 
   const handleMenuClick = () => {
