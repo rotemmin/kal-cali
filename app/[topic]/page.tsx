@@ -4,8 +4,10 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import NavigationButton from "@/components/NavigationButton";
 import Modal from "@/components/modal";
+import Header from "@/lib/components/Header";
 import dictionaryData from "@/public/dictionary.json";
 import "./[topic].css";
+
 
 interface Milestone {
   title: string;
@@ -74,6 +76,8 @@ const TopicPage = () => {
   };
 
   return (
+    <>
+    <Header />
     <div className="topic-page">
       <main className="topic-content">
         <h1 className="topic-title">{data.title}</h1>
@@ -115,6 +119,7 @@ const TopicPage = () => {
       </Modal>
 
     </div>
+    </>
   );
 };
 

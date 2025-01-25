@@ -177,7 +177,7 @@
     font-size: 18px;
     cursor: pointer;
     transition: transform 0.2s ease;
-    margin-left: auto;
+    margin: 0 auto;
 }
 
 .additional-button {
@@ -220,3 +220,10 @@
         margin-bottom: 24px;
     }
 }
+
+.close-button {
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    z-index: 10;
+  }

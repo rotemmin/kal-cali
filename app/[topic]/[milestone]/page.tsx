@@ -4,7 +4,10 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import NavigationButton from "@/components/NavigationButton";
 import Modal from "@/components/modal";
+import Header from "@/lib/components/Header";
 import "./MilestonePage.css";
+import Image from "next/image";
+
 
 interface MilestoneDescription {
   text: string;
@@ -249,6 +252,8 @@ const MilestonePage: React.FC = () => {
   const userGender: "male" | "female" = "female";
 
   return (
+    <>
+    <Header />
     <div className="milestone-page">
       <div className="content-container">
         <h1 className="title">{currentMilestone?.title}</h1>
@@ -278,6 +283,7 @@ const MilestonePage: React.FC = () => {
         <p>{selectedTerm?.description}</p>
       </Modal>
     </div>
+    </>
   );
 };
 

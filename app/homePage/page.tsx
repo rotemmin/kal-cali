@@ -3,19 +3,16 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import Header from "@/lib/components/Header";
 import "./home.css";
  
 const topics = [
-  { title: "חשבון בנק", icon: "/icons/bank.svg", link: "/bank-account" },
-  { title: "מס הכנסה", icon: "/icons/tax.svg", link: "/tax" },
-  { title: "פנסיה", icon: "/icons/pension.svg", link: "/pension" },
-  { title: "ביטוחים", icon: "/icons/insurance.svg", link: "/insurance" },
-  { title: "תלושי שכר", icon: "/icons/salary.svg", link: "/salary" },
-  {
-    title: "ביטוח לאומי",
-    icon: "/icons/national_insurance.svg",
-    link: "/national_insurance",
-  },
+  { title: "ביטוח לאומי", icon: "/icons/onlyTitleStickers/national_insurance.svg", link: "/national_insurance" },
+  { title: "מס הכנסה", icon: "/icons/onlyTitleStickers/tax.svg", link: "/tax" },
+  { title: "פנסיה", icon: "/icons/onlyTitleStickers/pension.svg", link: "/pension" },
+  { title: "ביטוחים", icon: "/icons/onlyTitleStickers/insurance.svg", link: "/insurance" },
+  { title: "תלושי שכר", icon: "/icons/onlyTitleStickers/salary.svg", link: "/salary" },
+  { title: "חשבון בנק", icon: "/icons/onlyTitleStickers/bank.svg", link: "/bank-account"},
 ];
 
 const HomePage = () => {
@@ -52,6 +49,8 @@ const HomePage = () => {
   };
 
   return (
+    <>
+    <Header />
     <main className="main-container">
       <div className="page-header">
         <h1 className="main-title">היי!</h1>
@@ -83,6 +82,7 @@ const HomePage = () => {
         })}
       </div>
     </main>
+    </>
   );
 };
 

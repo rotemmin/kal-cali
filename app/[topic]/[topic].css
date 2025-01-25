@@ -7,7 +7,7 @@
     padding: 0;
     background-color: var(--color-background);
     overflow-x: hidden;
-    overflow-y: hidden;
+    overflow-y: auto;
     max-width: 393px;
 }
 
@@ -19,7 +19,7 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    padding-bottom: 80px;
+    padding-bottom: 8px;
 }
 
 .topic-title {
@@ -141,9 +141,9 @@
 
 /* Responsive adjustments */
 @media (width: 393px) {
-    .topic-page {
+    /* .topic-page {
         height: 852px;
-    }
+    } */
     
     .topic-content {
         gap: 4px;
