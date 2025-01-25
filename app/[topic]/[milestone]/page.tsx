@@ -47,6 +47,11 @@ const MilestonePage: React.FC = () => {
     (m) => m.title.toLowerCase() === decodeURIComponent(milestone).toLowerCase()
   );
 
+  console.log("########################");
+  console.log("The topic is: ", topic);
+  console.log("The currentMilestone is: ", currentMilestone);
+  console.log("########################");
+
   const [dictionary, setDictionary] = useState<{ [key: string]: string }>({});
   const [selectedTerm, setSelectedTerm] = useState<{
     title: string;
