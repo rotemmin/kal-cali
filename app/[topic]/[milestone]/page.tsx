@@ -1,5 +1,5 @@
 "use client";
-import { createClient } from "@/lib/supabase/client"; // Use your custom client
+import { supabase } from "@/lib/supabase/client";
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import NavigationButton from "@/components/NavigationButton";
@@ -38,7 +38,7 @@ interface TopicData {
 }
 
 const MilestonePage: React.FC = () => {
-  const supabase = createClient(); // Use your custom Supabase client
+  // const supabase = createClient(); // Use your custom Supabase client
   const params = useParams();
   const router = useRouter();
   const { topic, milestone } = params as { topic: string; milestone: string };
@@ -283,7 +283,10 @@ const MilestonePage: React.FC = () => {
             <div className="note">
               <div
                 dangerouslySetInnerHTML={{
-                  __html: currentMilestone.note[userGender].replace(/\n/g, "<br />"),
+                  __html: currentMilestone.note[userGender].replace(
+                    /\n/g,
+                    "<br />"
+                  ),
                 }}
               />
             </div>

@@ -1,5 +1,5 @@
 "use client";
-import { createClient } from "@/lib/supabase/client"; // Use your custom client
+import { supabase } from "@/lib/supabase/client"; // Import Supabase client
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -36,9 +36,8 @@ const topics = [
 ];
 
 const HomePage = () => {
-  const supabase = createClient(); // Use your custom client
   const [firstName, setFirstName] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true); // Add a loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -55,7 +54,6 @@ const HomePage = () => {
 
         const userId = session.user.id;
 
-        // Fetch the user's first name from user_metadata
         const { data, error } = await supabase
           .from("user_metadata")
           .select("first_name")
@@ -70,12 +68,12 @@ const HomePage = () => {
       } catch (error) {
         console.error("Error fetching user name:", error);
       } finally {
-        setLoading(false); // Ensure loading is set to false after fetch
+        setLoading(false);
       }
     };
 
     fetchUserName();
-  }, [supabase]);
+  }, []);
 
   const updateCurrentTopic = async (normalizedTopic: string) => {
     try {
@@ -110,7 +108,6 @@ const HomePage = () => {
       <Header />
       <main className="main-container">
         <div className="page-header">
-          {/* Render nothing until the data is fetched */}
           {loading ? (
             <h1 className="main-title">טוען...</h1>
           ) : (
