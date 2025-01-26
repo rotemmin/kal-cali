@@ -19,7 +19,8 @@ export default function Home() {
           />
           
           <p className={styles.description}>
-            מי שרוצה ללמוד על תהליך כלכלי נכון שירים את היד! (או ילחץ על הכפתור)
+            {/* מי שרוצה ללמוד על תהליך כלכלי נכון שירים את היד! (או ילחץ על הכפתור) */}
+            איתנו אפשר להקליל פיננסיים
           </p>
           
           <div className={styles.buttonContainer}>
