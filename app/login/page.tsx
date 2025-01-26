@@ -40,7 +40,7 @@ export default function Login({
   return (
     <div className={styles.container}>
       <div className={styles.main}>
-        <p className={styles.introText}>הזיני את הפרטים שלך כדי להתחיל!</p>
+        <p className={styles.introText}>הזיני את הפרטים הבאים כדי להתחיל</p>
         <form className={styles.loginForm} action={signIn}>
           <input
             name="email"

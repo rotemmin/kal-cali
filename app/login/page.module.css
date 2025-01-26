@@ -1,11 +1,13 @@
-  /**todo: get from the girls*/
   .container {
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: center;
     height: 100vh;
-    background-color: #FCFFFA;
+    background-color: var(--color-background-secondary);
+    background-image: url('/pattern.svg');
+    background-size: cover;
+    background-position: center;
   }
 
   .main {
@@ -19,11 +21,11 @@
 
 
   .introText {
-    font-family: var(--font-family-primary);
+    font-family: var(--font-family-priamry);
     font-weight: 400;
     font-size: var(--text-xl);
     line-height: var(--text-xl);
-    color: black;
+    color: var(--color-text);
   }
 
   .loginForm {
@@ -37,18 +39,18 @@
   .inputContainer {
     width: 100%;
     padding: 4px 16px 3px 0px;
-    border: 2px solid #E6E4FF;
+    border: 2px solid var(--color-secondary);
     border-radius: 24px;
-    background-color: #FFFFFF;
+    background-color: var(--color-background);
 
-    font-family: var(--font-family-primary);
+    font-family: var(--font-family-priamry);
     font-weight: 400;
     font-size: var(--text-xl);
     line-height: var(--text-xl);
   }
 
   .inputContainer::placeholder {
-    color: black;
+    color: var(--color-text)
   }
 
   .inputContainer:focus {
@@ -67,23 +69,21 @@
 
   .loginForm button {
     padding: 4px 18px;
-    background-color: #A585E5;
+    background-color: var(--color-accent);
     border: none;
     border-radius: 20px;
     cursor: pointer;
 
     font-family: var(--font-family-secondary);
     font-weight: 400;
-    /**todo: too thick?*/
     font-size: var(--text-2xl);
     line-height: 31px;
     font-style: italic;
-    color: black;
+    color: #210E46;
     transition: transform 0.2s ease;
     margin-right: auto;
   }
 
   .loginForm button:hover {
-    transform: scale(1.05);
-    /**todo: want hover?*/
+    color: var(--color-background);
   }

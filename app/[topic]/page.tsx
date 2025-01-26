@@ -8,7 +8,6 @@ import Header from "@/lib/components/Header";
 import dictionaryData from "@/public/dictionary.json";
 import "./[topic].css";
 
-
 interface Milestone {
   title: string;
   link: string;
@@ -51,15 +50,6 @@ const TopicPage = () => {
         return `<span class="dictionary-term" data-term="${cleanTerm}">${content}</span>`;
       }
     );
-    return text.replace(
-      /<span data-term='([^']+)'>[^<]+<\/span>/g,
-      (match, term) => {
-        const cleanTerm = term.replace(/^ש?ב/, "");
-        return `<span style="color: purple; cursor: pointer;" data-term="${cleanTerm}">${
-          match.match(/>([^<]+)</)?.[1] || cleanTerm
-        }</span>`;
-      }
-    );
   };
 
   const handleTermClick = (event: React.MouseEvent) => {
@@ -77,48 +67,47 @@ const TopicPage = () => {
 
   return (
     <>
-    <Header />
-    <div className="topic-page">
-      <main className="topic-content">
-        <h1 className="topic-title">{data.title}</h1>
+      <Header />
+      <div className="topic-page">
+        <main className="topic-content">
+          <h1 className="topic-title">{data.title}</h1>
 
-        <div
-          className="topic-description"
-          onClick={handleTermClick}
-          dangerouslySetInnerHTML={{
-            __html: processTextWithTerms(data.description.female),
-          }}
-        />
+          <div
+            className="topic-description"
+            onClick={handleTermClick}
+            dangerouslySetInnerHTML={{
+              __html: processTextWithTerms(data.description.female),
+            }}
+          />
 
-        <div className="milestones-container">
-          {data.milestones.map((milestone, index) => (
-            <Link
-              key={index}
-              href={`/${topic}/${milestone.title}`}
-              style={{ textDecoration: "none" }}
-            >
-              <button className="milestone-button">
-                <span className="milestone-text">{milestone.title}</span>
-              </button>
-            </Link>
-          ))}
+          <div className="milestones-container">
+            {data.milestones.map((milestone, index) => (
+              <Link
+                key={index}
+                href={`/${topic}/${milestone.title}`}
+                style={{ textDecoration: "none" }}
+              >
+                <button className="milestone-button">
+                  <span className="milestone-text">{milestone.title}</span>
+                </button>
+              </Link>
+            ))}
+          </div>
+        </main>
+
+        <div className="nav-buttons">
+          <NavigationButton label="תפריט" link="/burger_menu" position="left" />
+          <NavigationButton label="מילון" link="/dictionary" position="right" />
         </div>
-      </main>
 
-      <div className="nav-buttons">
-        <NavigationButton label="תפריט" link="/burger_menu" position="left" />
-        <NavigationButton label="מילון" link="/dictionary" position="right" />
+        <Modal
+          isOpen={!!selectedTerm}
+          onClose={() => setSelectedTerm(null)}
+          title={selectedTerm?.title || ""}
+        >
+          <p>{selectedTerm?.description}</p>
+        </Modal>
       </div>
-
-      <Modal
-        isOpen={!!selectedTerm}
-        onClose={() => setSelectedTerm(null)}
-        title={selectedTerm?.title || ""}
-      >
-        <p>{selectedTerm?.description}</p>
-      </Modal>
-
-    </div>
     </>
   );
 };

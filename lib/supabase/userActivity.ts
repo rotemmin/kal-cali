@@ -1,77 +1,56 @@
-import { createClient } from "@/lib/supabase/server";
+import { createServerClient } from "@/lib/supabase/server";
+import { cookies } from "next/headers";
 
 export async function updateMilestoneStatus(
   userId: string,
   topic: string,
   milestone: string
 ) {
-  const supabase = createClient();
+  const supabase = createServerClient(cookies());
 
-  // Fetch the user's current progress
   const { data, error } = await supabase
     .from("user_activity")
     .select("topics_and_milestones, budget")
-    .eq("user_id", userId)
+    .eq("id", userId)
     .single();
 
   if (error || !data) {
-    console.error("Error fetching user activity:", error);
-    return { success: false, message: "Failed to fetch user activity" };
+    return { success: false, message: "Failed to fetch user activity." };
   }
 
   const { topics_and_milestones, budget } = data;
 
-  // Check if the topic and milestone exist
   if (
-    topics_and_milestones[topic] &&
-    topics_and_milestones[topic].milestones[milestone] !== undefined
+    !topics_and_milestones[topic] ||
+    !topics_and_milestones[topic].milestones ||
+    topics_and_milestones[topic].milestones[milestone] === undefined
   ) {
-    topics_and_milestones[topic].milestones[milestone] = 1;
-
-    // Check if all milestones for the topic are completed
-    const allDone = Object.values(
-      topics_and_milestones[topic].milestones
-    ).every((status) => status === 1);
-
-    if (allDone) {
-      topics_and_milestones[topic].status = 1; // Mark the topic as done
-
-      // Increment the user's budget by 1 coin
-      const updatedBudget = budget + 1;
-
-      // Update the database
-      const { error: updateError } = await supabase
-        .from("user_activity")
-        .update({
-          topics_and_milestones,
-          budget: updatedBudget,
-        })
-        .eq("user_id", userId);
-
-      if (updateError) {
-        console.error("Error updating user activity:", updateError);
-        return { success: false, message: "Failed to update user activity" };
-      }
-
-      return {
-        success: true,
-        message: "Milestone and topic updated successfully",
-      };
-    }
-  } else {
-    return { success: false, message: "Invalid topic or milestone" };
+    return { success: false, message: "Invalid topic or milestone." };
   }
 
-  // Update the database for milestone completion only
-  const { error: milestoneError } = await supabase
+  topics_and_milestones[topic].milestones[milestone] = 1;
+
+  const allDone = Object.values(topics_and_milestones[topic].milestones).every(
+    (status) => status === 1
+  );
+
+  let updatedBudget = budget;
+  if (allDone) {
+    topics_and_milestones[topic].status = 1;
+    updatedBudget += 1;
+  }
+
+  const { error: updateError } = await supabase
     .from("user_activity")
-    .update({ topics_and_milestones })
-    .eq("user_id", userId);
+    .update({
+      topics_and_milestones,
+      budget: updatedBudget,
+    })
+    .eq("id", userId);
 
-  if (milestoneError) {
-    console.error("Error updating milestone status:", milestoneError);
-    return { success: false, message: "Failed to update milestone status" };
+  if (updateError) {
+    return { success: false, message: "Failed to update user activity." };
   }
 
-  return { success: true, message: "Milestone updated successfully" };
+  return { success: true, message: "Milestone successfully updated." };
 }
