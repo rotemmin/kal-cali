@@ -1,6 +1,6 @@
 "use client";
 import { createClient } from "@/lib/supabase/client"; // Use your custom client
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Header from "@/lib/components/Header";
@@ -37,6 +37,45 @@ const topics = [
 
 const HomePage = () => {
   const supabase = createClient(); // Use your custom client
+  const [firstName, setFirstName] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true); // Add a loading state
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      try {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+
+        if (!session?.user) {
+          console.error("User session not found");
+          setLoading(false);
+          return;
+        }
+
+        const userId = session.user.id;
+
+        // Fetch the user's first name from user_metadata
+        const { data, error } = await supabase
+          .from("user_metadata")
+          .select("first_name")
+          .eq("id", userId)
+          .single();
+
+        if (error) {
+          console.error("Error fetching user metadata:", error);
+        } else {
+          setFirstName(data?.first_name || null);
+        }
+      } catch (error) {
+        console.error("Error fetching user name:", error);
+      } finally {
+        setLoading(false); // Ensure loading is set to false after fetch
+      }
+    };
+
+    fetchUserName();
+  }, [supabase]);
 
   const updateCurrentTopic = async (normalizedTopic: string) => {
     try {
@@ -71,7 +110,14 @@ const HomePage = () => {
       <Header />
       <main className="main-container">
         <div className="page-header">
-          <h1 className="main-title">היי!</h1>
+          {/* Render nothing until the data is fetched */}
+          {loading ? (
+            <h1 className="main-title">טוען...</h1>
+          ) : (
+            <h1 className="main-title">
+              {firstName ? `היי ${firstName}!` : "היי!"}
+            </h1>
+          )}
           <h2 className="sub-title">מה תרצי לעשות היום?</h2>
         </div>
         <div className="grid-container rtl">
