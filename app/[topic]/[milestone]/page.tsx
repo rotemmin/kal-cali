@@ -1,5 +1,5 @@
 "use client";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from "@/lib/supabase/client"; // Use your custom client
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import NavigationButton from "@/components/NavigationButton";
@@ -7,7 +7,6 @@ import Modal from "@/components/modal";
 import Header from "@/lib/components/Header";
 import "./MilestonePage.css";
 import Image from "next/image";
-
 
 interface MilestoneDescription {
   text: string;
@@ -39,7 +38,7 @@ interface TopicData {
 }
 
 const MilestonePage: React.FC = () => {
-  const supabase = createClientComponentClient();
+  const supabase = createClient(); // Use your custom Supabase client
   const params = useParams();
   const router = useRouter();
   const { topic, milestone } = params as { topic: string; milestone: string };
@@ -50,11 +49,6 @@ const MilestonePage: React.FC = () => {
     (m) => m.title.toLowerCase() === decodeURIComponent(milestone).toLowerCase()
   );
 
-  console.log("########################");
-  console.log("The topic is: ", topic);
-  console.log("The currentMilestone is: ", currentMilestone);
-  console.log("########################");
-
   const [dictionary, setDictionary] = useState<{ [key: string]: string }>({});
   const [selectedTerm, setSelectedTerm] = useState<{
     title: string;
@@ -63,11 +57,8 @@ const MilestonePage: React.FC = () => {
 
   const [milestoneCompleted, setMilestoneCompleted] = useState(false);
 
-  // ##############################
-  // New Function to Update Current Topic in Database
   const updateCurrentTopic = async () => {
     try {
-      // Get session
       const {
         data: { session },
       } = await supabase.auth.getSession();
@@ -79,7 +70,6 @@ const MilestonePage: React.FC = () => {
 
       const userId = session.user.id;
 
-      // Update the `curr_topic` field in the database
       const { error } = await supabase
         .from("user_activity")
         .update({ curr_topic: normalizedTopic })
@@ -95,8 +85,6 @@ const MilestonePage: React.FC = () => {
     }
   };
 
-  // ##############################
-  // Call updateCurrentTopic when the topic changes
   useEffect(() => {
     updateCurrentTopic();
   }, [normalizedTopic]);
@@ -180,7 +168,6 @@ const MilestonePage: React.FC = () => {
     }
 
     try {
-      // Get session
       const {
         data: { session },
       } = await supabase.auth.getSession();
@@ -192,7 +179,7 @@ const MilestonePage: React.FC = () => {
 
       const userId = session.user.id;
 
-      // Fetch user activity data
+      // Fetch user activity data from the database
       const { data, error: fetchError } = await supabase
         .from("user_activity")
         .select("topics_and_milestones, budget")
@@ -206,44 +193,66 @@ const MilestonePage: React.FC = () => {
       }
 
       const topicsAndMilestones = data?.topics_and_milestones || {};
-      const currentBudget = data?.budget || 0;
-
+      let currentBudget = data?.budget || 0;
+      console.log("topic:", normalizedTopic);
+      console.log("topicsAndMilestones", topicsAndMilestones);
+      // Check if the topic exists in the data
       if (!(normalizedTopic in topicsAndMilestones)) {
         alert("Topic not found in user's activity data");
         return;
       }
 
-      const milestonesLeft = topicsAndMilestones[normalizedTopic];
-      if (milestonesLeft > 0) {
-        topicsAndMilestones[normalizedTopic] -= 1;
-
-        // Check if topic is completed
-        let updatedBudget = currentBudget;
-        if (topicsAndMilestones[normalizedTopic] === 0) {
-          updatedBudget += 1;
-        }
-
-        // Update the database
-        const { error: updateError } = await supabase
-          .from("user_activity")
-          .update({
-            topics_and_milestones: topicsAndMilestones,
-            budget: updatedBudget,
-          })
-          .eq("id", userId);
-
-        if (updateError) {
-          console.error("Update error:", updateError);
-          alert("Error updating milestone");
-          return;
-        }
-
-        alert("Milestone completed successfully!");
-        setMilestoneCompleted(true);
-        router.refresh();
-      } else {
-        alert("Milestone already completed!");
+      // Access the topic object and its milestones
+      const topicObj = topicsAndMilestones[normalizedTopic];
+      if (!topicObj.milestones) {
+        alert("This topic has no 'milestones' object in the database");
+        return;
       }
+
+      // Build the key for the milestone
+      const milestoneKey = currentMilestone?.title.replace(/\s/g, "_");
+      if (!milestoneKey) {
+        alert("Invalid milestone key");
+        return;
+      }
+
+      // If the milestone is already completed, do nothing
+      if (topicObj.milestones[milestoneKey] === 1) {
+        alert("Milestone already completed!");
+        return;
+      }
+
+      // Mark the milestone as completed
+      topicObj.milestones[milestoneKey] = 1;
+
+      // Check if all milestones for the topic are complete
+      const allComplete = Object.values(topicObj.milestones).every(
+        (val) => val === 1
+      );
+
+      // If all milestones are complete, mark the topic as complete and increment the budget
+      if (allComplete) {
+        topicObj.status = 1;
+        currentBudget += 1;
+      }
+
+      // Update the database with the new milestones and budget
+      const { error: updateError } = await supabase
+        .from("user_activity")
+        .update({
+          topics_and_milestones: topicsAndMilestones,
+          budget: currentBudget,
+        })
+        .eq("id", userId);
+
+      if (updateError) {
+        console.error("Update error:", updateError);
+        alert("Error updating milestone in the database");
+        return;
+      }
+
+      alert("Milestone completed successfully!");
+      setMilestoneCompleted(true);
     } catch (error) {
       console.error("Error completing milestone:", error);
       alert("An unexpected error occurred.");
@@ -258,36 +267,36 @@ const MilestonePage: React.FC = () => {
 
   return (
     <>
-    <Header />
-    <div className="milestone-page">
-      <div className="content-container">
-        <h1 className="title">{currentMilestone?.title}</h1>
-        {currentMilestone?.title2 && (
-          <h2 className="subtitle">{currentMilestone.title2}</h2>
-        )}
+      <Header />
+      <div className="milestone-page">
+        <div className="content-container">
+          <h1 className="title">{currentMilestone?.title}</h1>
+          {currentMilestone?.title2 && (
+            <h2 className="subtitle">{currentMilestone.title2}</h2>
+          )}
 
-        {renderDescription(currentMilestone?.description[userGender])}
+          {renderDescription(currentMilestone?.description[userGender])}
 
-        <div className="button-container">
-          <button onClick={completeMilestone} className="main-button">
-            {currentMilestone?.button}
-          </button>
+          <div className="button-container">
+            <button onClick={completeMilestone} className="main-button">
+              {currentMilestone?.button}
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div className="navigation-buttons">
-        <NavigationButton label="מילון" link="/dictionary" position="right" />
-        <NavigationButton label="תפריט" link="/burger_menu" position="left" />
-      </div>
+        <div className="navigation-buttons">
+          <NavigationButton label="מילון" link="/dictionary" position="right" />
+          <NavigationButton label="תפריט" link="/burger_menu" position="left" />
+        </div>
 
-      <Modal
-        isOpen={!!selectedTerm}
-        onClose={() => setSelectedTerm(null)}
-        title={selectedTerm?.title || ""}
-      >
-        <p>{selectedTerm?.description}</p>
-      </Modal>
-    </div>
+        <Modal
+          isOpen={!!selectedTerm}
+          onClose={() => setSelectedTerm(null)}
+          title={selectedTerm?.title || ""}
+        >
+          <p>{selectedTerm?.description}</p>
+        </Modal>
+      </div>
     </>
   );
 };
