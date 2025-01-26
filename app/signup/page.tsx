@@ -8,11 +8,9 @@ export default function SignUp({
 }: {
   searchParams?: { message?: string };
 }) {
-  // This is your server action that the <form> calls
   const signUp = async (formData: FormData) => {
-    "use server"; // Required for server actions
+    "use server";
 
-    // 1) Basic environment checks
     const origin = headers().get("origin");
     if (!origin) {
       console.error("Origin header is missing");
@@ -21,8 +19,10 @@ export default function SignUp({
 
     const email = formData.get("email") as string | null;
     const password = formData.get("password") as string | null;
+    const firstName = formData.get("firstName") as string | null;
+    const familyName = formData.get("familyName") as string | null;
+    const sex = formData.get("sex") as string | null;
 
-    // 2) Validate
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email || !emailRegex.test(email)) {
       return redirect("/signup?message=Invalid email format");
@@ -33,29 +33,24 @@ export default function SignUp({
       );
     }
 
-    // 3) Create a Supabase server client
     const supabase = createClient(cookies());
 
     try {
-      // 4) Attempt sign-up
       const { data: signUpData, error: signUpError } =
         await supabase.auth.signUp({
           email,
           password,
           options: {
-            // If you are using magic links or email confirmations
             emailRedirectTo: `${origin}/auth/callback`,
           },
         });
 
-      // If supabase.auth.signUp fails
       if (signUpError) {
         return redirect(
           `/signup?message=${encodeURIComponent(signUpError.message)}`
         );
       }
 
-      // If signUp returns no user object
       if (!signUpData?.user) {
         return redirect(
           "/signup?message=Sign-up succeeded but no user object returned"
@@ -64,7 +59,7 @@ export default function SignUp({
 
       const userId = signUpData.user.id;
 
-      // 5) Insert row in user_activity
+      // Insert initial data into user_activity table
       const initialTopicsAndMilestones = {
         pension: {
           status: 0,
@@ -102,7 +97,6 @@ export default function SignUp({
         .from("user_activity")
         .insert([
           {
-            // If your table's PK column is "id", store it here:
             id: userId,
             activity_type: "initial_signup",
             topics_and_milestones: initialTopicsAndMilestones,
@@ -118,25 +112,38 @@ export default function SignUp({
         );
       }
 
-      // 6) If signUpData.session is null, explicitly log them in
-      //    This only works if your Auth settings allow unconfirmed sign-in.
+      // Insert user metadata into user_metadata table
+      const { error: metadataError } = await supabase
+        .from("user_metadata")
+        .insert([
+          {
+            id: userId,
+            first_name: firstName,
+            second_name: familyName,
+            sex: sex,
+          },
+        ]);
+
+      if (metadataError) {
+        return redirect(
+          `/signup?message=${encodeURIComponent(metadataError.message)}`
+        );
+      }
+
       if (!signUpData.session) {
-        const { data: signInData, error: signInError } =
-          await supabase.auth.signInWithPassword({ email, password });
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
         if (signInError) {
-          // Typically "Email not confirmed" if you require confirmation
           return redirect(
             `/signup?message=${encodeURIComponent(signInError.message)}`
           );
         }
-        // If signIn succeeds, the session cookie is now set in the browser's response
       }
 
-      // 7) All done, user is signed in with a real session
       return redirect("/homePage");
     } catch (err) {
-      // console.error("Unexpected signup error:", err);
-      // return redirect("/signup?message=Unexpected signup error");
       return redirect("/homePage");
     }
   };
@@ -161,6 +168,14 @@ export default function SignUp({
               required
               className={styles.inputContainer}
             />
+          </div>
+          <div className={styles.nameInputsRow}>
+            <select name="sex" required className={styles.inputContainer}>
+              <option value="">בחר מין</option>
+              <option value="male">זכר</option>
+              <option value="female">נקבה</option>
+              <option value="other">אחר</option>
+            </select>
           </div>
           <input
             type="email"
