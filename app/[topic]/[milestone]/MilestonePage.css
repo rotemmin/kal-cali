@@ -1,3 +1,7 @@
+.milestone-page{
+    overflow: auto;
+}
+
 .milestone-page .title {
     display: inline-block;
     position: relative;
@@ -28,7 +32,7 @@
     /* display: flex; */
     flex-direction: column;
     gap: 4px;
-    padding-bottom: 80px;
+    /* padding-bottom: 80px; */
 }
 
 .title {
@@ -40,13 +44,13 @@
     font-weight: 900;
     line-height: 130%;
     position: relative;
-    margin: 24px 0;
+    margin: 12px 0;
 }
 
 .subtitle {
     color: var(--color-text);
     text-align: right;
-    font-family: var(--font-family-primary);
+    font-family: var(--font-family-secondary);
     font-size: 24px;
     font-weight: 400;
     line-height: 130%;
@@ -108,7 +112,7 @@
     font-family: var(--font-family-secondary);
     font-size: 22px;
     font-style: italic;
-    font-weight: 400;
+    font-weight: 300;
     line-height: 130%;
     letter-spacing: 0.22px;
     cursor: pointer;
@@ -121,7 +125,7 @@
 .term-highlight::after {
     content: '';
     position: absolute;
-    bottom: -2px;
+    bottom: 4px;
     left: 0;
     right: 0;
     height: 1px;
@@ -131,15 +135,33 @@
     z-index: 2;
 }
 
+
 .note {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: var(--color-secondary); 
+    border-radius: var(--radius-xlg);
+    padding: 16px;
+    margin: 0px 16;
     color: var(--color-text);
-    text-align: right;
     font-family: var(--font-family-primary);
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 300;
-    line-height: 130%;
-    margin: 16px 0;
-}
+    /* line-height: 1.5; */
+  }
+
+.note p {
+    margin: 0 0; 
+    font-size: inherit; 
+    color: inherit; 
+  }
+
+  .note-highlight {
+    font-weight: 400;
+    font-family: var(--font-family-secondary);
+    font-style: italic;
+  }
 
 .help-section {
     margin: 24px 0;
@@ -214,7 +236,7 @@
     }
 
     .title {
-        margin: 20px 0;
+        margin: 4px 0;
     }
 
     .description {

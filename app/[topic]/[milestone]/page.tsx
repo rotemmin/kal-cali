@@ -240,7 +240,7 @@ const MilestonePage: React.FC = () => {
 
         alert("Milestone completed successfully!");
         setMilestoneCompleted(true);
-        router.refresh();
+        router.push(`@app/${topic}`);
       } else {
         alert("Milestone already completed!");
       }
@@ -267,6 +267,16 @@ const MilestonePage: React.FC = () => {
         )}
 
         {renderDescription(currentMilestone?.description[userGender])}
+        
+        {currentMilestone?.note && (
+          <div className="note">
+            <div
+              dangerouslySetInnerHTML={{
+                __html: currentMilestone.note[userGender].replace(/\n/g, "<br />"),
+              }}
+            />
+          </div>
+        )}
 
         <div className="button-container">
           <button onClick={completeMilestone} className="main-button">

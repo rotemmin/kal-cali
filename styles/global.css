@@ -21,7 +21,7 @@
 
   --border-radius: 0.5rem;
 
-  --font-family-priamry: "SimplerPro", sans-serif;
+  --font-family-primary: "SimplerPro", sans-serif;
   --font-family-secondary: "Sunday", serif;
 
   --text-xs: 0.75rem;
@@ -69,6 +69,7 @@
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
   --radius-lg: 1rem;
+  --radius-xlg: 1.5rem;
   --radius-full: 9999px;
 
   /* --font-titles: "Rubik", serif;
@@ -79,7 +80,7 @@
 body {
   color: var(--color-primary);
   background-color: var(--color-background);
-  font-family: var(--font-family-secondary);
+  font-family: var(--font-family-primary);
   overflow: hidden;
   height: 100vh;
   display: flex;
