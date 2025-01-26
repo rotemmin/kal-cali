@@ -194,8 +194,7 @@ const MilestonePage: React.FC = () => {
 
       const topicsAndMilestones = data?.topics_and_milestones || {};
       let currentBudget = data?.budget || 0;
-      console.log("topic:", normalizedTopic);
-      console.log("topicsAndMilestones", topicsAndMilestones);
+
       // Check if the topic exists in the data
       if (!(normalizedTopic in topicsAndMilestones)) {
         alert("Topic not found in user's activity data");
@@ -234,6 +233,9 @@ const MilestonePage: React.FC = () => {
       if (allComplete) {
         topicObj.status = 1;
         currentBudget += 1;
+
+        // Show alert when the topic is marked as complete
+        alert("Congrats! You have a new sticker!!!");
       }
 
       // Update the database with the new milestones and budget
