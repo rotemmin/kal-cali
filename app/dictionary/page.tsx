@@ -1,9 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
-import { SearchIcon } from "lucide-react";
+import { SearchIcon, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import Header from "@/lib/components/Header";
 
 const DictionaryPage = () => {
+  const router = useRouter();
   const [dictionaryData, setDictionaryData] = useState<any>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [groupedData, setGroupedData] = useState<any>({});
@@ -62,63 +65,73 @@ const DictionaryPage = () => {
   };
 
   return (
-    <div className={styles.mainContainer}>
-      <div className={styles.dictionaryContainer}>
-        <div
-          className={`${styles.searchBarContainer} ${
-            isSearchActive ? styles.searchBarContainerActive : ""
-          }`}
-        >
-          <input
-            type="text"
-            className={styles.searchBar}
-            value={searchTerm}
-            onChange={handleSearch}
-            onFocus={() => setIsSearchActive(true)}
-            onBlur={() => {
-              if (searchTerm.trim() === "") {
-                setIsSearchActive(false); // Collapse only if search term is empty
-              }
-            }}
-          />
-          <SearchIcon className={styles.searchIcon} />
-        </div>
+    <>
+      <Header />
+      <div className={styles.mainContainer}>
+        <X className={styles.closeButton} onClick={() => router.back()} />
+        <div className={styles.dictionaryContainer}>
+          <div
+            className={`${styles.searchBarContainer} ${
+              isSearchActive ? styles.searchBarContainerActive : ""
+            }`}
+          >
+            <input
+              type="text"
+              className={styles.searchBar}
+              value={searchTerm}
+              onChange={handleSearch}
+              onFocus={() => setIsSearchActive(true)}
+              onBlur={() => {
+                if (searchTerm.trim() === "") {
+                  setIsSearchActive(false);
+                }
+              }}
+            />
+            <SearchIcon className={styles.searchIcon} />
+          </div>
 
-        <div className={styles.textContainer} dir="ltr">
-          <h1 className={styles.dictionaryTitle}>מילון מושגים</h1>
+          <div className={styles.textContainer} dir="ltr">
+            <h1 className={styles.dictionaryTitle}>מילון מושגים</h1>
 
-          {/* Dictionary List */}
-          <div className={styles.dictionaryListContainer}>
-            <div className={styles.dictionaryList}>
-              {Object.keys(groupedData).length > 0 ? (
-                Object.entries(groupedData).map(([topic, entries]: any) => (
-                  <div key={topic} className={styles.topicGroup}>
-                    <h2 className={styles.topicTitle}>{topic}</h2>
-                    <div className={styles.entriesContainer}>
-                      {entries.map(
-                        (entry: { title: string; description: string }) => (
-                          <div
-                            key={entry.title}
-                            className={styles.dictionaryEntry}
-                          >
-                            <h3 className={styles.entryTitle}>{entry.title}</h3>
-                            <p className={styles.entryDescription} dir="rtl">
-                              {entry.description}
-                            </p>
-                          </div>
-                        )
-                      )}
+            <div className={styles.dictionaryListContainer}>
+              <div className={styles.dictionaryList}>
+                {Object.keys(groupedData).length > 0 ? (
+                  Object.entries(groupedData).map(([topic, entries]: any) => (
+                    <div key={topic} className={styles.topicGroup}>
+                      <h2 className={styles.topicTitle}>{topic}</h2>
+                      <div className={styles.entriesContainer}>
+                        {entries.map(
+                          (entry: { title: string; description: string }) => (
+                            <div
+                              key={entry.title}
+                              className={styles.dictionaryEntry}
+                            >
+                              <h3 className={styles.entryTitle}>
+                                {entry.title}
+                              </h3>
+                              <p className={styles.entryDescription} dir="rtl">
+                                {entry.description}
+                              </p>
+                            </div>
+                          )
+                        )}
+                      </div>
                     </div>
+                  ))
+                ) : (
+                  <div className={styles.noResultsContainer}>
+                    <p className={styles.noResultsHeader}>אופס!</p>
+                    <p className={styles.noResultsText}>
+                      ההגדרה הזו לא נמצאת במילון שלנו.
+                    </p>
                   </div>
-                ))
-              ) : (
-                <p className={styles.noResults}>לא נמצאו תוצאות.</p>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

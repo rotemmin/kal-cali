@@ -149,15 +149,15 @@ export default function SignUp({
           <div className={styles.nameInputsRow}>
             <input
               type="text"
-              name="familyName"
-              placeholder="שם משפחה"
+              name="firstName"
+              placeholder="שם פרטי"
               required
               className={styles.inputContainer}
             />
             <input
               type="text"
-              name="firstName"
-              placeholder="שם פרטי"
+              name="familyName"
+              placeholder="שם משפחה"
               required
               className={styles.inputContainer}
             />

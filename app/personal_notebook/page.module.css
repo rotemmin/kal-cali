@@ -1,127 +1,238 @@
 .notebookContainer {
     display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+    flex-direction: row;
+    min-height: calc(100vh - 82px);
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    background: #FCFFFA;
 }
 
-.sidebar {
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: column;
-    align-items: center;
-    height: 100vh;
-    position: fixed;
-    left: 0;
-    background-color: var(--color-text);
+/*todo: add x + line */
 
+.sidebar {
+    position: fixed;
+    top: 82px;
+    left: 0;
+    height: calc(100vh - 82px);
     width: 54px;
-    /* background-color: var(--color-background); */
+    background-color: var(--color-text);
+    z-index: 900;
+    overflow-y: auto;
 }
 
 .topicGroup {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    flex: 1;
+    align-items: center;
+    justify-content: flex-start;
 }
 
 .topic {
-    width: 60px;
-    /* Width of the topic block */
-    height: 140px;
-    /* Height of the topic block */
-    background-color: white;
-    border: 2px solid #d0d0ff;
-    /* Border color */
-    border-radius: 20px;
-    /* Rounded corners */
-    margin-bottom: -20px;
-    /* Overlap effect */
     display: flex;
     justify-content: center;
     align-items: center;
+
+    background-color: white;
+    border-radius: 16px;
+    border: 1px solid #D5D2FF;
+    box-shadow: 0px 0.5px 1px 0px #00000040;
+
+    width: 54px;
+    height: 148px;
+
+    margin-left: -15px;
+    margin-bottom: -20px;
+    margin-top: -15px;
+
     cursor: pointer;
     writing-mode: vertical-rl;
-    /* Vertical text */
-    text-orientation: mixed;
-    font-size: 14px;
-    /* Font size for text */
-    font-weight: bold;
-    /* Bold text */
-    color: #333;
-    /* Text color */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    /* Subtle shadow for depth */
-    transition: all 0.2s ease-in-out;
-    /* Smooth hover effect */
-}
+    transform: rotate(180deg);
 
-.topic:hover {
-    background-color: #e8e8ff;
-    transform: translateX(10px);
+    /**todo: correct font?*/
+    font-family: var(--font-family-secondary);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 28.6px;
+    letter-spacing: 0.01em;
+    text-align: right;
+    text-underline-position: from-font;
+
+    color: #333;
+    transition: all 0.2s ease-in-out;
+    z-index: 1;
 }
 
 .topic.selected {
-    background-color: #d8d8ff;
-    transform: translateX(15px);
-    font-weight: bold;
+    background: #D5D2FF;
+    z-index: 10;
 }
 
-.topicLabel {
-    display: block;
-    font-size: 0.9rem;
-    color: #666;
-}
-
-.topicText {
-    display: block;
-    font-size: 1rem;
-}
-
-/* Content area */
 .content {
-    flex: 1;
-    padding: 2rem;
-}
-
-.sectionHeader {
-    display: flex;
-    align-items: baseline;
-    margin-bottom: 1.5rem;
-}
-
-.title {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-left: 0.5rem;
-}
-
-.subtitle {
-    font-size: 1.2rem;
-    color: #666;
+    padding: 0 34px 80px 69px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 1;
 }
 
 .notesSection {
-    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 20px;
+    width: 100%;
+    max-width: 100%;
+}
+
+.sectionHeader {
+    font-family: var(--font-family-secondary);
+    font-size: 32px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 30.08px;
+    text-align: right;
+    color: var(--color-text);
+    margin: 0;
+    padding-top: 2rem;
+    text-decoration-line: underline;
+    text-decoration-color: #9895F4;
+    text-decoration-skip-ink: none;
+}
+
+.stickersArea {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 20px;
+}
+
+/* todo: implement */
+.sticker {}
+
+@media (max-width: 600px) {
+    .stickersArea {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+.notesContainer {
+    width: 100%;
+    /**todo: grow to hight according to the content*/
+}
+
+.additionalFieldsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.fieldContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+
+}
+
+.fieldLabel {
+    font-family: var(--font-family-secondary);
+    font-size: 22px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 28.6px;
+    letter-spacing: 0.01em;
+    text-align: right;
+
+    color: var(--color-text);
+}
+
+.inputContainer {
+    /* width: 100%; */
+    border-radius: 24px;
+    border: 2px solid #E6E4FF;
+    background-color: #FFFFFF;
+    font-family: var(--font-family-primary);
+    font-weight: 400;
+    font-size: var(--text-xl);
+    line-height: var(--text-xl);
+    resize: none;
+    min-height: 48px;
+    color: black;
+    padding: 8px 16px;
+    box-sizing: border-box;
+
+    width: 316px;
+    height: 35px;
+    border-radius: 24px;
+    opacity: 0px;
+}
+
+.inputContainer::placeholder {
+    color: #666;
+}
+
+.inputContainer:focus {
+    border: 2px solid #A585E5;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(165, 133, 229, 0.1);
 }
 
 .notesTextarea {
     width: 100%;
-    min-height: 150px;
+    min-height: 300px;
     padding: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    border: none;
+    border-radius: 8px;
+    background-color: #ffffff;
     font-size: 1rem;
-    resize: vertical;
-}
-
-.infoList {
-    margin-bottom: 2rem;
-}
-
-.infoList p {
-    margin-bottom: 1rem;
     line-height: 1.5;
-    font-size: 1rem;
-    color: #333;
+    resize: vertical;
+    box-sizing: border-box;
+
+    font-family: var(--font-family-priamry);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 26px;
+    letter-spacing: 0.01em;
+}
+
+.notesTextarea:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
+}
+
+.notesTextarea:empty::before {
+    content: "";
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background-color: black;
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    50% {
+        opacity: 1;
+    }
+
+    51%,
+    100% {
+        opacity: 0;
+    }
+}
+
+.nonClickable {
+    cursor: not-allowed;
+    color: gray;
+    /* Make non-clickable topics visually distinct */
+    pointer-events: none;
+    /* Disable clicks */
 }
