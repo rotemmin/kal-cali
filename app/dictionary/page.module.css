@@ -6,7 +6,7 @@
     position: relative;
     min-height: 100vh;
     background: var(--color-background-secondary);
-    padding: 30px 20px 20px 40px;
+    padding: 30px 20px 30px 40px;
 }
 
 .dictionaryContainer {
@@ -216,6 +216,16 @@
     text-align: center;
     color: var(--color-text);
     margin: 0;
+}
+
+.loadingContainer {
+    font-family: var(--font-family-secondary);
+    font-size: var(--text-xl);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 22.2px;
+    color: var(--color-text);
+    direction: rtl;
 }
 
 .closeButton {

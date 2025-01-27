@@ -11,6 +11,7 @@ const DictionaryPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [groupedData, setGroupedData] = useState<any>({});
   const [isSearchActive, setIsSearchActive] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,6 +34,8 @@ const DictionaryPage = () => {
         setGroupedData(grouped);
       } catch (error) {
         console.error("Error fetching dictionary data:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -95,7 +98,11 @@ const DictionaryPage = () => {
 
             <div className={styles.dictionaryListContainer}>
               <div className={styles.dictionaryList}>
-                {Object.keys(groupedData).length > 0 ? (
+                {loading ? (
+                  <div className={styles.loadingContainer}>
+                    <p>טוען נתונים...</p>
+                  </div>
+                ) : Object.keys(groupedData).length > 0 ? (
                   Object.entries(groupedData).map(([topic, entries]: any) => (
                     <div key={topic} className={styles.topicGroup}>
                       <h2 className={styles.topicTitle}>{topic}</h2>
@@ -118,14 +125,14 @@ const DictionaryPage = () => {
                       </div>
                     </div>
                   ))
-                ) : (
+                ) : searchTerm ? (
                   <div className={styles.noResultsContainer}>
                     <p className={styles.noResultsHeader}>אופס!</p>
                     <p className={styles.noResultsText}>
                       ההגדרה הזו לא נמצאת במילון שלנו.
                     </p>
                   </div>
-                )}
+                ) : null}
               </div>
             </div>
           </div>
