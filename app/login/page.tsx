@@ -1,46 +1,52 @@
-import { supabase } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/server";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import styles from "./page.module.css";
 
 export default function Login({
   searchParams,
 }: {
-  searchParams: { message: string };
+  searchParams?: { message?: string };
 }) {
   const signIn = async (formData: FormData) => {
     "use server";
 
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
+    const email = formData.get("email") as string | null;
+    const password = formData.get("password") as string | null;
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!email || !emailRegex.test(email)) {
       return redirect("/login?message=Invalid email format");
     }
-
-    // Validate password length
-    if (password.length < 6) {
+    if (!password || password.length < 6) {
       return redirect(
         "/login?message=Password must be at least 6 characters long"
       );
     }
 
-    try {
-      // Use Supabase's `auth.signInWithPassword` to log in
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+    const supabase = createClient(cookies());
 
-      if (error) {
-        console.error("Login error:", error.message);
-        return redirect("/login?message=Could not authenticate user");
+    try {
+      const { data: signInData, error: signInError } =
+        await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+      if (signInError) {
+        return redirect(
+          `/login?message=${encodeURIComponent(signInError.message)}`
+        );
       }
 
-      // Redirect to homepage on successful login
+      if (!signInData?.user) {
+        return redirect(
+          "/login?message=Login succeeded but no user object returned"
+        );
+      }
+
       return redirect("/homePage");
-    } catch (error) {
+    } catch (err) {
       return redirect("/homePage");
     }
   };
@@ -48,11 +54,11 @@ export default function Login({
   return (
     <div className={styles.container}>
       <div className={styles.main}>
-        <p className={styles.introText}>הזיני את הפרטים הבאים כדי להתחיל</p>
+        <p className={styles.introText}>הזינו את הפרטים הבאים כדי להתחיל</p>
         <form className={styles.loginForm} action={signIn}>
           <input
-            name="email"
             type="email"
+            name="email"
             placeholder="כתובת מייל"
             required
             className={`${styles.inputContainer} ${
@@ -68,12 +74,10 @@ export default function Login({
               searchParams?.message ? styles.error : ""
             }`}
           />
-          <button type="submit" className={styles.loginButton}>
-            כניסה
-          </button>
+          <button type="submit">כניסה</button>
         </form>
         {searchParams?.message && (
-          <p className={styles.errorMessage}>{searchParams.message}</p>
+          <p style={{ color: "red" }}>{searchParams.message}</p>
         )}
       </div>
     </div>
