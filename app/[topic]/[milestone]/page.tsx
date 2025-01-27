@@ -7,6 +7,8 @@ import Modal from "@/components/modal";
 import Header from "@/lib/components/Header";
 import "./MilestonePage.css";
 import Image from "next/image";
+// NEW: Import ProgressBar component
+import ProgressBar from "../milestones_progress_bar/ProgressBar";
 
 interface MilestoneDescription {
   text: string;
@@ -41,7 +43,7 @@ const MilestonePage: React.FC = () => {
   const params = useParams();
   const router = useRouter();
   const { topic, milestone } = params as { topic: string; milestone: string };
-  const normalizedTopic = topic.replace(/-/g, "_"); // Replace hyphens with underscores
+  const normalizedTopic = topic.replace(/-/g, "_");
   const data: TopicData = require(`@/lib/content/topics/${normalizedTopic}.json`);
 
   const currentMilestone = data.milestones.find(
@@ -55,7 +57,40 @@ const MilestonePage: React.FC = () => {
   } | null>(null);
 
   const [milestoneCompleted, setMilestoneCompleted] = useState(false);
-  const [userGender, setUserGender] = useState<"male" | "female">("female");
+  // NEW: Add states for progress bar
+  const [totalMilestones, setTotalMilestones] = useState(0);
+  const [completedMilestones, setCompletedMilestones] = useState(0);
+
+  // NEW: Add function to fetch milestone progress
+  const fetchMilestoneProgress = async () => {
+    try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (!session?.user) return;
+
+      const { data, error } = await supabase
+        .from("user_activity")
+        .select("topics_and_milestones")
+        .eq("id", session.user.id)
+        .single();
+
+      if (error) throw error;
+
+      const topicData = data.topics_and_milestones[normalizedTopic];
+      if (topicData && topicData.milestones) {
+        const total = Object.keys(topicData.milestones).length;
+        const completed = Object.values(topicData.milestones).filter(
+          (val) => val === 1
+        ).length;
+        setTotalMilestones(total);
+        setCompletedMilestones(completed);
+      }
+    } catch (error) {
+      console.error("Error fetching milestone progress:", error);
+    }
+  };
 
   const updateCurrentTopic = async () => {
     try {
@@ -87,35 +122,11 @@ const MilestonePage: React.FC = () => {
 
   useEffect(() => {
     updateCurrentTopic();
+    // NEW: Fetch milestone progress on component mount
+    fetchMilestoneProgress();
   }, [normalizedTopic]);
 
   useEffect(() => {
-    // Fetch the user's gender from Supabase
-    const fetchGender = async () => {
-      try {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-
-        if (session?.user) {
-          const { data, error } = await supabase
-            .from("user_metadata")
-            .select("sex")
-            .eq("id", session.user.id)
-            .single();
-
-          if (!error) {
-            setUserGender(data?.sex === "male" ? "male" : "female");
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching user gender:", error);
-      }
-    };
-
-    fetchGender();
-
-    // Load the dictionary
     import("@/public/dictionary.json").then((dictionaryData) => {
       const dict: { [key: string]: string } = {};
       dictionaryData.dictionary.forEach(
@@ -187,15 +198,113 @@ const MilestonePage: React.FC = () => {
     );
   };
 
+  const completeMilestone = async () => {
+    if (milestoneCompleted) {
+      alert("You have already completed this milestone!");
+      return;
+    }
+
+    try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (!session?.user) {
+        alert("No user session found");
+        return;
+      }
+
+      const userId = session.user.id;
+
+      const { data, error: fetchError } = await supabase
+        .from("user_activity")
+        .select("topics_and_milestones, budget")
+        .eq("id", userId)
+        .single();
+
+      if (fetchError) {
+        console.error("Fetch error:", fetchError);
+        alert("Error fetching user data");
+        return;
+      }
+
+      const topicsAndMilestones = data?.topics_and_milestones || {};
+      let currentBudget = data?.budget || 0;
+
+      if (!(normalizedTopic in topicsAndMilestones)) {
+        alert("Topic not found in user's activity data");
+        return;
+      }
+
+      const topicObj = topicsAndMilestones[normalizedTopic];
+      if (!topicObj.milestones) {
+        alert("This topic has no 'milestones' object in the database");
+        return;
+      }
+
+      const milestoneKey = currentMilestone?.title.replace(/\s/g, "_");
+      if (!milestoneKey) {
+        alert("Invalid milestone key");
+        return;
+      }
+
+      if (topicObj.milestones[milestoneKey] === 1) {
+        alert("Milestone already completed!");
+        return;
+      }
+
+      topicObj.milestones[milestoneKey] = 1;
+
+      const allComplete = Object.values(topicObj.milestones).every(
+        (val) => val === 1
+      );
+
+      if (allComplete) {
+        topicObj.status = 1;
+        currentBudget += 1;
+        alert("Congrats! You have a new sticker!!!");
+      }
+
+      const { error: updateError } = await supabase
+        .from("user_activity")
+        .update({
+          topics_and_milestones: topicsAndMilestones,
+          budget: currentBudget,
+        })
+        .eq("id", userId);
+
+      if (updateError) {
+        console.error("Update error:", updateError);
+        alert("Error updating milestone in the database");
+        return;
+      }
+
+      alert("Milestone completed successfully!");
+      setMilestoneCompleted(true);
+      // NEW: Update progress bar after completing milestone
+      setCompletedMilestones((prev) => prev + 1);
+    } catch (error) {
+      console.error("Error completing milestone:", error);
+      alert("An unexpected error occurred.");
+    }
+  };
+
   if (!currentMilestone) {
     return <div>המיילסטון לא נמצא!</div>;
   }
+
+  const userGender: "male" | "female" = "female";
 
   return (
     <>
       <Header />
       <div className="milestone-page">
         <div className="content-container">
+          {/* NEW: Add ProgressBar component */}
+          <ProgressBar
+            totalMilestones={totalMilestones}
+            completedMilestones={completedMilestones}
+          />
           <h1 className="title">{currentMilestone?.title}</h1>
           {currentMilestone?.title2 && (
             <h2 className="subtitle">{currentMilestone.title2}</h2>
@@ -217,10 +326,7 @@ const MilestonePage: React.FC = () => {
           )}
 
           <div className="button-container">
-            <button
-              onClick={() => console.log("Milestone Completed")}
-              className="main-button"
-            >
+            <button onClick={completeMilestone} className="main-button">
               {currentMilestone?.button}
             </button>
           </div>
