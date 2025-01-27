@@ -38,7 +38,6 @@ interface TopicData {
 }
 
 const MilestonePage: React.FC = () => {
-  // const supabase = createClient(); // Use your custom Supabase client
   const params = useParams();
   const router = useRouter();
   const { topic, milestone } = params as { topic: string; milestone: string };
@@ -56,6 +55,7 @@ const MilestonePage: React.FC = () => {
   } | null>(null);
 
   const [milestoneCompleted, setMilestoneCompleted] = useState(false);
+  const [userGender, setUserGender] = useState<"male" | "female">("female");
 
   const updateCurrentTopic = async () => {
     try {
@@ -90,6 +90,32 @@ const MilestonePage: React.FC = () => {
   }, [normalizedTopic]);
 
   useEffect(() => {
+    // Fetch the user's gender from Supabase
+    const fetchGender = async () => {
+      try {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+
+        if (session?.user) {
+          const { data, error } = await supabase
+            .from("user_metadata")
+            .select("sex")
+            .eq("id", session.user.id)
+            .single();
+
+          if (!error) {
+            setUserGender(data?.sex === "male" ? "male" : "female");
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user gender:", error);
+      }
+    };
+
+    fetchGender();
+
+    // Load the dictionary
     import("@/public/dictionary.json").then((dictionaryData) => {
       const dict: { [key: string]: string } = {};
       dictionaryData.dictionary.forEach(
@@ -161,111 +187,9 @@ const MilestonePage: React.FC = () => {
     );
   };
 
-  const completeMilestone = async () => {
-    if (milestoneCompleted) {
-      alert("You have already completed this milestone!");
-      return;
-    }
-
-    try {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      if (!session?.user) {
-        alert("No user session found");
-        return;
-      }
-
-      const userId = session.user.id;
-
-      // Fetch user activity data from the database
-      const { data, error: fetchError } = await supabase
-        .from("user_activity")
-        .select("topics_and_milestones, budget")
-        .eq("id", userId)
-        .single();
-
-      if (fetchError) {
-        console.error("Fetch error:", fetchError);
-        alert("Error fetching user data");
-        return;
-      }
-
-      const topicsAndMilestones = data?.topics_and_milestones || {};
-      let currentBudget = data?.budget || 0;
-
-      // Check if the topic exists in the data
-      if (!(normalizedTopic in topicsAndMilestones)) {
-        alert("Topic not found in user's activity data");
-        return;
-      }
-
-      // Access the topic object and its milestones
-      const topicObj = topicsAndMilestones[normalizedTopic];
-      if (!topicObj.milestones) {
-        alert("This topic has no 'milestones' object in the database");
-        return;
-      }
-
-      // Build the key for the milestone
-      const milestoneKey = currentMilestone?.title.replace(/\s/g, "_");
-      if (!milestoneKey) {
-        alert("Invalid milestone key");
-        return;
-      }
-
-      // If the milestone is already completed, do nothing
-      if (topicObj.milestones[milestoneKey] === 1) {
-        alert("Milestone already completed!");
-        return;
-      }
-
-      // Mark the milestone as completed
-      topicObj.milestones[milestoneKey] = 1;
-
-      // Check if all milestones for the topic are complete
-      const allComplete = Object.values(topicObj.milestones).every(
-        (val) => val === 1
-      );
-
-      // If all milestones are complete, mark the topic as complete and increment the budget
-      if (allComplete) {
-        topicObj.status = 1;
-        currentBudget += 1;
-
-        // Show alert when the topic is marked as complete
-        alert("Congrats! You have a new sticker!!!");
-      }
-
-      // Update the database with the new milestones and budget
-      const { error: updateError } = await supabase
-        .from("user_activity")
-        .update({
-          topics_and_milestones: topicsAndMilestones,
-          budget: currentBudget,
-        })
-        .eq("id", userId);
-
-      if (updateError) {
-        console.error("Update error:", updateError);
-        alert("Error updating milestone in the database");
-        return;
-      }
-
-      alert("Milestone completed successfully!");
-      setMilestoneCompleted(true);
-    } catch (error) {
-      console.error("Error completing milestone:", error);
-      alert("An unexpected error occurred.");
-    }
-  };
-
   if (!currentMilestone) {
     return <div>המיילסטון לא נמצא!</div>;
   }
-
-  const userGender: "male" | "female" = "female";
 
   return (
     <>
@@ -293,7 +217,10 @@ const MilestonePage: React.FC = () => {
           )}
 
           <div className="button-container">
-            <button onClick={completeMilestone} className="main-button">
+            <button
+              onClick={() => console.log("Milestone Completed")}
+              className="main-button"
+            >
               {currentMilestone?.button}
             </button>
           </div>

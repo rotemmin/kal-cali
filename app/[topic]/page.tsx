@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { supabase } from "@/lib/supabase/client";
 import NavigationButton from "@/components/NavigationButton";
 import Modal from "@/components/modal";
 import Header from "@/lib/components/Header";
@@ -25,7 +26,7 @@ interface TopicData {
 const TopicPage = () => {
   const params = useParams();
   const { topic } = params as { topic: string };
-  const normalizedTopic = topic.replace(/-/g, "_"); // Replace hyphens with underscores
+  const normalizedTopic = topic.replace(/-/g, "_");
   const data: TopicData = require(`@/lib/content/topics/${normalizedTopic}.json`);
 
   const [dictionary, setDictionary] = useState<{ [key: string]: string }>({});
@@ -33,6 +34,26 @@ const TopicPage = () => {
     title: string;
     description: string;
   } | null>(null);
+  const [userGender, setUserGender] = useState<"male" | "female">("female");
+
+  useEffect(() => {
+    const fetchGender = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (session?.user) {
+        const { data, error } = await supabase
+          .from("user_metadata")
+          .select("sex")
+          .eq("id", session.user.id)
+          .single();
+
+        if (!error) setUserGender(data?.sex === "male" ? "male" : "female");
+      }
+    };
+    fetchGender();
+  }, []);
 
   useEffect(() => {
     const dict: { [key: string]: string } = {};
@@ -76,7 +97,9 @@ const TopicPage = () => {
             className="topic-description"
             onClick={handleTermClick}
             dangerouslySetInnerHTML={{
-              __html: processTextWithTerms(data.description.female),
+              __html: processTextWithTerms(
+                data.description[userGender] || data.description.female
+              ),
             }}
           />
 

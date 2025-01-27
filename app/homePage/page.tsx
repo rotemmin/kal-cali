@@ -12,7 +12,11 @@ const topics = [
     icon: "/icons/onlyTitleStickers/national_insurance.svg",
     link: "/national_insurance",
   },
-  { title: "מס הכנסה", icon: "/icons/onlyTitleStickers/tax.svg", link: "/tax" },
+  {
+    title: "מס הכנסה",
+    icon: "/icons/onlyTitleStickers/tax.svg",
+    link: "/homePage",
+  },
   {
     title: "פנסיה",
     icon: "/icons/onlyTitleStickers/pension.svg",
@@ -21,12 +25,12 @@ const topics = [
   {
     title: "ביטוחים",
     icon: "/icons/onlyTitleStickers/insurance.svg",
-    link: "/insurance",
+    link: "/homePage",
   },
   {
     title: "תלושי שכר",
     icon: "/icons/onlyTitleStickers/salary.svg",
-    link: "/salary",
+    link: "/homePage",
   },
   {
     title: "חשבון בנק",
@@ -38,9 +42,10 @@ const topics = [
 const HomePage = () => {
   const [firstName, setFirstName] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [userGender, setUserGender] = useState<"male" | "female">("female");
 
   useEffect(() => {
-    const fetchUserName = async () => {
+    const fetchUserData = async () => {
       try {
         const {
           data: { session },
@@ -54,9 +59,10 @@ const HomePage = () => {
 
         const userId = session.user.id;
 
+        // Fetch user's first name and gender
         const { data, error } = await supabase
           .from("user_metadata")
-          .select("first_name")
+          .select("first_name, sex")
           .eq("id", userId)
           .single();
 
@@ -64,44 +70,17 @@ const HomePage = () => {
           console.error("Error fetching user metadata:", error);
         } else {
           setFirstName(data?.first_name || null);
+          setUserGender(data?.sex === "male" ? "male" : "female");
         }
       } catch (error) {
-        console.error("Error fetching user name:", error);
+        console.error("Error fetching user data:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchUserName();
+    fetchUserData();
   }, []);
-
-  const updateCurrentTopic = async (normalizedTopic: string) => {
-    try {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      if (!session?.user) {
-        console.error("User session not found");
-        return;
-      }
-
-      const userId = session.user.id;
-
-      const { error } = await supabase
-        .from("user_activity")
-        .update({ curr_topic: normalizedTopic })
-        .eq("id", userId);
-
-      if (error) {
-        console.error("Error updating current topic:", error);
-      } else {
-        console.log("Current topic updated successfully:", normalizedTopic);
-      }
-    } catch (error) {
-      console.error("Error updating current topic:", error);
-    }
-  };
 
   return (
     <>
@@ -115,7 +94,11 @@ const HomePage = () => {
               {firstName ? `היי ${firstName}!` : "היי!"}
             </h1>
           )}
-          <h2 className="sub-title">מה תרצי לעשות היום?</h2>
+          <h2 className="sub-title">
+            {userGender === "male"
+              ? "מה תרצה לעשות היום?"
+              : "מה תרצי לעשות היום?"}
+          </h2>
         </div>
         <div className="grid-container rtl">
           {topics.map((topic, index) => {
@@ -127,7 +110,7 @@ const HomePage = () => {
                 href={topic.link}
                 key={index}
                 className="grid-item"
-                onClick={() => updateCurrentTopic(normalizedTopic)}
+                onClick={() => console.log("Selected topic:", normalizedTopic)}
               >
                 <div className="icon-container">
                   <Image

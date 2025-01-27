@@ -1,101 +1,101 @@
-  .container {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-    background-color: var(--color-background-secondary);
-    min-height: 100vh;
-    background-image: url('/pattern.svg');
-    background-size: cover;
-    background-position: center;
-  }
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  background-color: var(--color-background-secondary);
+  min-height: 100vh;
+  background-image: url("/pattern.svg");
+  background-size: cover;
+  background-position: center;
+}
 
-  .main {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 2.9rem;
-    padding: 0 var(--spacing-8);
-  }
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 2.9rem;
+  padding: 0 var(--spacing-8);
+}
 
-  .introText {
-    font-family: var(--font-family-priamry);
-    font-weight: 400;
-    font-size: var(--text-xl);
-    line-height: var(--text-xl);
-    color: var(--color-text);
+.introText {
+  font-family: var(--font-family-priamry);
+  font-weight: 400;
+  font-size: var(--text-xl);
+  line-height: var(--text-xl);
+  color: var(--color-text);
 
-    margin-left: 1.44rem;
-    text-align: right;
-    white-space: nowrap;
-  }
+  margin-left: 1.44rem;
+  text-align: right;
+  white-space: nowrap;
+}
 
-  .signupForm {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 35px;
-    width: 100%;
-  }
+.signupForm {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 35px;
+  width: 100%;
+}
 
-  .nameInputsRow {
-    display: flex;
-    gap: var(--spacing-4);
-    width: 100%;
-  }
+.nameInputsRow {
+  display: flex;
+  gap: var(--spacing-4);
+  width: 100%;
+}
 
-  .nameInputsRow .inputContainer {
-    flex: 1;
-  }
+.nameInputsRow .inputContainer {
+  flex: 1;
+}
 
-  .inputContainer {
-    width: 100%;
-    padding: 4px 16px 3px 0px;
-    border: 2px solid var(--color-secondary);
-    border-radius: 24px;
-    background-color: var(--color-background);
+.inputContainer {
+  width: 100%;
+  padding: 4px 16px 3px 0px;
+  border: 2px solid var(--color-secondary);
+  border-radius: 24px;
+  background-color: var(--color-background);
 
-    font-family: var(--font-family-priamry);
-    font-weight: 400;
-    font-size: var(--text-xl);
-    line-height: var(--text-xl);
-  }
+  font-family: var(--font-family-priamry);
+  font-weight: 400;
+  font-size: var(--text-xl);
+  line-height: var(--text-xl);
+}
 
-  .inputContainer::placeholder {
-    color: var(--color-text);
-  }
+.inputContainer::placeholder {
+  color: var(--color-text);
+}
 
-  .inputContainer:focus {
-    border: 2px solid #A585E5;
-    outline: none;
-  }
+.inputContainer:focus {
+  border: 2px solid #a585e5;
+  outline: none;
+}
 
-  .inputContainer:focus-visible {
-    border: 2px solid #A585E5;
-    outline: none;
-  }
+.inputContainer:focus-visible {
+  border: 2px solid #a585e5;
+  outline: none;
+}
 
-  .inputContainer.error {
-    border: 2px solid #FC4343;
-  }
+.inputContainer.error {
+  border: 2px solid #fc4343;
+}
 
-  .signupForm button {
-    padding: 4px 20px;
-    background-color: var(--color-accent);
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
+.signupForm button {
+  padding: 4px 20px;
+  background-color: var(--color-accent);
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
 
-    font-family: var(--font-family-secondary);
-    font-weight: 400;
-    font-size: var(--text-2xl);
-    line-height: 31px;
-    font-style: italic;
-    color: #210E46;
-    transition: transform 0.2s ease;
-    margin-right: auto;
-  }
+  font-family: var(--font-family-secondary);
+  font-weight: 400;
+  font-size: var(--text-2xl);
+  line-height: 31px;
+  font-style: italic;
+  color: #210e46;
+  transition: transform 0.2s ease;
+  margin-right: auto;
+}
 
-  .signupForm button:hover {
-    color: var(--color-background);
-  }
+.signupForm button:hover {
+  color: var(--color-background);
+}
