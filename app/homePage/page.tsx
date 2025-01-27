@@ -1,5 +1,5 @@
 "use client";
-import { supabase } from "@/lib/supabase/client"; // Import Supabase client
+import { supabase } from "@/lib/supabase/client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,32 +10,44 @@ const topics = [
   {
     title: "ביטוח לאומי",
     icon: "/icons/onlyTitleStickers/national_insurance.svg",
+    completedIcon: "/icons/stickers/final_national_insurance.svg",
     link: "/national_insurance",
+    dbKey: "national_insurance", // NEW: Added explicit database key
   },
   {
     title: "מס הכנסה",
     icon: "/icons/onlyTitleStickers/tax.svg",
+    completedIcon: "/icons/stickers/final_tax.svg",
     link: "/homePage",
+    dbKey: "tax",
   },
   {
     title: "פנסיה",
     icon: "/icons/onlyTitleStickers/pension.svg",
+    completedIcon: "/icons/stickers/final_pension.svg",
     link: "/pension",
+    dbKey: "pension",
   },
   {
     title: "ביטוחים",
     icon: "/icons/onlyTitleStickers/insurance.svg",
+    completedIcon: "/icons/stickers/final_insurance.svg",
     link: "/homePage",
+    dbKey: "insurance",
   },
   {
     title: "תלושי שכר",
     icon: "/icons/onlyTitleStickers/salary.svg",
+    completedIcon: "/icons/stickers/final_salary.svg",
     link: "/homePage",
+    dbKey: "salary",
   },
   {
     title: "חשבון בנק",
     icon: "/icons/onlyTitleStickers/bank.svg",
+    completedIcon: "/icons/stickers/final_bank.svg",
     link: "/bank-account",
+    dbKey: "bank_account",
   },
 ];
 
@@ -43,6 +55,9 @@ const HomePage = () => {
   const [firstName, setFirstName] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [userGender, setUserGender] = useState<"male" | "female">("female");
+  const [completedTopics, setCompletedTopics] = useState<{
+    [key: string]: boolean;
+  }>({});
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -59,18 +74,47 @@ const HomePage = () => {
 
         const userId = session.user.id;
 
-        // Fetch user's first name and gender
-        const { data, error } = await supabase
+        const { data: userData, error: userError } = await supabase
           .from("user_metadata")
           .select("first_name, sex")
           .eq("id", userId)
           .single();
 
-        if (error) {
-          console.error("Error fetching user metadata:", error);
+        if (userError) {
+          console.error("Error fetching user metadata:", userError);
         } else {
-          setFirstName(data?.first_name || null);
-          setUserGender(data?.sex === "male" ? "male" : "female");
+          setFirstName(userData?.first_name || null);
+          setUserGender(userData?.sex === "male" ? "male" : "female");
+        }
+
+        // Fetch and log user's topics completion status
+        const { data: activityData, error: activityError } = await supabase
+          .from("user_activity")
+          .select("topics_and_milestones")
+          .eq("id", userId)
+          .single();
+
+        if (activityError) {
+          console.error("Error fetching user activity:", activityError);
+        } else {
+          // Log the raw data to debug
+          console.log(
+            "Raw topics_and_milestones data:",
+            activityData?.topics_and_milestones
+          );
+
+          const completedTopicsObj: { [key: string]: boolean } = {};
+          Object.entries(activityData?.topics_and_milestones || {}).forEach(
+            ([topic, data]) => {
+              completedTopicsObj[topic] = (data as any).status === 1;
+              // Log each topic's completion status
+              console.log(`Topic ${topic} status:`, (data as any).status);
+            }
+          );
+
+          // Log the final completed topics object
+          console.log("Completed topics:", completedTopicsObj);
+          setCompletedTopics(completedTopicsObj);
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -102,19 +146,25 @@ const HomePage = () => {
         </div>
         <div className="grid-container rtl">
           {topics.map((topic, index) => {
-            const normalizedTopic = topic.link
-              .replace(/-/g, "_")
-              .replace("/", "");
+            // Use the explicit dbKey instead of normalizing the link
+            const isCompleted = completedTopics[topic.dbKey];
+
+            // Log the status for each topic as it's being rendered
+            console.log(`Rendering ${topic.dbKey}:`, {
+              isCompleted,
+              iconToShow: isCompleted ? topic.completedIcon : topic.icon,
+            });
+
             return (
               <Link
                 href={topic.link}
                 key={index}
                 className="grid-item"
-                onClick={() => console.log("Selected topic:", normalizedTopic)}
+                onClick={() => console.log("Selected topic:", topic.dbKey)}
               >
                 <div className="icon-container">
                   <Image
-                    src={topic.icon}
+                    src={isCompleted ? topic.completedIcon : topic.icon}
                     alt={topic.title}
                     fill
                     style={{ objectFit: "contain" }}
