@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 import { debounce } from "lodash";
 import styles from "./page.module.css";
 
@@ -88,7 +88,7 @@ interface Question {
 }
 type TopicKey = keyof typeof topicFields;
 
-const supabase = createClient();
+// const supabase = createClient();
 
 const PersonalNotebookPage = () => {
   const [notes, setNotes] = useState<Note[]>([]);

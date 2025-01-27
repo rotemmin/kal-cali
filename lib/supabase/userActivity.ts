@@ -1,13 +1,11 @@
-import { createServerClient } from "@/lib/supabase/server";
-import { cookies } from "next/headers";
+import { supabase } from '@/lib/supabase/client';
 
 export async function updateMilestoneStatus(
   userId: string,
   topic: string,
   milestone: string
 ) {
-  const supabase = createServerClient(cookies());
-
+  // שליפת הנתונים הקיימים
   const { data, error } = await supabase
     .from("user_activity")
     .select("topics_and_milestones, budget")
@@ -20,6 +18,7 @@ export async function updateMilestoneStatus(
 
   const { topics_and_milestones, budget } = data;
 
+  // בדיקת תקינות הנתיבים
   if (
     !topics_and_milestones[topic] ||
     !topics_and_milestones[topic].milestones ||
@@ -28,18 +27,22 @@ export async function updateMilestoneStatus(
     return { success: false, message: "Invalid topic or milestone." };
   }
 
+  // עדכון סטטוס המיילסטון
   topics_and_milestones[topic].milestones[milestone] = 1;
 
+  // בדיקה האם כל המיילסטונים בנושא הושלמו
   const allDone = Object.values(topics_and_milestones[topic].milestones).every(
     (status) => status === 1
   );
 
+  // עדכון תקציב אם הושלם נושא
   let updatedBudget = budget;
   if (allDone) {
     topics_and_milestones[topic].status = 1;
     updatedBudget += 1;
   }
 
+  // עדכון בדאטהבייס
   const { error: updateError } = await supabase
     .from("user_activity")
     .update({
