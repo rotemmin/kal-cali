@@ -6,12 +6,12 @@ import NavigationButton from "@/components/NavigationButton";
 import Modal from "@/components/modal";
 import Header from "@/lib/components/Header";
 import "./MilestonePage.css";
-import Image from "next/image";
-// NEW: Import ProgressBar component
 import ProgressBar from "../milestones_progress_bar/ProgressBar";
 import dictionaryIcon from "@/public/icons/dictionary.svg";
 import notebookIcon from "@/public/icons/notebook.svg";
 import { X } from "lucide-react";
+import ChatInterface from '../chat/page';
+
 
 interface MilestoneDescription {
   text: string;
@@ -63,6 +63,13 @@ const MilestonePage: React.FC = () => {
   // NEW: Add states for progress bar
   const [totalMilestones, setTotalMilestones] = useState(0);
   const [completedMilestones, setCompletedMilestones] = useState(0);
+
+  const [showChat, setShowChat] = useState(false);
+
+  const handleChatFinish = async () => {
+    await completeMilestone();
+    router.back(); // חזרה לדף הקודם אחרי השלמת המיילסטון
+  };
 
   // NEW: Add function to fetch milestone progress
   const fetchMilestoneProgress = async () => {
@@ -201,6 +208,56 @@ const MilestonePage: React.FC = () => {
     );
   };
 
+  const renderContent = () => {
+    if (showChat) {
+      return (
+        <>
+          <ChatInterface />
+          <div className="button-container">
+            <button onClick={handleChatFinish} className="main-button">
+              סיימתי
+            </button>
+          </div>
+        </>
+      );
+    }
+
+    const description = currentMilestone?.description?.[userGender];
+    
+    return (
+      <>
+        <h1 className="title">{currentMilestone?.title}</h1>
+        {currentMilestone?.title2 && (
+          <h2 className="subtitle">{currentMilestone.title2}</h2>
+        )}
+
+        {description && renderDescription(description)}
+
+        {currentMilestone?.note?.[userGender] && (
+          <div className="note">
+            <div
+              dangerouslySetInnerHTML={{
+                __html: currentMilestone.note[userGender].replace(/\n/g, "<br />"),
+              }}
+            />
+          </div>
+        )}
+
+        <div className="button-container">
+          {currentMilestone?.help?.type === 'chat' ? (
+            <button onClick={() => setShowChat(true)} className="main-button">
+              הבא
+            </button>
+          ) : (
+            <button onClick={completeMilestone} className="main-button">
+              {currentMilestone?.button}
+            </button>
+          )}
+        </div>
+      </>
+    );
+  };
+
   const completeMilestone = async () => {
     if (milestoneCompleted) {
       alert("You have already completed this milestone!");
@@ -303,37 +360,12 @@ const MilestonePage: React.FC = () => {
       <Header />
       <div className="milestone-page">
         <div className="content-container">
-          {/* NEW: Add ProgressBar component */}
           <X className="closeButton" onClick={() => router.back()} />
           <ProgressBar
             totalMilestones={totalMilestones}
             completedMilestones={completedMilestones}
           />
-          <h1 className="title">{currentMilestone?.title}</h1>
-          {currentMilestone?.title2 && (
-            <h2 className="subtitle">{currentMilestone.title2}</h2>
-          )}
-
-          {renderDescription(currentMilestone?.description[userGender])}
-
-          {currentMilestone?.note && (
-            <div className="note">
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: currentMilestone.note[userGender].replace(
-                    /\n/g,
-                    "<br />"
-                  ),
-                }}
-              />
-            </div>
-          )}
-
-          <div className="button-container">
-            <button onClick={completeMilestone} className="main-button">
-              {currentMilestone?.button}
-            </button>
-          </div>
+          {renderContent()}
         </div>
 
         <div className="nav-buttons">
@@ -364,3 +396,70 @@ const MilestonePage: React.FC = () => {
 };
 
 export default MilestonePage;
+
+
+//   return (
+//     <>
+//       <Header />
+//       <div className="milestone-page">
+//         <div className="content-container">
+//           <X className="closeButton" onClick={() => router.back()} />
+//           <ProgressBar
+//             totalMilestones={totalMilestones}
+//             completedMilestones={completedMilestones}
+//           />
+//           <h1 className="title">{currentMilestone?.title}</h1>
+//           {currentMilestone?.title2 && (
+//             <h2 className="subtitle">{currentMilestone.title2}</h2>
+//           )}
+
+//           {renderDescription(currentMilestone?.description[userGender])}
+
+//           {currentMilestone?.note && (
+//             <div className="note">
+//               <div
+//                 dangerouslySetInnerHTML={{
+//                   __html: currentMilestone.note[userGender].replace(
+//                     /\n/g,
+//                     "<br />"
+//                   ),
+//                 }}
+//               />
+//             </div>
+//           )}
+
+//           <div className="button-container">
+//             <button onClick={completeMilestone} className="main-button">
+//               {currentMilestone?.button}
+//             </button>
+//           </div>
+//         </div>
+
+//         <div className="nav-buttons">
+//           <NavigationButton
+//             icon={dictionaryIcon}
+//             link="/dictionary"
+//             position="right"
+//             altText="Dictionary"
+//           />
+//           <NavigationButton
+//             icon={notebookIcon}
+//             link="/personal_notebook"
+//             position="left"
+//             altText="Notebook"
+//           />
+//         </div>
+
+//         <Modal
+//           isOpen={!!selectedTerm}
+//           onClose={() => setSelectedTerm(null)}
+//           title={selectedTerm?.title || ""}
+//         >
+//           <p>{selectedTerm?.description}</p>
+//         </Modal>
+//       </div>
+//     </>
+//   );
+// };
+
+// export default MilestonePage;
