@@ -11,6 +11,7 @@ import Image from "next/image";
 import ProgressBar from "../milestones_progress_bar/ProgressBar";
 import dictionaryIcon from "@/public/icons/dictionary.svg";
 import notebookIcon from "@/public/icons/notebook.svg";
+import { X } from "lucide-react";
 
 interface MilestoneDescription {
   text: string;
@@ -303,6 +304,7 @@ const MilestonePage: React.FC = () => {
       <div className="milestone-page">
         <div className="content-container">
           {/* NEW: Add ProgressBar component */}
+          <X className="closeButton" onClick={() => router.back()} />
           <ProgressBar
             totalMilestones={totalMilestones}
             completedMilestones={completedMilestones}
