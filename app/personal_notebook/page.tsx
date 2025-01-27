@@ -3,6 +3,9 @@ import React, { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { debounce } from "lodash";
 import styles from "./page.module.css";
+import { X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import Header from "@/lib/components/Header";
 
 const englishToHebrewTopics: { [key: string]: string } = {
   pension: "פנסיה",
@@ -32,38 +35,17 @@ const topicFields = {
   ],
   national_insurance: [
     { label: "דפי הניהול מהפקדה", field: "management_deposit_pages" },
-    { label: "פטלול הפנסיה שנראה לך מתאים", field: "pension_fit" },
+    { label: "מסלול הפנסיה שנראה לך מתאים", field: "pension_fit" },
     { label: "סטטוס תשלומים", field: "payment_status" },
     { label: "מידע רלוונטי לניהול עתידי", field: "future_management_info" },
     { label: "סיכום השיחה", field: "call_summary" },
   ],
   bank_account: [
     { label: "עוד נקודות חשובות שעלו במהלך השיחה", field: "additional_points" },
-    { label: "מספר החשבון", field: "account_number" },
-    { label: "יתרה נוכחית", field: "current_balance" },
+    { label: "סוג חשבון", field: "account_type" },
+    { label: "דמי ניהול", field: "management_fee" },
     { label: "פעולות אחרונות", field: "recent_transactions" },
     { label: "שינויים צפויים", field: "expected_changes" },
-  ],
-  income_tax: [
-    { label: "נתוני מס הכנסה שנבדקו", field: "tax_data_checked" },
-    { label: "הערות מיוחדות למס הכנסה", field: "income_tax_notes" },
-    { label: "מסמכים שהוגשו", field: "submitted_documents" },
-    { label: "מעקב אחר פניות", field: "followup_requests" },
-    { label: "שאלות לא פתורות", field: "unresolved_questions" },
-  ],
-  pay_slips: [
-    { label: "מספר תלושי השכר הנבדקים", field: "number_of_pay_slips" },
-    { label: "פרטים חשובים מהתלושים", field: "important_pay_slip_details" },
-    { label: "חריגות בתלושים", field: "pay_slip_anomalies" },
-    { label: "תשלומים שהושוו", field: "compared_payments" },
-    { label: "מידע שנוסף לתיקים", field: "information_added_to_records" },
-  ],
-  credit_card: [
-    { label: "פרטי כרטיס אשראי", field: "credit_card_details" },
-    { label: "הוצאות חודשיות נבדקות", field: "monthly_expenses_checked" },
-    { label: "תשלומים עתידיים", field: "future_payments" },
-    { label: "עסקאות חריגות", field: "unusual_transactions" },
-    { label: "תאריך חידוש כרטיס", field: "card_renewal_date" },
   ],
 };
 
@@ -88,19 +70,18 @@ interface Question {
 }
 type TopicKey = keyof typeof topicFields;
 
-// const supabase = createClient();
-
 const PersonalNotebookPage = () => {
-  const [notes, setNotes] = useState<Note[]>([]);
+  const router = useRouter();
   const [topics, setTopics] = useState<Topic[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
-  const [currentTopic, setCurrentTopic] = useState<TopicKey | null>(null);
+  const [currentTopic, setCurrentTopic] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [noteText, setNoteText] = useState<string>("");
-  const [questions, setQuestions] = useState<Question[]>([]);
   const [additionalFields, setAdditionalFields] = useState<
     Record<string, string>
   >({});
+  const [milestones, setMilestones] = useState<any>({});
+  const [notes, setNotes] = useState<Record<string, string>>({});
 
   const fetchTopics = useCallback(async () => {
     try {
@@ -118,6 +99,8 @@ const PersonalNotebookPage = () => {
       if (error) throw error;
 
       const topicsData = data?.topics_and_milestones || {};
+      setMilestones(topicsData);
+
       const dbTopics: Topic[] = Object.keys(topicsData).map((topic, index) => ({
         id: index.toString(),
         curr_topic: englishToHebrewTopics[topic] || topic,
@@ -144,12 +127,14 @@ const PersonalNotebookPage = () => {
 
       setTopics(mergedTopics);
 
-      if (!currentTopic && data?.curr_topic) {
+      // Set the current topic to "פנסיה" if it is "O" or not set
+      if (!currentTopic || currentTopic === "O") {
+        console.log("Setting current topic to pension");
+        setCurrentTopic("פנסיה");
+      } else if (data?.curr_topic && !currentTopic) {
         setCurrentTopic(
           englishToHebrewTopics[data.curr_topic] || data.curr_topic
         );
-      } else if (dbTopics.length > 0 && !currentTopic) {
-        setCurrentTopic(dbTopics[0].curr_topic as TopicKey);
       }
     } catch (error) {
       setErrorMessage("לא הצלחנו לטעון את הנושאים");
@@ -164,6 +149,7 @@ const PersonalNotebookPage = () => {
       const topicInEnglish = hebrewToEnglishTopics[currentTopic];
       if (!topicInEnglish) return;
 
+      // Fetch data from Supabase
       const { data, error } = await supabase
         .from("notes")
         .select("note, field_1, field_2, field_3, field_4, field_5")
@@ -173,31 +159,37 @@ const PersonalNotebookPage = () => {
 
       if (error) throw error;
 
+      // Update note text and additional fields if data exists
       if (data) {
         setNoteText(data.note || "");
+
+        // Create a new object for additional fields
         const newFields: Record<string, string> = {};
-        Object.entries(data).forEach(([key, value]) => {
+        for (const [key, value] of Object.entries(data)) {
           if (key.startsWith("field_") && value) {
             newFields[`${topicInEnglish}_${key}`] = value;
           }
-        });
+        }
+
         setAdditionalFields((prev) => ({
           ...prev,
           ...newFields,
         }));
       } else {
-        // Clear the fields when no data is found for this topic
+        // If no data is found, clear note and related fields
         setNoteText("");
-        const fieldsToRemove = Object.keys(additionalFields).filter((key) =>
-          key.startsWith(`${topicInEnglish}_`)
-        );
-        const newFields = { ...additionalFields };
-        fieldsToRemove.forEach((key) => delete newFields[key]);
-        setAdditionalFields(newFields);
+
+        const updatedFields = { ...additionalFields };
+        for (const key of Object.keys(updatedFields)) {
+          if (key.startsWith(`${topicInEnglish}_`)) {
+            delete updatedFields[key];
+          }
+        }
+        setAdditionalFields(updatedFields);
       }
     } catch (error) {
       setErrorMessage("לא הצלחנו לטעון את ההערות");
-      console.error(error);
+      console.error("Error fetching notes:", error);
     }
   }, [userId, currentTopic]);
 
@@ -206,13 +198,20 @@ const PersonalNotebookPage = () => {
   }, [fetchTopics]);
 
   useEffect(() => {
-    fetchNotes();
+    if (currentTopic) {
+      fetchNotes();
+    }
   }, [fetchNotes, currentTopic]);
 
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((event, session) => {
       if (session?.user) {
-        setUserId(session.user.id);
+        setUserId((prevUserId) => {
+          if (prevUserId !== session.user.id) {
+            return session.user.id;
+          }
+          return prevUserId;
+        });
       } else {
         console.log("No user session found.");
       }
@@ -222,6 +221,41 @@ const PersonalNotebookPage = () => {
       data.subscription.unsubscribe();
     };
   }, []);
+
+  const getStickerImage = (topic: string, index: number) => {
+    const topicInEnglish = hebrewToEnglishTopics[topic];
+    console.log(topicInEnglish);
+    if (!topicInEnglish) {
+      console.error(`No English equivalent found for topic: ${topic}`);
+      return ""; // Return an empty string or a default image path if needed
+    }
+
+    const topicMilestones = milestones[topicInEnglish]?.milestones || {};
+    const totalMilestones = Object.keys(topicMilestones).length;
+    const completedMilestones = Object.values(topicMilestones).filter(
+      (status) => status === 1
+    ).length;
+
+    // Determine the folder path based on the English topic name
+    const folderPath = `/${topicInEnglish}_stickers/`; // Adjust this path if needed
+
+    // Determine which sticker to show based on the index
+    if (index === 0) {
+      return completedMilestones > 0
+        ? `${folderPath}${topicInEnglish}1.svg`
+        : `${folderPath}pre${topicInEnglish}1.svg`;
+    } else if (index === 1) {
+      return completedMilestones >= totalMilestones / 2
+        ? `${folderPath}${topicInEnglish}2.svg`
+        : `${folderPath}pre${topicInEnglish}2.svg`;
+    } else if (index === 2) {
+      return completedMilestones === totalMilestones
+        ? `${folderPath}${topicInEnglish}3.svg`
+        : `${folderPath}pre${topicInEnglish}3.svg`;
+    }
+
+    return `${folderPath}pre${topicInEnglish}1.svg`; // Default to the first pre-sticker
+  };
 
   const handleFieldChange = (field: string, value: string) => {
     const topicInEnglish = hebrewToEnglishTopics[currentTopic!];
@@ -281,79 +315,109 @@ const PersonalNotebookPage = () => {
     updateDb(newNote);
   };
 
+  const handleTextareaInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const textarea = e.target;
+
+    // Reset the height to 'auto' to recalculate
+    textarea.style.height = "auto";
+
+    // Set the height based on scrollHeight (actual content height)
+    textarea.style.height = `${textarea.scrollHeight}px`;
+  };
+
   return (
-    <div className={styles.notebookContainer}>
-      <div className={styles.sidebar}>
-        <div className={styles.topicGroup}>
-          {topics.map((topic) => (
-            <div
-              key={topic.id}
-              className={`${styles.topic} ${
-                topic.fromDb && currentTopic === topic.curr_topic
-                  ? styles.selected
-                  : ""
-              } ${!topic.fromDb ? styles.nonClickable : ""}`}
-              onClick={() =>
-                topic.fromDb && setCurrentTopic(topic.curr_topic as TopicKey)
-              }
-            >
-              {topic.curr_topic}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <main className={styles.content}>
-        {currentTopic && (
-          <div className={styles.notesSection}>
-            <div className={styles.sectionHeader}>{currentTopic}</div>
-            <div className={styles.notesContainer}>
-              <textarea
-                className={styles.notesTextarea}
-                value={noteText}
-                onChange={handleNoteChange}
-                placeholder="רשמי כאן את ההערות שלך..."
-                dir="rtl"
-              />
-            </div>
-            <div className={styles.additionalFieldsContainer}>
-              {currentTopic &&
-                topicFields[
-                  hebrewToEnglishTopics[
-                    currentTopic
-                  ] as keyof typeof topicFields
-                ]?.map(
-                  (
-                    { label, field }: { label: string; field: string },
-                    index: number
-                  ) => {
-                    const topicInEnglish = hebrewToEnglishTopics[currentTopic];
-                    const fieldKey = `${topicInEnglish}_field_${index + 1}`;
-
-                    return (
-                      <div key={field} className={styles.fieldContainer}>
-                        <label className={styles.fieldLabel}>{label}</label>
-                        <input
-                          type="text"
-                          className={styles.inputContainer}
-                          value={additionalFields[fieldKey] || ""}
-                          onChange={(e) =>
-                            handleFieldChange(
-                              `field_${index + 1}`,
-                              e.target.value
-                            )
-                          }
-                          dir="rtl"
-                        />
-                      </div>
-                    );
+    <>
+      <Header />
+      <div className={styles.notebookContainer}>
+        <X className={styles.closeButton} onClick={() => router.back()} />
+        <div className={styles.sidebar}>
+          <div className={styles.topicGroup}>
+            {topics.map((topic) => (
+              <div
+                key={topic.id}
+                className={`${styles.topic} ${
+                  topic.fromDb && currentTopic === topic.curr_topic
+                    ? styles.selected
+                    : ""
+                } ${!topic.fromDb ? styles.nonClickable : ""}`}
+                onClick={() => {
+                  if (currentTopic !== topic.curr_topic) {
+                    setCurrentTopic(topic.curr_topic);
                   }
-                )}
-            </div>
+                }}
+              >
+                {topic.curr_topic}
+              </div>
+            ))}
           </div>
-        )}
-      </main>
-    </div>
+        </div>
+
+        <main className={styles.content}>
+          {currentTopic && (
+            <div className={styles.notesSection}>
+              <div className={styles.sectionHeader}>{currentTopic}</div>
+              <div className={styles.notesContainer}>
+                <textarea
+                  className={styles.notesTextarea}
+                  value={noteText}
+                  onChange={handleNoteChange}
+                  onInput={handleTextareaInput}
+                  placeholder="רשמי כאן את ההערות שלך..."
+                  dir="rtl"
+                />
+              </div>
+              <div className={styles.separator}></div>
+              <div className={styles.additionalFieldsContainer}>
+                {currentTopic &&
+                  topicFields[
+                    hebrewToEnglishTopics[
+                      currentTopic
+                    ] as keyof typeof topicFields
+                  ]?.map(
+                    (
+                      { label, field }: { label: string; field: string },
+                      index: number
+                    ) => {
+                      const topicInEnglish =
+                        hebrewToEnglishTopics[currentTopic];
+                      const fieldKey = `${topicInEnglish}_field_${index + 1}`;
+
+                      return (
+                        <div key={field} className={styles.fieldContainer}>
+                          <label className={styles.fieldLabel}>{label}</label>
+                          <input
+                            type="text"
+                            className={styles.inputContainer}
+                            value={additionalFields[fieldKey] || ""}
+                            onChange={(e) =>
+                              handleFieldChange(
+                                `field_${index + 1}`,
+                                e.target.value
+                              )
+                            }
+                            dir="rtl"
+                          />
+                        </div>
+                      );
+                    }
+                  )}
+              </div>
+              <div className={styles.separator}></div>
+              <div className={styles.stickersArea}>
+                {[0, 1, 2].map((index) => (
+                  <img
+                    key={index}
+                    src={getStickerImage(currentTopic, index)}
+                    alt={`Sticker ${index + 1}`}
+                    className={styles.sticker}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </main>
+      </div>
+    </>
   );
 };
 
