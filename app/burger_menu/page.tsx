@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect, useRef, useCallback } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useRef, useCallback } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const BurgerMenuPage: React.FC = () => {
   const router = useRouter();
@@ -25,9 +25,9 @@ const BurgerMenuPage: React.FC = () => {
 
   // Add/remove event listener
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [handleClickOutside]);
 
@@ -35,19 +35,16 @@ const BurgerMenuPage: React.FC = () => {
     <div
       ref={menuRef}
       style={{
-        position: 'fixed',
+        position: "fixed",
         top: 0,
         right: 0,
-        width: '60%',
-        height: '100%',
-        backgroundColor: 'rgba(255, 255, 255, 0.91)',
+        width: "60%",
+        height: "100%",
+        backgroundColor: "rgba(255, 255, 255, 0.91)",
         zIndex: 1000,
       }}
     >
       <ul>
-        <li>
-          <Link href="/stickers_notebook">מחברת המדבקות</Link>
-        </li>
         <li>
           <Link href="/personal_notebook">המחברת האישית</Link>
         </li>

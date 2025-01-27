@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { debounce } from "lodash";
 import styles from "./page.module.css";
@@ -35,7 +35,7 @@ const topicFields = {
   ],
   national_insurance: [
     { label: "דפי הניהול מהפקדה", field: "management_deposit_pages" },
-    { label: "מסלול הפנסיה שנראה לך מתאים", field: "pension_fit" },
+    { label: "מסלול הפנסיה שנראה לי מתאים", field: "pension_fit" },
     { label: "סטטוס תשלומים", field: "payment_status" },
     { label: "מידע רלוונטי לניהול עתידי", field: "future_management_info" },
     { label: "סיכום השיחה", field: "call_summary" },
@@ -49,26 +49,11 @@ const topicFields = {
   ],
 };
 
-interface Note {
-  id: string;
-  user_id: string;
-  curr_topic: string;
-  note: string;
-  additional_fields?: string;
-}
-
 interface Topic {
   id: string;
   curr_topic: string;
   fromDb: boolean;
 }
-
-interface Question {
-  id: string;
-  question: string;
-  answer: string;
-}
-type TopicKey = keyof typeof topicFields;
 
 const PersonalNotebookPage = () => {
   const router = useRouter();
@@ -81,7 +66,6 @@ const PersonalNotebookPage = () => {
     Record<string, string>
   >({});
   const [milestones, setMilestones] = useState<any>({});
-  const [notes, setNotes] = useState<Record<string, string>>({});
 
   const fetchTopics = useCallback(async () => {
     try {
@@ -101,20 +85,23 @@ const PersonalNotebookPage = () => {
       const topicsData = data?.topics_and_milestones || {};
       setMilestones(topicsData);
 
+      // Generate dbTopics with unique IDs
       const dbTopics: Topic[] = Object.keys(topicsData).map((topic, index) => ({
-        id: index.toString(),
+        id: `db-${index}`, // Generate unique ID for each db topic
         curr_topic: englishToHebrewTopics[topic] || topic,
         fromDb: true,
       }));
 
+      // Generate predefinedTopics with unique IDs
       const predefinedTopics: Topic[] = Object.keys(englishToHebrewTopics).map(
         (topic, index) => ({
-          id: `predefined-${index}`,
+          id: `predefined-${index}`, // Generate unique ID for each predefined topic
           curr_topic: englishToHebrewTopics[topic],
           fromDb: false,
         })
       );
 
+      // Merge dbTopics and predefinedTopics, ensuring no duplicates
       const mergedTopics: Topic[] = [...dbTopics, ...predefinedTopics].reduce(
         (uniqueTopics, topic) => {
           if (!uniqueTopics.find((t) => t.curr_topic === topic.curr_topic)) {
@@ -127,7 +114,6 @@ const PersonalNotebookPage = () => {
 
       setTopics(mergedTopics);
 
-      // Set the current topic to "פנסיה" if it is "O" or not set
       if (!currentTopic || currentTopic === "O") {
         console.log("Setting current topic to pension");
         setCurrentTopic("פנסיה");
@@ -149,7 +135,6 @@ const PersonalNotebookPage = () => {
       const topicInEnglish = hebrewToEnglishTopics[currentTopic];
       if (!topicInEnglish) return;
 
-      // Fetch data from Supabase
       const { data, error } = await supabase
         .from("notes")
         .select("note, field_1, field_2, field_3, field_4, field_5")
@@ -159,33 +144,29 @@ const PersonalNotebookPage = () => {
 
       if (error) throw error;
 
-      // Update note text and additional fields if data exists
       if (data) {
         setNoteText(data.note || "");
 
-        // Create a new object for additional fields
-        const newFields: Record<string, string> = {};
-        for (const [key, value] of Object.entries(data)) {
-          if (key.startsWith("field_") && value) {
-            newFields[`${topicInEnglish}_${key}`] = value;
-          }
-        }
+        const newFields = Object.entries(data)
+          .filter(([key]) => key.startsWith("field_"))
+          .reduce((acc, [key, value]) => {
+            acc[`${topicInEnglish}_${key}`] = value as string;
+            return acc;
+          }, {} as Record<string, string>);
 
         setAdditionalFields((prev) => ({
           ...prev,
           ...newFields,
         }));
       } else {
-        // If no data is found, clear note and related fields
         setNoteText("");
-
-        const updatedFields = { ...additionalFields };
-        for (const key of Object.keys(updatedFields)) {
-          if (key.startsWith(`${topicInEnglish}_`)) {
-            delete updatedFields[key];
-          }
-        }
-        setAdditionalFields(updatedFields);
+        setAdditionalFields((prev) =>
+          Object.fromEntries(
+            Object.entries(prev).filter(
+              ([key]) => !key.startsWith(`${topicInEnglish}_`)
+            )
+          )
+        );
       }
     } catch (error) {
       setErrorMessage("לא הצלחנו לטעון את ההערות");
@@ -236,10 +217,8 @@ const PersonalNotebookPage = () => {
       (status) => status === 1
     ).length;
 
-    // Determine the folder path based on the English topic name
-    const folderPath = `/${topicInEnglish}_stickers/`; // Adjust this path if needed
+    const folderPath = `/${topicInEnglish}_stickers/`;
 
-    // Determine which sticker to show based on the index
     if (index === 0) {
       return completedMilestones > 0
         ? `${folderPath}${topicInEnglish}1.svg`
@@ -254,7 +233,55 @@ const PersonalNotebookPage = () => {
         : `${folderPath}pre${topicInEnglish}3.svg`;
     }
 
-    return `${folderPath}pre${topicInEnglish}1.svg`; // Default to the first pre-sticker
+    return `${folderPath}pre${topicInEnglish}1.svg`;
+  };
+
+  const debouncedUpdateNote = useMemo(
+    () =>
+      debounce(async (userId, topicInEnglish, newNote) => {
+        try {
+          if (!userId || !topicInEnglish) return;
+          await supabase.from("notes").upsert(
+            {
+              user_id: userId,
+              curr_topic: topicInEnglish,
+              note: newNote,
+            },
+            { onConflict: "user_id, curr_topic" }
+          );
+        } catch (error) {
+          console.error("Failed to save note:", error);
+        }
+      }, 500),
+    []
+  );
+
+  const debouncedUpdateField = useMemo(
+    () =>
+      debounce(async (userId, topicInEnglish, field, value) => {
+        try {
+          if (!userId || !topicInEnglish) return;
+          await supabase.from("notes").upsert(
+            {
+              user_id: userId,
+              curr_topic: topicInEnglish,
+              [field]: value,
+            },
+            { onConflict: "user_id, curr_topic" }
+          );
+        } catch (error) {
+          console.error("Failed to save field:", error);
+        }
+      }, 500),
+    []
+  );
+
+  const handleNoteChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newNote = event.target.value;
+    setNoteText(newNote);
+
+    const topicInEnglish = hebrewToEnglishTopics[currentTopic!];
+    debouncedUpdateNote(userId, topicInEnglish, newNote);
   };
 
   const handleFieldChange = (field: string, value: string) => {
@@ -263,65 +290,14 @@ const PersonalNotebookPage = () => {
 
     const fieldKey = `${topicInEnglish}_${field}`;
     setAdditionalFields((prev) => ({ ...prev, [fieldKey]: value }));
-
-    const updateDb = debounce(async () => {
-      try {
-        if (!userId || !currentTopic) return;
-
-        const fieldData = {
-          user_id: userId,
-          curr_topic: topicInEnglish,
-          [field]: value,
-        };
-
-        const { error } = await supabase
-          .from("notes")
-          .upsert(fieldData, { onConflict: "user_id, curr_topic" });
-
-        if (error) throw error;
-      } catch (error) {
-        console.error("Failed to save field:", error);
-      }
-    }, 500);
-
-    updateDb();
-  };
-
-  const handleNoteChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newNote = event.target.value;
-    setNoteText(newNote);
-
-    const updateDb = debounce(async (newNote: string) => {
-      try {
-        if (!userId || !currentTopic) return;
-
-        const topicInEnglish = hebrewToEnglishTopics[currentTopic!];
-        if (!topicInEnglish) return;
-
-        await supabase.from("notes").upsert(
-          {
-            user_id: userId,
-            curr_topic: topicInEnglish,
-            note: newNote,
-          },
-          { onConflict: "user_id, curr_topic" }
-        );
-      } catch (error) {
-        setErrorMessage("Failed to save note.");
-        console.error(error);
-      }
-    }, 500);
-
-    updateDb(newNote);
+    debouncedUpdateField(userId, topicInEnglish, field, value);
   };
 
   const handleTextareaInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const textarea = e.target;
 
-    // Reset the height to 'auto' to recalculate
     textarea.style.height = "auto";
 
-    // Set the height based on scrollHeight (actual content height)
     textarea.style.height = `${textarea.scrollHeight}px`;
   };
 

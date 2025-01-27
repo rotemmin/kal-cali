@@ -223,6 +223,6 @@
     top: 10px;
     left: 10px;
     cursor: pointer;
-    color: var(--color-text);
+    color: var(--color-disabled);
     z-index: 1000;
 }
