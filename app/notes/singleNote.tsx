@@ -1,11 +1,11 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
 import { isResponseEmpty } from "@/lib/supabase/utils";
-import { createClient } from "@/lib/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { debounce } from "lodash";
 
-const supabase: SupabaseClient = createClient();
+// const supabase: SupabaseClient = createClient();
 
 interface NoteComponentProps {
   topicId: string;
