@@ -151,7 +151,7 @@ export default function SignUp({
   return (
     <div className={styles.container}>
       <div className={styles.main}>
-        <p className={styles.introText}>מלאי את הפרטים הבאים כדי להתחיל</p>
+        <p className={styles.introText}>מלאו את הפרטים הבאים כדי להתחיל</p>
         <form className={styles.signupForm} action={signUp}>
           <div className={styles.nameInputsRow}>
             <input
