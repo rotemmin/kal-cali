@@ -325,6 +325,16 @@ const PersonalNotebookPage = () => {
     textarea.style.height = `${textarea.scrollHeight}px`;
   };
 
+  useEffect(() => {
+    const textarea = document.querySelector(
+      `.${styles.notesTextarea}`
+    ) as HTMLTextAreaElement;
+    if (textarea) {
+      textarea.style.height = "auto";
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+  }, [noteText, currentTopic]);
+
   return (
     <>
       <Header />
