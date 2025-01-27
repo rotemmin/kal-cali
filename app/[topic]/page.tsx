@@ -8,6 +8,8 @@ import Modal from "@/components/modal";
 import Header from "@/lib/components/Header";
 import dictionaryData from "@/public/dictionary.json";
 import "./[topic].css";
+import dictionaryIcon from "@/public/icons/dictionary.svg";
+import notebookIcon from "@/public/icons/notebook.svg";
 
 interface Milestone {
   title: string;
@@ -119,8 +121,18 @@ const TopicPage = () => {
         </main>
 
         <div className="nav-buttons">
-          <NavigationButton label="תפריט" link="/burger_menu" position="left" />
-          <NavigationButton label="מילון" link="/dictionary" position="right" />
+          <NavigationButton
+            icon={dictionaryIcon}
+            link="/dictionary"
+            position="right"
+            altText="Dictionary"
+          />
+          <NavigationButton
+            icon={notebookIcon}
+            link="/personal_notebook"
+            position="left"
+            altText="Notebook"
+          />
         </div>
 
         <Modal

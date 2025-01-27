@@ -1,11 +1,11 @@
 {
-  "name": "Product Jam Kit",
-  "short_name": "Jam Kit",
+  "name": "Kal-Cali",
+  "short_name": "KalCali",
   "icons": [
     {
-      "src": "/icons/logo-192.png",
+      "src": "/icons/app_logo.svg",
       "sizes": "192x192",
-      "type": "image/png",
+      "type": "svg",
       "purpose": "maskable"
     }
   ],

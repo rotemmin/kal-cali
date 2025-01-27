@@ -5,6 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import Header from "@/lib/components/Header";
 import "./home.css";
+import NavigationButton from "@/lib/components/NavigationButton";
+import dictionaryIcon from "@/public/icons/dictionary.svg";
+import notebookIcon from "@/public/icons/notebook.svg";
 
 const topics = [
   {
@@ -174,6 +177,21 @@ const HomePage = () => {
               </Link>
             );
           })}
+        </div>
+
+        <div className="nav-buttons">
+          <NavigationButton
+            icon={dictionaryIcon}
+            link="/dictionary"
+            position="right"
+            altText="Dictionary"
+          />
+          <NavigationButton
+            icon={notebookIcon}
+            link="/personal_notebook"
+            position="left"
+            altText="Notebook"
+          />
         </div>
       </main>
     </>

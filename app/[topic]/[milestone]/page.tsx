@@ -9,6 +9,8 @@ import "./MilestonePage.css";
 import Image from "next/image";
 // NEW: Import ProgressBar component
 import ProgressBar from "../milestones_progress_bar/ProgressBar";
+import dictionaryIcon from "@/public/icons/dictionary.svg";
+import notebookIcon from "@/public/icons/notebook.svg";
 
 interface MilestoneDescription {
   text: string;
@@ -332,9 +334,19 @@ const MilestonePage: React.FC = () => {
           </div>
         </div>
 
-        <div className="navigation-buttons">
-          <NavigationButton label="מילון" link="/dictionary" position="right" />
-          <NavigationButton label="תפריט" link="/burger_menu" position="left" />
+        <div className="nav-buttons">
+          <NavigationButton
+            icon={dictionaryIcon}
+            link="/dictionary"
+            position="right"
+            altText="Dictionary"
+          />
+          <NavigationButton
+            icon={notebookIcon}
+            link="/personal_notebook"
+            position="left"
+            altText="Notebook"
+          />
         </div>
 
         <Modal
