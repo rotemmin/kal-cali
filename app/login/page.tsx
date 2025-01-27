@@ -1,5 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
-import { cookies } from "next/headers";
+import { supabase } from "@/lib/supabase/client";
 import { redirect } from "next/navigation";
 import styles from "./page.module.css";
 
@@ -10,31 +9,40 @@ export default function Login({
 }) {
   const signIn = async (formData: FormData) => {
     "use server";
+
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
+    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return redirect("/login?message=Invalid email format");
     }
 
+    // Validate password length
     if (password.length < 6) {
       return redirect(
         "/login?message=Password must be at least 6 characters long"
       );
     }
 
-    const cookieStore = cookies();
-    const supabase = createClient(cookieStore);
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (error) {
-      console.log("error", error);
-      return redirect("/login?message=Could not authenticate user");
+    try {
+      // Use Supabase's `auth.signInWithPassword` to log in
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        console.error("Login error:", error.message);
+        return redirect("/login?message=Could not authenticate user");
+      }
+
+      // Redirect to homepage on successful login
+      return redirect("/homePage");
+    } catch (error) {
+      return redirect("/homePage");
     }
-    return redirect("/homePage");
   };
 
   return (
@@ -44,6 +52,7 @@ export default function Login({
         <form className={styles.loginForm} action={signIn}>
           <input
             name="email"
+            type="email"
             placeholder="כתובת מייל"
             required
             className={`${styles.inputContainer} ${
@@ -59,9 +68,13 @@ export default function Login({
               searchParams?.message ? styles.error : ""
             }`}
           />
-
-          <button className={styles.loginButton}>כניסה</button>
+          <button type="submit" className={styles.loginButton}>
+            כניסה
+          </button>
         </form>
+        {searchParams?.message && (
+          <p className={styles.errorMessage}>{searchParams.message}</p>
+        )}
       </div>
     </div>
   );

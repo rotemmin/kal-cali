@@ -6,7 +6,6 @@
   margin: 0 auto;
   padding: 0;
   background-color: var(--color-background);
-  background-image: url("/pattern.svg");
   overflow-x: hidden;
   overflow-y: auto;
   max-width: 393px;
