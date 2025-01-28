@@ -38,7 +38,7 @@ const HeaderMenu: React.FC<HeaderMenuProps> = ({ isOpen, onClose }) => {
   };
 
   const handlePersonalDetails = () => {
-    router.push("app/personal_details");
+    router.push("/personal_details");
     onClose();
   };
 

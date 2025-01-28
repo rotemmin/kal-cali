@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import Header from "@/components/Header";
 import styles from "./page.module.css";
 
 interface UserData {
@@ -20,12 +21,14 @@ const PersonalDetails = () => {
       const {
         data: { session },
       } = await supabase.auth.getSession();
+
       if (session && session.user) {
         const { data, error } = await supabase
           .from("user_metadata")
           .select("first_name, second_name, sex")
           .eq("id", session.user.id)
           .single();
+
         if (!error && data) {
           setUser({
             name: `${data.first_name ?? "לא ידוע"} ${
@@ -43,36 +46,38 @@ const PersonalDetails = () => {
 
   return (
     <div className={styles.container}>
-      <button className={styles.editButton}>עריכה</button>
-      <h1 className={styles.title}>
-        <strong>פרטים אישיים</strong>
-      </h1>
-      {user ? (
-        <div className={styles.details}>
-          <p>
-            <strong>שם</strong>
-            <br />
-            <span className={styles.label}>{user.name}</span>
-          </p>
-          <p>
-            <strong>כתובת מייל</strong>
-            <br />
-            <span className={styles.label}>{user.email}</span>
-          </p>
-          <p>
-            <strong>סיסמה</strong>
-            <br />
-            <span className={styles.label}>{user.password}</span>
-          </p>
-          <p>
-            <strong>לשון פנייה</strong>
-            <br />
-            <span className={styles.label}>{user.gender}</span>
-          </p>
+      <Header />
+      <div className={styles.content}>
+        <div className={styles.titleContainer}>
+          <h1 className={styles.title}>פרטים אישיים</h1>
+          <button className={styles.editButton}>עריכה</button>
         </div>
-      ) : (
-        <p>טוען...</p>
-      )}
+        {user ? (
+          <div className={styles.details}>
+            <div className={styles.detailItem}>
+              <div className={styles.subHeading}>שם</div>
+              <div className={styles.value}>{user.name}</div>
+            </div>
+
+            <div className={styles.detailItem}>
+              <div className={styles.subHeading}>כתובת מייל</div>
+              <div className={styles.value}>{user.email}</div>
+            </div>
+
+            <div className={styles.detailItem}>
+              <div className={styles.subHeading}>סיסמה</div>
+              <div className={styles.value}>{user.password}</div>
+            </div>
+
+            <div className={styles.detailItem}>
+              <div className={styles.subHeading}>לשון פנייה</div>
+              <div className={styles.value}>{user.gender}</div>
+            </div>
+          </div>
+        ) : (
+          <p className={styles.loadingText}>...טוען</p>
+        )}
+      </div>
     </div>
   );
 };
