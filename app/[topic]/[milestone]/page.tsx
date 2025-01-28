@@ -10,8 +10,7 @@ import ProgressBar from "../milestones_progress_bar/ProgressBar";
 import dictionaryIcon from "@/public/icons/dictionary.svg";
 import notebookIcon from "@/public/icons/notebook.svg";
 import { X } from "lucide-react";
-import ChatInterface from '../chat/page';
-
+import ChatInterface from "../chat/page";
 
 interface MilestoneDescription {
   text: string;
@@ -225,7 +224,10 @@ const MilestonePage: React.FC = () => {
     const description = currentMilestone?.description?.[userGender];
     const handleAdditionalLinkClick = () => {
       if (currentMilestone?.additionalLink) {
-        const finalLink = currentMilestone.additionalLink.replace('[topic]', topic);
+        const finalLink = currentMilestone.additionalLink.replace(
+          "[topic]",
+          topic
+        );
         router.push(finalLink);
       }
     };
@@ -236,42 +238,45 @@ const MilestonePage: React.FC = () => {
         {currentMilestone?.title2 && (
           <h2 className="subtitle">{currentMilestone.title2}</h2>
         )}
-    
+
         {description && renderDescription(description)}
-        
-        {currentMilestone?.additionalbutton && currentMilestone?.additionalLink && (
-        <div className="text-center my-4">
-          <button 
-            onClick={handleAdditionalLinkClick}
-            className="secondary-button text-blue-600 hover:text-blue-800 underline text-sm"
-          >
-            {currentMilestone.additionalbutton}
-          </button>
-        </div>
-      )}
+
+        {currentMilestone?.additionalbutton &&
+          currentMilestone?.additionalLink && (
+            <div className="text-center my-4">
+              <button
+                onClick={handleAdditionalLinkClick}
+                className="secondary-button text-blue-600 hover:text-blue-800 underline text-sm"
+              >
+                {currentMilestone.additionalbutton}
+              </button>
+            </div>
+          )}
 
         {currentMilestone?.note?.[userGender] && (
           <div className="note">
             <div
               dangerouslySetInnerHTML={{
-                __html: currentMilestone.note[userGender].replace(/\n/g, "<br />"),
+                __html: currentMilestone.note[userGender].replace(
+                  /\n/g,
+                  "<br />"
+                ),
               }}
             />
           </div>
         )}
 
-      <div className="button-container">
-        {currentMilestone?.help?.type === 'chat' ? (
-          <button onClick={() => setShowChat(true)} className="main-button">
-            הבא
-          </button>
-        ) : (
-          <button onClick={completeMilestone} className="main-button">
-            {currentMilestone?.button}
-          </button>
-        )}
-      </div>
-    
+        <div className="button-container">
+          {currentMilestone?.help?.type === "chat" ? (
+            <button onClick={() => setShowChat(true)} className="main-button">
+              הבא
+            </button>
+          ) : (
+            <button onClick={completeMilestone} className="main-button">
+              {currentMilestone?.button}
+            </button>
+          )}
+        </div>
       </>
     );
   };
@@ -386,8 +391,6 @@ const MilestonePage: React.FC = () => {
           {renderContent()}
         </div>
 
-        
-
         <Modal
           isOpen={!!selectedTerm}
           onClose={() => setSelectedTerm(null)}
@@ -398,25 +401,24 @@ const MilestonePage: React.FC = () => {
       </div>
 
       <div className="nav-buttons">
-          <NavigationButton
-            icon={dictionaryIcon}
-            link="/dictionary"
-            position="right"
-            altText="Dictionary"
-          />
-          <NavigationButton
-            icon={notebookIcon}
-            link="/personal_notebook"
-            position="left"
-            altText="Notebook"
-          />
-        </div>
+        <NavigationButton
+          icon={dictionaryIcon}
+          link="/dictionary"
+          position="right"
+          altText="Dictionary"
+        />
+        <NavigationButton
+          icon={notebookIcon}
+          link={`/personal_notebook?${topic ? `topic=${topic}` : ""}`}
+          position="left"
+          altText="Notebook"
+        />
+      </div>
     </>
   );
 };
 
 export default MilestonePage;
-
 
 //   return (
 //     <>
