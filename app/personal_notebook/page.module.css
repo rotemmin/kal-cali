@@ -187,7 +187,7 @@
 .closeButton {
     position: absolute;
     top: 0.6rem;
-    left: 3rem;
+    right: 3rem;
     cursor: pointer;
     color: var(--color-disabled);
 }

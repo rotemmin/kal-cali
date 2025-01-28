@@ -15,7 +15,7 @@ const topics = [
   {
     title: "ביטוח לאומי",
     icon: "/icons/onlyTitleStickers/national_insurance.svg",
-    completedIcon: "/icons/stickers/final_national_insurance.svg",
+    completedIcon: "/icons/stickers/final_national_insu.svg",
     link: "/national_insurance",
     dbKey: "national_insurance", // NEW: Added explicit database key
   },
@@ -36,21 +36,21 @@ const topics = [
   {
     title: "ביטוחים",
     icon: "/icons/onlyTitleStickers/insurance.svg",
-    completedIcon: "/icons/stickers/final_insurance.svg",
+    completedIcon: "/icons/stickers/final_bituchim.svg",
     link: "/homePage",
     dbKey: "insurance",
   },
   {
     title: "תלושי שכר",
     icon: "/icons/onlyTitleStickers/salary.svg",
-    completedIcon: "/icons/stickers/final_salary.svg",
+    completedIcon: "/icons/stickers/final_tlushim.svg",
     link: "/homePage",
     dbKey: "salary",
   },
   {
     title: "חשבון בנק",
     icon: "/icons/onlyTitleStickers/bank.svg",
-    completedIcon: "/icons/stickers/final_bank.svg",
+    completedIcon: "/icons/stickers/bank_account3.svg",
     link: "/bank_account",
     dbKey: "bank_account",
   },
