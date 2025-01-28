@@ -1,7 +1,10 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { X } from "lucide-react";
+import Header from "@/lib/components/Header";
+import "./investment_options.css";
+import ProgressBar from "../milestones_progress_bar/ProgressBar";
 
 interface InvestmentType {
   title: string;
@@ -29,10 +32,10 @@ interface InvestmentOptionsData {
 
 const InvestmentOptions: React.FC = () => {
   const params = useParams();
+  const router = useRouter();
   const { topic } = params as { topic: string };
-
   const [data, setData] = useState<InvestmentOptionsData | null>(null);
-  const userGender: "male" | "female" = "female"; // ברירת מחדל
+  const userGender: "male" | "female" = "female";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,7 +46,6 @@ const InvestmentOptions: React.FC = () => {
         console.error("Failed to load data:", error);
       }
     };
-
     fetchData();
   }, []);
 
@@ -52,31 +54,79 @@ const InvestmentOptions: React.FC = () => {
   }
 
   return (
-    <div>
-      <h1>{data.title}</h1>
-      <p>{data.description[userGender]}</p>
-      <h2>סוגי מסלולי השקעה</h2>
-      {data.investment_types.map((type, index) => (
-        <div key={index}>
-          <h3>{type.title}</h3>
-          <p>{type.details}</p>
+    <>
+      <Header />
+      <div className="investment-options-page">
+        <div className="content-container">
+          <X className="closeButton" onClick={() => router.back()} />
+          
+          <h1 className="title">
+            {data.title}
+          </h1>
+          
+          <div className="description">
+            {data.description[userGender]}
+          </div>
+
+          <h2 className="subtitle">
+            סוגי מסלולי השקעה
+          </h2>
+          
+          <div className="investment-types">
+            {data.investment_types.map((type, index) => (
+              <div key={index} className="investment-type-card">
+                <h3 className="investment-type-title">
+                  {type.title}
+                </h3>
+                <p className="investment-type-details">
+                  {type.details}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <h2 className="subtitle">
+            {data.how_to_choose.title}
+          </h2>
+          
+          <div className="criteria">
+            {data.how_to_choose.criteria.map((criterion, index) => (
+              <div key={index} className="criteria-card">
+                <h3 className="investment-type-title">
+                  {criterion.title}
+                </h3>
+                <p className="investment-type-details">
+                  {criterion.details}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <h3 className="subtitle">
+            מה חשוב לזכור בבחירת מסלול?
+          </h3>
+          
+          <div className="important-notes">
+            <ul>
+              {data.important_notes.map((note, index) => (
+                <li key={index}>
+                  {note}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="button-container">
+            <button
+              onClick={() => router.back()}
+              className="main-button"
+            >
+              חזרה
+            </button>
+          </div>
         </div>
-      ))}
-      <h2>{data.how_to_choose.title}</h2>
-      {data.how_to_choose.criteria.map((criterion, index) => (
-        <div key={index}>
-          <h3>{criterion.title}</h3>
-          <p>{criterion.details}</p>
-        </div>
-      ))}
-      <h3>מה חשוב לזכור בבחירת מסלול?</h3>
-      <ul>
-        {data.important_notes.map((note, index) => (
-          <li key={index}>{note}</li>
-        ))}
-      </ul>
-      <button onClick={() => window.history.back()}>חזרה</button>
-    </div>
+      </div>
+    </>
   );
 };
 

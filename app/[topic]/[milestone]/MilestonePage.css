@@ -185,8 +185,20 @@
 .button-container {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-top: 32px;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.secondary-button {
+  background: none;
+  border: none;
+  color: var(--color-accent);
+  text-decoration: underline;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  transition: color 0.2s ease;
 }
 
 .main-button,
@@ -253,7 +265,7 @@
 }
 
 .progress-bar-container {
-  margin-bottom: var(--spacing-4);
+  margin: var(--spacing-4);
   text-align: right;
 }
 

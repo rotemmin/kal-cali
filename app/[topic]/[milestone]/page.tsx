@@ -223,15 +223,32 @@ const MilestonePage: React.FC = () => {
     }
 
     const description = currentMilestone?.description?.[userGender];
-    
+    const handleAdditionalLinkClick = () => {
+      if (currentMilestone?.additionalLink) {
+        const finalLink = currentMilestone.additionalLink.replace('[topic]', topic);
+        router.push(finalLink);
+      }
+    };
+
     return (
       <>
         <h1 className="title">{currentMilestone?.title}</h1>
         {currentMilestone?.title2 && (
           <h2 className="subtitle">{currentMilestone.title2}</h2>
         )}
-
+    
         {description && renderDescription(description)}
+        
+        {currentMilestone?.additionalbutton && currentMilestone?.additionalLink && (
+        <div className="text-center my-4">
+          <button 
+            onClick={handleAdditionalLinkClick}
+            className="secondary-button text-blue-600 hover:text-blue-800 underline text-sm"
+          >
+            {currentMilestone.additionalbutton}
+          </button>
+        </div>
+      )}
 
         {currentMilestone?.note?.[userGender] && (
           <div className="note">
@@ -243,17 +260,18 @@ const MilestonePage: React.FC = () => {
           </div>
         )}
 
-        <div className="button-container">
-          {currentMilestone?.help?.type === 'chat' ? (
-            <button onClick={() => setShowChat(true)} className="main-button">
-              הבא
-            </button>
-          ) : (
-            <button onClick={completeMilestone} className="main-button">
-              {currentMilestone?.button}
-            </button>
-          )}
-        </div>
+      <div className="button-container">
+        {currentMilestone?.help?.type === 'chat' ? (
+          <button onClick={() => setShowChat(true)} className="main-button">
+            הבא
+          </button>
+        ) : (
+          <button onClick={completeMilestone} className="main-button">
+            {currentMilestone?.button}
+          </button>
+        )}
+      </div>
+    
       </>
     );
   };
@@ -368,7 +386,18 @@ const MilestonePage: React.FC = () => {
           {renderContent()}
         </div>
 
-        <div className="nav-buttons">
+        
+
+        <Modal
+          isOpen={!!selectedTerm}
+          onClose={() => setSelectedTerm(null)}
+          title={selectedTerm?.title || ""}
+        >
+          <p>{selectedTerm?.description}</p>
+        </Modal>
+      </div>
+
+      <div className="nav-buttons">
           <NavigationButton
             icon={dictionaryIcon}
             link="/dictionary"
@@ -382,15 +411,6 @@ const MilestonePage: React.FC = () => {
             altText="Notebook"
           />
         </div>
-
-        <Modal
-          isOpen={!!selectedTerm}
-          onClose={() => setSelectedTerm(null)}
-          title={selectedTerm?.title || ""}
-        >
-          <p>{selectedTerm?.description}</p>
-        </Modal>
-      </div>
     </>
   );
 };
