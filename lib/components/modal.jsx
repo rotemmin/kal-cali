@@ -1,21 +1,31 @@
 import React from 'react';
+import './Modal.css';
 
 const Modal = ({ isOpen, onClose, title, children }) => {
- if (!isOpen) return null;
+  if (!isOpen) return null;
 
- return (
-   <div>
-     <div>
-       <div>
-         <button onClick={onClose}>✕</button>
-         <h2>{title}</h2>
-       </div>
-       <div>
-         {children}
-       </div>
-     </div>
-   </div>
- );
+  const handleOverlayClick = (e) => {
+    // רק אם הלחיצה היא על ה-overlay עצמו ולא על תוכן המודל
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
+  return (
+    <div className="modal-overlay" onClick={handleOverlayClick}>
+      <div className="modal-container">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h2 className="modal-title">{title}</h2>
+            <button className="modal-close" onClick={onClose}>✕</button>
+          </div>
+          <div className="modal-body">
+            {children}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Modal;
