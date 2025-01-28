@@ -6,7 +6,7 @@
   flex-direction: column;
   align-items: center;
   position: absolute;
-  bottom: 48px; /* Adjust position to be above the purple buttons */
+  bottom: 25px; /* Adjust position to be above the purple buttons */
   left: 50%;
   transform: translateX(-50%);
 }
