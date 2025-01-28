@@ -329,7 +329,6 @@ const MilestonePage: React.FC = () => {
       }
 
       if (topicObj.milestones[milestoneKey] === 1) {
-        // alert("Milestone already completed!");
         return;
       }
 
@@ -344,7 +343,6 @@ const MilestonePage: React.FC = () => {
         currentBudget += 1;
 
         router.push(`/${topic}/finalPage`);
-        // alert("Congrats! You have a new sticker!!!");
       }
 
       const { error: updateError } = await supabase
@@ -357,7 +355,6 @@ const MilestonePage: React.FC = () => {
 
       if (updateError) {
         console.error("Update error:", updateError);
-        // alert("Error updating milestone in the database");
         return;
       }
 
