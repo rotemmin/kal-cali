@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { supabase } from "@/lib/supabase/client";
-import './chat.css';
-import pensionData from '@/lib/content/topics/pension.json';
+import React, { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+import "./chat.css";
+import pensionData from "@/lib/content/topics/pension.json";
 
 interface Message {
   from: string;
@@ -16,9 +16,11 @@ interface ChatMessageProps {
   isAdvisor: boolean;
 }
 
+const supabase = createClient();
+
 const ChatMessage: React.FC<ChatMessageProps> = ({ from, text, isAdvisor }) => (
-  <div className={`chat-message ${isAdvisor ? 'advisor' : 'user'}`}>
-    <div className={`message-bubble ${isAdvisor ? 'advisor' : 'user'}`}>
+  <div className={`chat-message ${isAdvisor ? "advisor" : "user"}`}>
+    <div className={`message-bubble ${isAdvisor ? "advisor" : "user"}`}>
       <div className="message-sender">{from}</div>
       <div className="message-text">{text}</div>
     </div>
@@ -31,7 +33,9 @@ const ChatInterface: React.FC = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
 
         if (!session?.user) {
           console.error("User session not found");
@@ -58,24 +62,24 @@ const ChatInterface: React.FC = () => {
   }, []);
 
   const chatMilestone = pensionData.milestones.find(
-    milestone => milestone.help?.type === 'chat'
+    (milestone) => milestone.help?.type === "chat"
   );
 
   const chatData = chatMilestone?.help || {
-    type: 'chat',
-    content: [] 
+    type: "chat",
+    content: [],
   };
 
-  const mappedContent = chatData.content.map(message => ({
+  const mappedContent = chatData.content.map((message) => ({
     ...message,
-    from: message.from === "אני" ? firstName || "אני" : message.from
+    from: message.from === "אני" ? firstName || "אני" : message.from,
   }));
 
   return (
     <div className="chat-container">
       <div className="chat-messages">
         {mappedContent.map((message, index) => (
-          <ChatMessage 
+          <ChatMessage
             key={index}
             from={message.from}
             text={message.text}
@@ -121,14 +125,14 @@ export default ChatInterface;
 
 //   const chatData = chatMilestone?.help || {
 //     type: 'chat',
-//     content: [] 
+//     content: []
 //   };
 
 //   return (
 //     <div className="chat-container">
 //       <div className="chat-messages">
 //         {chatData.content.map((message, index) => (
-//           <ChatMessage 
+//           <ChatMessage
 //             key={index}
 //             from={message.from}
 //             text={message.text}
@@ -141,4 +145,3 @@ export default ChatInterface;
 // };
 
 // export default ChatInterface;
-
