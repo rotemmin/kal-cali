@@ -6,6 +6,7 @@
   padding: 1rem;
   flex-direction: row-reverse;
   border-radius: 0 0 1rem 1rem;
+  z-index: 20;
 }
 
 .menuButton,

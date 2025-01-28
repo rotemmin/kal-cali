@@ -406,7 +406,7 @@ const MilestonePage: React.FC = () => {
         />
         <NavigationButton
           icon={notebookIcon}
-          link="/personal_notebook"
+          link={`/personal_notebook?${topic ? `topic=${topic}` : ""}`}
           position="left"
           altText="Notebook"
         />

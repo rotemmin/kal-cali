@@ -3,9 +3,10 @@
   grid-template-columns: repeat(2, 1fr);
   gap: clamp(var(--spacing-2), 4vw, var(--spacing-8));
   padding: clamp(var(--spacing-2), 1vw, var(--spacing-4));
-  width: min(90%, 800px);
+  width: min(95%, 1000px); /* הגדלת הרוחב המקסימלי */
   margin: 0 auto;
   min-height: calc(100vh - var(--navbar-height) - var(--footer-height));
+  place-items: center; /* מרכוז האלמנטים בגריד */
 }
 
 .icon-container {
@@ -81,4 +82,30 @@ body {
   background-repeat: no-repeat;
   min-height: 100vh;
   margin: 0;
+}
+
+@media screen and (max-width: 480px) {
+  .grid-container {
+    gap: var(--spacing-2);
+    padding: var(--spacing-1);
+    width: 98%; /* כמעט מלוא הרוחב במובייל */
+  }
+  
+  .icon-container {
+    width: 100px; /* אייקונים גדולים יותר */
+    height: 100px;
+  }
+}
+
+@media screen and (min-width: 481px) and (max-width: 768px) {
+  .grid-container {
+    gap: var(--spacing-3);
+    padding: var(--spacing-2);
+    width: 95%;
+  }
+  
+  .icon-container {
+    width: 130px;
+    height: 130px;
+  }
 }

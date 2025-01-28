@@ -28,6 +28,7 @@ interface TopicData {
 const TopicPage = () => {
   const params = useParams();
   const { topic } = params as { topic: string };
+  console.log("Topic: ", topic);
   const normalizedTopic = topic.replace(/-/g, "_");
   const data: TopicData = require(`@/lib/content/topics/${normalizedTopic}.json`);
 
@@ -131,7 +132,7 @@ const TopicPage = () => {
           />
           <NavigationButton
             icon={notebookIcon}
-            link="/personal_notebook"
+            link={`/personal_notebook${topic ? `?topic=${topic}` : ""}`}
             position="left"
             altText="Notebook"
           />

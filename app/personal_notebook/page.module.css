@@ -8,12 +8,14 @@
 }
 
 .sidebar {
+    padding-bottom: 10px;
+    top: 100px;
     position: fixed;
     left: 0;
     height: calc(100vh - 82px);
-    /*todo: do it differently?*/
     width: 54px;
     overflow-y: auto;
+    z-index: 10;
 }
 
 .topicGroup {
@@ -23,7 +25,6 @@
     justify-content: flex-start;
 }
 
-/*todo: make the top one not disturbed*/
 .topic {
     display: flex;
     justify-content: center;
@@ -91,26 +92,16 @@
 }
 
 .stickersArea {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
     align-items: flex-start;
     overflow: hidden;
 }
 
-/**todo: make them like figma*/
 
 .sticker {
-    transform: scale(0.5);
-    padding: 0;
     object-fit: contain;
-    transition: transform 0.2s ease;
-}
-
-.sticker:hover {
-    transform: scale(1.1);
-    transition: transform 0.2s ease;
 }
 
 .notesContainer {
@@ -153,8 +144,6 @@
     font-weight: 400;
     font-size: var(--text-xl);
     line-height: var(--text-xl);
-    resize: none;
-    /*todo: need this?*/
     color: var(--color-text);
     padding: 8px 16px;
     box-sizing: border-box;
@@ -205,4 +194,17 @@
 
 .separator {
     border-top: 1px dashed var(--color-disabled);
+}
+
+.loadingNote {
+    width: 24px;
+    height: 24px;
+    color: var(--color-accent);
+}
+
+.loadingContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }

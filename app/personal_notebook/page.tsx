@@ -3,8 +3,8 @@ import React, { useState, useMemo, useEffect, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { debounce } from "lodash";
 import styles from "./page.module.css";
-import { X } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { Loader, X } from "lucide-react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Header from "@/lib/components/Header";
 
 const supabase = createClient();
@@ -16,15 +16,6 @@ const englishToHebrewTopics: { [key: string]: string } = {
   income_tax: "מס הכנסה",
   pay_slips: "תלושי שכר",
   credit_card: "אשראי",
-};
-
-const hebrewToEnglishTopics: { [key: string]: string } = {
-  פנסיה: "pension",
-  "ביטוח לאומי": "national_insurance",
-  "חשבון בנק": "bank_account",
-  "מס הכנסה": "income_tax",
-  "תלושי שכר": "pay_slips",
-  אשראי: "credit_card",
 };
 
 const topicFields = {
@@ -58,16 +49,39 @@ interface Topic {
 }
 
 const PersonalNotebookPage = () => {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
   const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(true);
   const [topics, setTopics] = useState<Topic[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
   const [currentTopic, setCurrentTopic] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [noteText, setNoteText] = useState<string>("");
+  const [loadingNote, setLoadingNote] = useState<boolean>(false);
   const [additionalFields, setAdditionalFields] = useState<
     Record<string, string>
   >({});
   const [milestones, setMilestones] = useState<any>({});
+
+  useEffect(() => {
+    const topic = searchParams.get("topic");
+    if (!currentTopic) {
+      setCurrentTopic(topic);
+    }
+    // remove topic from search params in order to avoid maintaining it in the url
+    window.history.replaceState(null, "", pathname);
+  }, [searchParams]);
+
+  useEffect(() => {
+    const textarea = document.querySelector(
+      `.${styles.notesTextarea}`
+    ) as HTMLTextAreaElement;
+    if (textarea) {
+      textarea.style.height = "auto";
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+  }, [noteText, currentTopic]);
 
   const fetchTopics = useCallback(async () => {
     try {
@@ -89,16 +103,16 @@ const PersonalNotebookPage = () => {
 
       // Generate dbTopics with unique IDs
       const dbTopics: Topic[] = Object.keys(topicsData).map((topic, index) => ({
-        id: `db-${index}`, // Generate unique ID for each db topic
-        curr_topic: englishToHebrewTopics[topic] || topic,
+        id: `db-${index}`,
+        curr_topic: topic,
         fromDb: true,
       }));
 
       // Generate predefinedTopics with unique IDs
       const predefinedTopics: Topic[] = Object.keys(englishToHebrewTopics).map(
         (topic, index) => ({
-          id: `predefined-${index}`, // Generate unique ID for each predefined topic
-          curr_topic: englishToHebrewTopics[topic],
+          id: `predefined-${index}`,
+          curr_topic: topic,
           fromDb: false,
         })
       );
@@ -115,18 +129,17 @@ const PersonalNotebookPage = () => {
       );
 
       setTopics(mergedTopics);
-
       if (!currentTopic || currentTopic === "O") {
         console.log("Setting current topic to pension");
-        setCurrentTopic("פנסיה");
+        setCurrentTopic("pension");
       } else if (data?.curr_topic && !currentTopic) {
-        setCurrentTopic(
-          englishToHebrewTopics[data.curr_topic] || data.curr_topic
-        );
+        setCurrentTopic(data.curr_topic);
       }
     } catch (error) {
       setErrorMessage("לא הצלחנו לטעון את הנושאים");
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   }, [userId, currentTopic]);
 
@@ -134,17 +147,21 @@ const PersonalNotebookPage = () => {
     if (!userId || !currentTopic) return;
 
     try {
-      const topicInEnglish = hebrewToEnglishTopics[currentTopic];
-      if (!topicInEnglish) return;
-
       const { data, error } = await supabase
         .from("notes")
         .select("note, field_1, field_2, field_3, field_4, field_5")
         .eq("user_id", userId)
-        .eq("curr_topic", topicInEnglish)
+        .eq("curr_topic", currentTopic)
         .single();
 
-      if (error) throw error;
+      if (error) {
+        setNoteText("");
+        setAdditionalFields({});
+        if (error.code !== "PGRST116") {
+          // means no notes found
+          throw error;
+        }
+      }
 
       if (data) {
         setNoteText(data.note || "");
@@ -152,7 +169,7 @@ const PersonalNotebookPage = () => {
         const newFields = Object.entries(data)
           .filter(([key]) => key.startsWith("field_"))
           .reduce((acc, [key, value]) => {
-            acc[`${topicInEnglish}_${key}`] = value as string;
+            acc[`${currentTopic}_${key}`] = value as string;
             return acc;
           }, {} as Record<string, string>);
 
@@ -165,7 +182,7 @@ const PersonalNotebookPage = () => {
         setAdditionalFields((prev) =>
           Object.fromEntries(
             Object.entries(prev).filter(
-              ([key]) => !key.startsWith(`${topicInEnglish}_`)
+              ([key]) => !key.startsWith(`${currentTopic}_`)
             )
           )
         );
@@ -182,7 +199,10 @@ const PersonalNotebookPage = () => {
 
   useEffect(() => {
     if (currentTopic) {
-      fetchNotes();
+      setLoadingNote(true);
+      fetchNotes().finally(() => {
+        setLoadingNote(false);
+      });
     }
   }, [fetchNotes, currentTopic]);
 
@@ -206,36 +226,35 @@ const PersonalNotebookPage = () => {
   }, []);
 
   const getStickerImage = (topic: string, index: number) => {
-    const topicInEnglish = hebrewToEnglishTopics[topic];
-    console.log(topicInEnglish);
-    if (!topicInEnglish) {
+    console.log(topic);
+    if (!topic) {
       console.error(`No English equivalent found for topic: ${topic}`);
-      return ""; // Return an empty string or a default image path if needed
+      return "";
     }
 
-    const topicMilestones = milestones[topicInEnglish]?.milestones || {};
+    const topicMilestones = milestones[topic]?.milestones || {};
     const totalMilestones = Object.keys(topicMilestones).length;
     const completedMilestones = Object.values(topicMilestones).filter(
       (status) => status === 1
     ).length;
 
-    const folderPath = `/${topicInEnglish}_stickers/`;
+    const folderPath = `/${topic}_stickers/`;
 
     if (index === 0) {
       return completedMilestones > 0
-        ? `${folderPath}${topicInEnglish}1.svg`
-        : `${folderPath}pre${topicInEnglish}1.svg`;
+        ? `${folderPath}${topic}1.svg`
+        : `${folderPath}pre${topic}1.svg`;
     } else if (index === 1) {
       return completedMilestones >= totalMilestones / 2
-        ? `${folderPath}${topicInEnglish}2.svg`
-        : `${folderPath}pre${topicInEnglish}2.svg`;
+        ? `${folderPath}${topic}2.svg`
+        : `${folderPath}pre${topic}2.svg`;
     } else if (index === 2) {
       return completedMilestones === totalMilestones
-        ? `${folderPath}${topicInEnglish}3.svg`
-        : `${folderPath}pre${topicInEnglish}3.svg`;
+        ? `${folderPath}${topic}3.svg`
+        : `${folderPath}pre${topic}3.svg`;
     }
 
-    return `${folderPath}pre${topicInEnglish}1.svg`;
+    return `${folderPath}pre${topic}1.svg`;
   };
 
   const debouncedUpdateNote = useMemo(
@@ -278,21 +297,22 @@ const PersonalNotebookPage = () => {
     []
   );
 
+  const handleChangeTopic = (topic: string) => {
+    setCurrentTopic(topic);
+  };
+
   const handleNoteChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newNote = event.target.value;
     setNoteText(newNote);
 
-    const topicInEnglish = hebrewToEnglishTopics[currentTopic!];
-    debouncedUpdateNote(userId, topicInEnglish, newNote);
+    debouncedUpdateNote(userId, currentTopic!, newNote);
   };
 
   const handleFieldChange = (field: string, value: string) => {
-    const topicInEnglish = hebrewToEnglishTopics[currentTopic!];
-    if (!topicInEnglish) return;
+    const fieldKey = `${currentTopic}_${field}`;
 
-    const fieldKey = `${topicInEnglish}_${field}`;
     setAdditionalFields((prev) => ({ ...prev, [fieldKey]: value }));
-    debouncedUpdateField(userId, topicInEnglish, field, value);
+    debouncedUpdateField(userId, currentTopic!, field, value);
   };
 
   const handleTextareaInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -303,108 +323,104 @@ const PersonalNotebookPage = () => {
     textarea.style.height = `${textarea.scrollHeight}px`;
   };
 
-  useEffect(() => {
-    const textarea = document.querySelector(
-      `.${styles.notesTextarea}`
-    ) as HTMLTextAreaElement;
-    if (textarea) {
-      textarea.style.height = "auto";
-      textarea.style.height = `${textarea.scrollHeight}px`;
-    }
-  }, [noteText, currentTopic]);
-
   return (
     <>
       <Header />
-      <div className={styles.notebookContainer}>
-        <X className={styles.closeButton} onClick={() => router.back()} />
-        <div className={styles.sidebar}>
-          <div className={styles.topicGroup}>
-            {topics.map((topic) => (
-              <div
-                key={topic.id}
-                className={`${styles.topic} ${
-                  topic.fromDb && currentTopic === topic.curr_topic
-                    ? styles.selected
-                    : ""
-                } ${!topic.fromDb ? styles.nonClickable : ""}`}
-                onClick={() => {
-                  if (currentTopic !== topic.curr_topic) {
-                    setCurrentTopic(topic.curr_topic);
-                  }
-                }}
-              >
-                {topic.curr_topic}
-              </div>
-            ))}
-          </div>
+      {loading ? (
+        <div className={styles.loadingContainer}>
+          <Loader className={`${styles.loadingNote} animate-spin`} />
         </div>
-
-        <main className={styles.content}>
-          {currentTopic && (
-            <div className={styles.notesSection}>
-              <div className={styles.sectionHeader}>{currentTopic}</div>
-              <div className={styles.notesContainer}>
-                <textarea
-                  className={styles.notesTextarea}
-                  value={noteText}
-                  onChange={handleNoteChange}
-                  onInput={handleTextareaInput}
-                  placeholder="רשמי כאן את ההערות שלך..."
-                  dir="rtl"
-                />
-              </div>
-              <div className={styles.separator}></div>
-              <div className={styles.additionalFieldsContainer}>
-                {currentTopic &&
-                  topicFields[
-                    hebrewToEnglishTopics[
-                      currentTopic
-                    ] as keyof typeof topicFields
-                  ]?.map(
-                    (
-                      { label, field }: { label: string; field: string },
-                      index: number
-                    ) => {
-                      const topicInEnglish =
-                        hebrewToEnglishTopics[currentTopic];
-                      const fieldKey = `${topicInEnglish}_field_${index + 1}`;
-
-                      return (
-                        <div key={field} className={styles.fieldContainer}>
-                          <label className={styles.fieldLabel}>{label}</label>
-                          <input
-                            type="text"
-                            className={styles.inputContainer}
-                            value={additionalFields[fieldKey] || ""}
-                            onChange={(e) =>
-                              handleFieldChange(
-                                `field_${index + 1}`,
-                                e.target.value
-                              )
-                            }
-                            dir="rtl"
-                          />
-                        </div>
-                      );
+      ) : (
+        <div className={styles.notebookContainer}>
+          <X className={styles.closeButton} onClick={() => router.back()} />
+          <div className={styles.sidebar}>
+            <div className={styles.topicGroup}>
+              {topics.map((topic) => (
+                <div
+                  key={topic.id}
+                  className={`${styles.topic} ${
+                    topic.fromDb && currentTopic === topic.curr_topic
+                      ? styles.selected
+                      : ""
+                  } ${!topic.fromDb ? styles.nonClickable : ""}`}
+                  onClick={() => {
+                    if (currentTopic !== topic.curr_topic) {
+                      handleChangeTopic(topic.curr_topic);
                     }
-                  )}
-              </div>
-              <div className={styles.separator}></div>
-              <div className={styles.stickersArea}>
-                {[0, 1, 2].map((index) => (
-                  <img
-                    key={index}
-                    src={getStickerImage(currentTopic, index)}
-                    alt={`Sticker ${index + 1}`}
-                    className={styles.sticker}
-                  />
-                ))}
-              </div>
+                  }}
+                >
+                  {englishToHebrewTopics[topic.curr_topic]}
+                </div>
+              ))}
             </div>
-          )}
-        </main>
-      </div>
+          </div>
+
+          <main className={styles.content}>
+            {currentTopic && (
+              <div className={styles.notesSection}>
+                <div className={styles.sectionHeader}>
+                  {englishToHebrewTopics[currentTopic]}
+                </div>
+                <div className={styles.notesContainer}>
+                  {loadingNote ? (
+                    <Loader className={`${styles.loadingNote} animate-spin`} />
+                  ) : (
+                    <textarea
+                      className={styles.notesTextarea}
+                      value={noteText}
+                      onChange={handleNoteChange}
+                      onInput={handleTextareaInput}
+                      placeholder="רשמי כאן את ההערות שלך..."
+                      dir="rtl"
+                    />
+                  )}
+                </div>
+                <div className={styles.separator}></div>
+                <div className={styles.additionalFieldsContainer}>
+                  {currentTopic &&
+                    topicFields[currentTopic as keyof typeof topicFields]?.map(
+                      (
+                        { label, field }: { label: string; field: string },
+                        index: number
+                      ) => {
+                        const fieldKey = `${currentTopic}_field_${index + 1}`;
+
+                        return (
+                          <div key={field} className={styles.fieldContainer}>
+                            <label className={styles.fieldLabel}>{label}</label>
+                            <input
+                              type="text"
+                              className={styles.inputContainer}
+                              value={additionalFields[fieldKey] || ""}
+                              onChange={(e) =>
+                                handleFieldChange(
+                                  `field_${index + 1}`,
+                                  e.target.value
+                                )
+                              }
+                              dir="rtl"
+                            />
+                          </div>
+                        );
+                      }
+                    )}
+                </div>
+                <div className={styles.separator} />
+                <div className={styles.stickersArea}>
+                  {[0, 1, 2].map((index) => (
+                    <img
+                      key={index}
+                      src={getStickerImage(currentTopic, index)}
+                      alt={`Sticker ${index + 1}`}
+                      className={styles.sticker}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+          </main>
+        </div>
+      )}
     </>
   );
 };

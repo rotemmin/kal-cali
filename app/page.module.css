@@ -1,154 +1,166 @@
 .background {
-    height: 100vh;
-    width: 100%;
-    background-color: var(--color-primary);
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .background::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('../public/pattern.svg');
-    background-repeat: repeat;
-    opacity: 1;  
-    z-index: 1;
-  }
-  
-  .container {
-    position: relative;
-    z-index: 2;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-  }
-  
+  height: 100vh;
+  width: 100%;
+  background-color: var(--color-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+.background::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../public/pattern.svg');
+  background-repeat: repeat;
+  opacity: 1;
+  z-index: 1;
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  max-width: 100%;
+}
+
+.welcome {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #000;
+  text-align: right;
+  font-family: var(--font-family-secondary);
+  font-size: 38px;
+  font-style: italic;
+  font-weight: 900;
+}
+
+.logo {
+  width: 349px;
+  height: 261px;
+  object-fit: contain;
+}
+
+.description {
+  width: 300px;
+  height: 62px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #000;
+  text-align: center;
+
+  font-family: var(--font-family-secondary);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 21.14px;
+  text-align: center;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 1rem;
+}
+
+.buttonLink {
+  text-decoration: none;
+}
+
+.loginButton,
+.signupButton {
+  height: 40px;
+  border: none;
+  border-radius: 24px;
+  background: #9895F4;
+  color: #210E46;
+
+  font-family: var(--font-family-secondary);
+  font-size: 24px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 31.2px;
+  text-align: right;
+  cursor: pointer;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loginButton {
+  width: 96px;
+}
+
+.signupButton {
+  width: 104px;
+}
+
+@media (min-width: 769px) {
   .content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-    max-width: 100%;
+    margin-top: -120px;
   }
-  
-  .welcome {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    color: #000;
-    text-align: right;
-    font-family: Sunday;
-    font-size: 38px;
-    font-style: italic;
-    font-weight: 900;
+}
+
+@media (max-width: 768px) {
+  .content {
+    gap: 1.5rem;
   }
-  
+
   .logo {
-    width: 349px;
-    height: 261px;
-    object-fit: contain;
+    width: 280px;
+    height: 209px;
   }
-  
+
+  .welcome {
+    font-size: 35px;
+  }
+
   .description {
-    width: 286px;
-    height: 62px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    color: #000;
-    text-align: center;
-    font-family: Sunday;
-    font-size: 26px;
+    font-size: 24px;
+  }
+
+  .loginButton,
+  .signupButton {
+    font-size: 23px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .logo {
+    width: 240px;
+    height: 179px;
+  }
+
+  .welcome {
+    font-size: 32px;
+  }
+
+  .description {
+    font-size: 21px;
+  }
+
+  .loginButton,
+  .signupButton {
+    font-size: 22px;
     font-weight: 400;
   }
-  
-  .buttonContainer {
-    display: flex;
-    gap: 1rem;
-  }
-  
-  .buttonLink {
-    text-decoration: none;
-  }
-  
-  .loginButton, .signupButton {
-    height: 40px;
-    border: none;
-    border-radius: 24px;
-    background: #A585E5;
-    color: #210E46;
-    font-family: Sunday;
-    font-style: italic;
-    cursor: pointer;
-    padding: 0 1.5rem;
-    display: flex;           
-    align-items: center;     
-    justify-content: center;
-  }
-  
-  .loginButton {
-    width: 96px;
-  }
-  
-  .signupButton {
-    width: 104px;
-  }
-
-  @media (min-width: 769px) {
-    .content {
-      margin-top: -120px;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .content {
-      gap: 1.5rem;
-    }
-  
-    .logo {
-      width: 280px;
-      height: 209px;
-    }
-  
-    .welcome {
-      font-size: 35px;
-    }
-  
-    .description {
-      font-size: 24px;
-    }
-
-    .loginButton, .signupButton {
-        font-size: 23px;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .container {
-      padding: 1rem;
-    }
-  
-    .logo {
-      width: 240px;
-      height: 179px;
-    }
-  
-    .welcome {
-      font-size: 32px;
-    }
-  
-    .description {
-      font-size: 21px;
-    }
-    .loginButton, .signupButton {
-        font-size: 22px;     
-        font-weight: 400;
-    }
-  }
+}
