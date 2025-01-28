@@ -1,17 +1,17 @@
 .grid-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: clamp(var(--spacing-2), 4vw, var(--spacing-8));
-  padding: clamp(var(--spacing-2), 1vw, var(--spacing-4));
-  width: min(95%, 1000px); /* הגדלת הרוחב המקסימלי */
+  gap: clamp(16px, 3vh, 40px); /* הגדרה לרווחים מבוססי גובה */
+  padding: clamp(8px, 2vh, 20px);
+  width: min(98%, 1100px);
   margin: 0 auto;
   min-height: calc(100vh - var(--navbar-height) - var(--footer-height));
-  place-items: center; /* מרכוז האלמנטים בגריד */
+  place-items: center;
 }
 
 .icon-container {
-  width: 142px;
-  height: 142px;
+  width: clamp(80px, 12vh, 180px); /* התאמת המדבקות לאורך המסך */
+  height: clamp(80px, 12vh, 180px);
   position: relative;
   display: flex;
   justify-content: center;
@@ -86,26 +86,52 @@ body {
 
 @media screen and (max-width: 480px) {
   .grid-container {
-    gap: var(--spacing-2);
-    padding: var(--spacing-1);
+    gap: clamp(12px, 2vh, 24px); /* gap מותאם לאורך המסך */
+    padding: 8px;
     width: 98%; /* כמעט מלוא הרוחב במובייל */
   }
   
   .icon-container {
-    width: 100px; /* אייקונים גדולים יותר */
-    height: 100px;
+    width: clamp(90px, 10vh, 120px); /* גודל המדבקות מותאם */
+    height: clamp(90px, 10vh, 120px);
   }
 }
 
-@media screen and (min-width: 481px) and (max-width: 768px) {
+/* טווחים מדויקים לגובה מסך */
+@media screen and (max-width: 480px) and (min-height: 667px) and (max-height: 852px) {
   .grid-container {
-    gap: var(--spacing-3);
-    padding: var(--spacing-2);
-    width: 95%;
+    gap: calc(1vh + 8px); /* רווח דינמי */
+    padding: 8px;
   }
-  
+
   .icon-container {
-    width: 130px;
-    height: 130px;
+    width: calc(10vh); /* גודל מותאם למדבקות */
+    height: calc(10vh);
   }
 }
+
+@media screen and (max-width: 480px) and (max-height: 666px) {
+  .grid-container {
+    gap: 12px; 
+    padding: 8px;
+  }
+
+  .icon-container {
+    width: 90px;
+    height: 90px;
+  }
+}
+
+@media screen and (max-width: 480px) and (min-height: 853px) {
+  .grid-container {
+    gap: 24px; 
+    padding: 12px;
+  }
+
+  .icon-container {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+
