@@ -379,7 +379,7 @@ const MilestonePage: React.FC = () => {
       <Header />
       <div className="milestone-page">
         <div className="content-container">
-          <X className="closeButton" onClick={() => router.back()} />
+          <X className="closeButtonMilestone" onClick={() => router.back()} />
           <ProgressBar
             totalMilestones={totalMilestones}
             completedMilestones={completedMilestones}
