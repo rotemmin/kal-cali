@@ -220,17 +220,17 @@
 }
 
 /* Navigation */
+
 .navigation-buttons {
   position: fixed;
-  bottom: 16px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: clamp(16px, 4vh, 24px);
+  left: 0;
+  right: 0;
   width: 100%;
-  max-width: 337px;
   display: flex;
   justify-content: space-between;
-  padding: 0 16px;
-  background-color: var(--color-background);
+  padding: 0 clamp(16px, 4vw, 24px);
+  background-color: transparent;
   z-index: 10;
 }
 
