@@ -98,7 +98,7 @@ const TopicPage = () => {
     <>
       <Header />
       <div className="topic-page">
-        <X className="closeButton" onClick={() => router.back()} />
+        <X className="closeButtonTopic" onClick={() => router.back()} />
         <main className="topic-content">
           <h1 className="topic-title">{data.title}</h1>
 
