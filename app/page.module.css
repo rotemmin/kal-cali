@@ -44,7 +44,7 @@
   justify-content: center;
   color: #000;
   text-align: right;
-  font-family: Sunday;
+  font-family: var(--font-family-secondary);
   font-size: 38px;
   font-style: italic;
   font-weight: 900;
@@ -65,7 +65,7 @@
   color: #000;
   text-align: center;
 
-  font-family: Sunday;
+  font-family: var(--font-family-secondary);
   font-size: 20px;
   font-weight: 400;
   line-height: 21.14px;
@@ -89,7 +89,7 @@
   background: #9895F4;
   color: #210E46;
 
-  font-family: Sunday;
+  font-family: var(--font-family-secondary);
   font-size: 24px;
   font-style: italic;
   font-weight: 400;
