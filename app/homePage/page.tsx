@@ -16,7 +16,7 @@ const topics = [
   {
     title: "ביטוח לאומי",
     icon: "/icons/onlyTitleStickers/national_insurance.svg",
-    completedIcon: "/icons/stickers/final_national_insu.svg",
+    completedIcon: "/icons/stickers/final_national_insurance.svg",
     link: "/national_insurance",
     dbKey: "national_insurance", // NEW: Added explicit database key
   },
