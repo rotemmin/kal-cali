@@ -281,7 +281,6 @@ const MilestonePage: React.FC = () => {
 
   const completeMilestone = async () => {
     if (milestoneCompleted) {
-      alert("You have already completed this milestone!");
       return;
     }
 
@@ -291,7 +290,7 @@ const MilestonePage: React.FC = () => {
       } = await supabase.auth.getSession();
 
       if (!session?.user) {
-        alert("No user session found");
+        alert("Please Login :)");
         return;
       }
 
@@ -305,7 +304,7 @@ const MilestonePage: React.FC = () => {
 
       if (fetchError) {
         console.error("Fetch error:", fetchError);
-        alert("Error fetching user data");
+        // alert("Error fetching user data");
         return;
       }
 
@@ -313,24 +312,24 @@ const MilestonePage: React.FC = () => {
       let currentBudget = data?.budget || 0;
 
       if (!(normalizedTopic in topicsAndMilestones)) {
-        alert("Topic not found in user's activity data");
+        // alert("Topic not found in user's activity data");
         return;
       }
 
       const topicObj = topicsAndMilestones[normalizedTopic];
       if (!topicObj.milestones) {
-        alert("This topic has no 'milestones' object in the database");
+        // alert("This topic has no 'milestones' object in the database");
         return;
       }
 
       const milestoneKey = currentMilestone?.title.replace(/\s/g, "_");
       if (!milestoneKey) {
-        alert("Invalid milestone key");
+        // alert("Invalid milestone key");
         return;
       }
 
       if (topicObj.milestones[milestoneKey] === 1) {
-        alert("Milestone already completed!");
+        // alert("Milestone already completed!");
         return;
       }
 
@@ -343,7 +342,7 @@ const MilestonePage: React.FC = () => {
       if (allComplete) {
         topicObj.status = 1;
         currentBudget += 1;
-        alert("Congrats! You have a new sticker!!!");
+        // alert("Congrats! You have a new sticker!!!");
       }
 
       const { error: updateError } = await supabase
@@ -356,16 +355,16 @@ const MilestonePage: React.FC = () => {
 
       if (updateError) {
         console.error("Update error:", updateError);
-        alert("Error updating milestone in the database");
+        // alert("Error updating milestone in the database");
         return;
       }
 
-      alert("Milestone completed successfully!");
+      // alert("Milestone completed successfully!");
       setMilestoneCompleted(true);
       setCompletedMilestones((prev) => prev + 1);
     } catch (error) {
       console.error("Error completing milestone:", error);
-      alert("An unexpected error occurred.");
+      // alert("An unexpected error occurred.");
     }
   };
 
