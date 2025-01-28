@@ -178,7 +178,8 @@
   gap: 1rem;
   align-items: center;
   margin-top: 2rem;
-  margin-bottom: 60px; /* הוספת רווח תחתון כדי למנוע חיתוך */
+  margin-bottom: 60px;
+  /* הוספת רווח תחתון כדי למנוע חיתוך */
 }
 
 .main-button,
@@ -241,7 +242,7 @@
 }
 
 /* Close Button */
-.closeButton {
+.closeButtonMilestone {
   position: absolute;
   top: 8.2rem;
   left: 1rem;
