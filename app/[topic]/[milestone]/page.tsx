@@ -338,46 +338,25 @@ const MilestonePage: React.FC = () => {
         (val) => val === 1
       );
 
-      // if (allComplete) {
-      //   topicObj.status = 1;
-      //   currentBudget += 1;
-
-      //   router.push(`/${topic}/finalPage`);
-      // }
-
-      // const { error: updateError } = await supabase
-      //   .from("user_activity")
-      //   .update({
-      //     topics_and_milestones: topicsAndMilestones,
-      //     budget: currentBudget,
-      //   })
-      //   .eq("id", userId);
-
-      // if (updateError) {
-      //   console.error("Update error:", updateError);
-      //   return;
-      // }
-
       if (allComplete) {
         topicObj.status = 1;
         currentBudget += 1;
-    
-        const { error: updateError } = await supabase
-            .from("user_activity")
-            .update({
-                topics_and_milestones: topicsAndMilestones,
-                budget: currentBudget,
-            })
-            .eq("id", userId);
-    
-        if (updateError) {
-            console.error("Update error:", updateError);
-            return;
-        }
-    
+
         router.push(`/${topic}/finalPage`);
-        return; // יציאה מהפונקציה
-    }
+      }
+
+      const { error: updateError } = await supabase
+        .from("user_activity")
+        .update({
+          topics_and_milestones: topicsAndMilestones,
+          budget: currentBudget,
+        })
+        .eq("id", userId);
+
+      if (updateError) {
+        console.error("Update error:", updateError);
+        return;
+      }
 
       // alert("Milestone completed successfully!");
       setMilestoneCompleted(true);
