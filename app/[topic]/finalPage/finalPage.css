@@ -1,0 +1,161 @@
+.final-page {
+    position: relative;
+    min-height: 100vh;
+    background-image: url("/pattern.svg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: var(--color-background-secondary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: var(--spacing-8);
+  }
+  
+  .content-container {
+    width: 100%;
+    max-width: var(--max-width-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-6);
+    padding: 0 var(--container-padding);
+  }
+  
+  .image-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .cochevet-container {
+    position: relative;
+    width: 24rem;
+    height: 24rem;
+    margin-top: -4rem;
+  }
+  
+  .sticker-container {
+    position: absolute;
+    width: 18rem;
+    height: 18rem;
+    top: 100vh; 
+    z-index: 2;
+    opacity: 0;
+    transition: all 1s ease-in-out;
+  }
+  
+  .sticker-container.show-sticker {
+    top: 35%;
+    opacity: 1;
+  }
+  
+  .sticker-container.animate-to-notebook {
+    transform: translate(-60vw, 48vh) scale(0.2);
+    opacity: 0;
+    transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .final-message {
+    width: 100%;
+    color: var(--color-text);
+    text-align: center;
+    font-family: var(--font-family-primary);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%;
+    letter-spacing: 0.2px;
+    margin-bottom: 4px;
+  }
+  
+  .note-highlight {
+    font-weight: 400;
+    font-size: 20px;
+    font-family: var(--font-family-secondary);
+    font-style: italic;
+  }
+  
+  .return-button {
+    margin-top: var(--spacing-2);
+    padding: var(--spacing-3) var(--spacing-8);
+    background-color: var(--color-accent);
+    color: white;
+    border-radius: var(--radius-full);
+    font-size: var(--text-lg);
+    font-weight: 500;
+    font-family: var(--font-family-primary);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .return-button:hover {
+    background-color: var(--color-accent-secondary);
+  }
+  
+  .nav-buttons {
+    position: fixed;
+    bottom: clamp(16px, 4vh, 24px);
+    left: 0;
+    right: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 clamp(16px, 4vw, 24px);
+    background-color: transparent;
+    z-index: 10;
+  }
+  
+  @media (max-width: 768px) {
+    .cochevet-container {
+      width: 16rem;
+      height: 16rem;
+    }
+  
+    .sticker-container {
+      width: 12rem;
+      height: 12rem;
+    }
+  
+    .sticker-container.animate-to-notebook {
+        transform: translate(-40vw, 40vh) scale(0.2);
+      }
+  
+    .final-message {
+      margin-top: 5rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .final-page {
+      padding-top: var(--spacing-6);
+    }
+  
+    .cochevet-container {
+      width: 18rem;
+      height: 14rem;
+    }
+  
+    .sticker-container {
+      width: 12rem;
+      height: 12rem;
+    }
+  
+    .sticker-container.animate-to-notebook {
+        transform: translate(-38vw, 50vh) scale(0.2);
+      }
+  
+    .final-message {
+      margin-top: 4.5rem;
+      padding: var(--spacing-2) var(--spacing-2);
+      font-size: var(--text-l);
+    }
+  
+    .return-button {
+      font-size: var(--text-base);
+      padding: var(--spacing-2) var(--spacing-6);
+    }
+  }

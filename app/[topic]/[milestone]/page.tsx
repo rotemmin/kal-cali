@@ -342,6 +342,8 @@ const MilestonePage: React.FC = () => {
       if (allComplete) {
         topicObj.status = 1;
         currentBudget += 1;
+
+        router.push(`/${topic}/finalPage`);
         // alert("Congrats! You have a new sticker!!!");
       }
 
