@@ -88,3 +88,22 @@
       padding: 12px;
     }
   }
+
+  .chat-container .modal-container {
+    background-color: var(--color-background);
+    border: 2px solid var(--color-accent);
+    box-shadow: 0px 4px 12px rgba(76, 175, 80, 0.15);
+  }
+  
+  .chat-container .modal-title {
+    color: var(--color-accent);
+    font-weight: 500;
+  }
+  
+  .chat-container .modal-close {
+    color: #4CAF50;
+  }
+  
+  .chat-container .modal-body {
+    color: #333333;
+  }
