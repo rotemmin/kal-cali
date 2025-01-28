@@ -8,7 +8,7 @@ export default function Home() {
       <div className={styles.container}>
         <div className={styles.content}>
           <h1 className={styles.welcome}>ברוכ.ה הבא.ה ל-</h1>
-          
+
           <Image
             src="/icons/firstPageLogo.svg"
             alt="FinanStep Logo"
@@ -17,17 +17,17 @@ export default function Home() {
             priority
             className={styles.logo}
           />
-          
+
           <p className={styles.description}>
             {/* מי שרוצה ללמוד על תהליך כלכלי נכון שירים את היד! (או ילחץ על הכפתור) */}
-            איתנו אפשר להקליל פיננסיים
+            מי שרוצה ללמוד על תהליך כלכלי נכון שתרים את היד! (או תלחץ על הכפתור)
           </p>
-          
+
           <div className={styles.buttonContainer}>
             <Link href="/login" className={styles.buttonLink}>
               <button className={styles.loginButton}>לכניסה</button>
             </Link>
-            
+
             <Link href="/signup" className={styles.buttonLink}>
               <button className={styles.signupButton}>להרשמה</button>
             </Link>
