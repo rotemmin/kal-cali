@@ -329,7 +329,6 @@ const MilestonePage: React.FC = () => {
       }
 
       if (topicObj.milestones[milestoneKey] === 1) {
-        // alert("Milestone already completed!");
         return;
       }
 
@@ -339,27 +338,46 @@ const MilestonePage: React.FC = () => {
         (val) => val === 1
       );
 
+      // if (allComplete) {
+      //   topicObj.status = 1;
+      //   currentBudget += 1;
+
+      //   router.push(`/${topic}/finalPage`);
+      // }
+
+      // const { error: updateError } = await supabase
+      //   .from("user_activity")
+      //   .update({
+      //     topics_and_milestones: topicsAndMilestones,
+      //     budget: currentBudget,
+      //   })
+      //   .eq("id", userId);
+
+      // if (updateError) {
+      //   console.error("Update error:", updateError);
+      //   return;
+      // }
+
       if (allComplete) {
         topicObj.status = 1;
         currentBudget += 1;
-
+    
+        const { error: updateError } = await supabase
+            .from("user_activity")
+            .update({
+                topics_and_milestones: topicsAndMilestones,
+                budget: currentBudget,
+            })
+            .eq("id", userId);
+    
+        if (updateError) {
+            console.error("Update error:", updateError);
+            return;
+        }
+    
         router.push(`/${topic}/finalPage`);
-        // alert("Congrats! You have a new sticker!!!");
-      }
-
-      const { error: updateError } = await supabase
-        .from("user_activity")
-        .update({
-          topics_and_milestones: topicsAndMilestones,
-          budget: currentBudget,
-        })
-        .eq("id", userId);
-
-      if (updateError) {
-        console.error("Update error:", updateError);
-        // alert("Error updating milestone in the database");
-        return;
-      }
+        return; // יציאה מהפונקציה
+    }
 
       // alert("Milestone completed successfully!");
       setMilestoneCompleted(true);
