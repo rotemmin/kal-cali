@@ -3,14 +3,14 @@
   grid-template-columns: repeat(2, 1fr);
   width: 100%;
   margin: 0 auto;
-  padding: var(--spacing-2);
-  gap: clamp(var(--spacing-2), 3vw, var(--spacing-8));
+  padding: var(--spacing-4);
+  gap: clamp(var(--spacing-4), 4vw, var(--spacing-8));
   min-height: calc(100vh - var(--navbar-height) - var(--footer-height));
 }
 
 .icon-container {
-  width: clamp(100px, 35vw, 250px);  /* Minimum 100px, maximum 250px, scales with viewport */
-  aspect-ratio: 1;  /* Keep square shape */
+  width: clamp(130px, 40vw, 300px);  /* Increased base size and maximum */
+  aspect-ratio: 1;
   position: relative;
   display: flex;
   justify-content: center;
@@ -22,16 +22,16 @@
 
 .page-header {
   text-align: right;
-  padding: var(--spacing-4) var(--spacing-4) var(--spacing-2);
-  margin-bottom: var(--spacing-4);
+  padding: var(--spacing-6) var(--spacing-6) var(--spacing-4);
+  margin-bottom: var(--spacing-6);
 }
 
 .main-title {
   font-family: var(--font-family-secondary);
-  font-size: clamp(var(--text-xl), 4vw, var(--text-3xl));
+  font-size: clamp(var(--text-2xl), 5vw, var(--text-3xl));
   color: var(--color-text);
   margin: 0;
-  margin-bottom: var(--spacing-2);
+  margin-bottom: var(--spacing-4);
   text-align: right;
   font-style: italic;
   font-weight: 700;
@@ -40,7 +40,7 @@
 
 .sub-title {
   font-family: var(--font-family-primary);
-  font-size: clamp(var(--text-base), 2.5vw, var(--text-xl));
+  font-size: clamp(var(--text-lg), 3vw, var(--text-2xl));
   color: var(--color-text);
   margin: 0;
   text-align: right;
@@ -49,19 +49,17 @@
   letter-spacing: 0.2px;
 }
 
-/* Nav buttons positioning */
 .nav-buttons {
   position: fixed;
-  bottom: var(--spacing-2);
+  bottom: var(--spacing-4);
   left: 0;
   right: 0;
   display: flex;
   justify-content: space-between;
-  padding: 0 var(--spacing-2);
+  padding: 0 var(--spacing-4);
   z-index: 10;
 }
 
-/* Background */
 body {
   background-image: url("/pattern.svg");
   background-size: cover;
@@ -72,20 +70,20 @@ body {
   overflow-x: hidden;
 }
 
-/* Mobile adjustments */
+/* Mobile */
 @media (max-width: 480px) {
   .grid-container {
-    gap: var(--spacing-2);
-    padding: var(--spacing-2);
-    margin-bottom: 80px;  /* Space for nav buttons */
+    gap: var(--spacing-4);
+    padding: var(--spacing-4);
+    margin-bottom: 100px;  /* Increased space for nav buttons */
   }
 
   .icon-container {
-    width: clamp(90px, 25vw, 120px);  /* Smaller on mobile */
+    width: clamp(120px, 35vw, 160px);  /* Increased mobile sizes */
   }
 
   .page-header {
-    padding: var(--spacing-2);
+    padding: var(--spacing-4);
   }
 }
 
@@ -96,21 +94,25 @@ body {
   }
 
   .icon-container {
-    width: clamp(80px, 22vw, 100px);  /* Even smaller on very small screens */
+    width: clamp(100px, 30vw, 130px);  /* Increased minimum size */
   }
 }
 
 /* Tablet */
 @media (min-width: 768px) {
   .grid-container {
-    width: min(95%, 1200px);  /* Increased max-width for larger screens */
-    gap: clamp(var(--spacing-4), 4vw, var(--spacing-8));
-    padding: var(--spacing-4);
+    width: min(95%, 1400px);  /* Increased max-width */
+    gap: clamp(var(--spacing-6), 5vw, var(--spacing-8));
+    padding: var(--spacing-6);
+  }
+
+  .icon-container {
+    width: clamp(200px, 45vw, 280px);  /* Larger on tablet */
   }
 
   .nav-buttons {
-    bottom: var(--spacing-4);
-    padding: 0 var(--spacing-4);
+    bottom: var(--spacing-6);
+    padding: 0 var(--spacing-6);
   }
 }
 
@@ -121,7 +123,7 @@ body {
   }
 
   .icon-container {
-    width: clamp(180px, 40vw, 250px);  /* Larger on desktop */
+    width: clamp(250px, 50vw, 300px);  /* Much larger on desktop */
   }
 }
 
