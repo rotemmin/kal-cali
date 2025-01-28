@@ -47,7 +47,8 @@
         },
       "button": "סיימתי!",
       "type": "info",
-      "link": "/[topic]"
+      "link": "/[topic]",
+      "sticker": "/pension_stickers/pension1.svg"
       },
       {
         "title": "מה קורה היום בשוק",
@@ -60,7 +61,8 @@
           "female": "<span class='note-highlight'>בתכלס</span><br>אנחנו רק רוצים שלא ייגבו מאיתנו עמלה גבוהה מידי!<br> דמי הניהול הממוצעים בשוק הם 2.56% מהפקדה ו-0.21% מהצבירה."
         },
         "button": "סיימתי!",
-        "link": "@app\\pension"
+        "link": "\\pension",
+        "sticker": "/pension_stickers/pension2.svg"
       },
       {
         "title": "שיחה עם נציג",

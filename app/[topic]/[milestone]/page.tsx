@@ -11,6 +11,7 @@ import dictionaryIcon from "@/public/icons/dictionary.svg";
 import notebookIcon from "@/public/icons/notebook.svg";
 import { X } from "lucide-react";
 import ChatInterface from "../chat/page";
+import MilestoneSticker from '@/lib/components/milestoneSticker';
 
 interface MilestoneDescription {
   text: string;
@@ -35,6 +36,7 @@ interface Milestone {
   button: string;
   additionalbutton?: string;
   additionalLink?: string;
+  sticker?: string;
 }
 
 interface TopicData {
@@ -66,7 +68,7 @@ const MilestonePage: React.FC = () => {
 
   const handleChatFinish = async () => {
     await completeMilestone();
-    router.back();
+    // router.back();
   };
 
   const fetchMilestoneProgress = async () => {
@@ -263,6 +265,13 @@ const MilestonePage: React.FC = () => {
           </div>
         )}
 
+        {currentMilestone?.sticker && (
+          <MilestoneSticker 
+            stickerPath={currentMilestone.sticker} 
+            isCompleted={milestoneCompleted}
+          />
+        )}
+
         <div className="button-container">
           {currentMilestone?.help?.type === "chat" ? (
             <button onClick={() => setShowChat(true)} className="main-button">
@@ -342,6 +351,16 @@ const MilestonePage: React.FC = () => {
         currentBudget += 1;
 
         router.push(`/${topic}/finalPage`);
+      } else {
+        if (currentMilestone?.help?.type === "chat") {
+          router.back();
+        } else if (currentMilestone?.sticker) {
+          setTimeout(() => {
+            router.back();
+          }, 1500);
+        } else {
+          router.back();
+        }
       }
 
       const { error: updateError } = await supabase

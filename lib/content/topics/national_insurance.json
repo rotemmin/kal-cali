@@ -6,7 +6,7 @@
   },
   "milestones": [
     {
-      "title": "הסבר כללי",
+      "title": "מה זה בכלל ביטוח לאומי",
       "description": {
         "male": [
           {
@@ -46,7 +46,8 @@
         ]
       },
       "button": "סיימתי!",
-      "link": "/[topic]"
+      "link": "/[topic]",
+      "sticker": "/national_insurance_stickers/national_insurance1.svg"
     },
     {
       "title": "איך משלמים ביטוח לאומי",
@@ -105,7 +106,8 @@
           "title": "תשלום במזומן",
           "content": "ניתן לשלם בסניפי הדואר או בבנק הדואר באמצעות המחאות או מזומן."
         }
-      ]
+      ],
+      "sticker": "/national_insurance_stickers/national_insurance1.svg"
     },
     {
       "title": "מי פטור מביטוח לאומי",

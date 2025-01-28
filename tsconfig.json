@@ -26,6 +26,6 @@
       "@/public/*": ["./public/*"],
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "lib/components/modal.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "lib/components/modal.jsx", "lib/components/milestoneSticker.tsx"],
   "exclude": ["node_modules"]
 }

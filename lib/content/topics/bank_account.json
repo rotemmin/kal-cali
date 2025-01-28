@@ -18,7 +18,8 @@
       },
       "button": "סיימתי!",
       "type": "info",
-      "link": "/[topic]"
+      "link": "/[topic]",
+      "sticker": "/bank_account_stickers/bank_account1.svg"
     },
     {
       "title": "בחירת כרטיס אשראי",
@@ -33,7 +34,8 @@
       "button": "סיימתי!",
       "link": "/[topic]",
       "additionalbutton": "מידע נוסף על בחירת כרטיס אשראי",
-      "additionalLink": "/[topic]/different_cards"
+      "additionalLink": "/[topic]/different_cards",
+      "sticker": "/bank_account_stickers/bank_account2.svg"
     },
     {
       "title": "ניהול מסגרת אשראי",
