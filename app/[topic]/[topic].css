@@ -74,6 +74,14 @@
   transition: transform 0.2s ease;
 }
 
+.milestone-button.completed {
+  background-color: var(--color-accent);
+}
+
+.milestone-button.incomplete {
+  background-color: var(--color-disabled);
+}
+
 .milestone-text {
   color: #ffffff;
   font-size: 22px;

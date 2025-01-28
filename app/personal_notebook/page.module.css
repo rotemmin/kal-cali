@@ -9,7 +9,7 @@
 
 .sidebar {
     padding-bottom: 10px;
-    top: 100px;
+    top: 80px;
     position: fixed;
     left: 0;
     height: calc(100vh - 82px);

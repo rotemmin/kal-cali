@@ -270,7 +270,7 @@ const MilestonePage: React.FC = () => {
               הבא
             </button>
           ) : (
-            <button onClick={completeMilestone} className="main-button">
+            <button onClick={handleChatFinish} className="main-button">
               {currentMilestone?.button}
             </button>
           )}

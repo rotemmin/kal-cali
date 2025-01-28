@@ -26,6 +26,7 @@ interface TopicData {
   };
   milestones: Milestone[];
 }
+const supabase = createClient();
 
 const TopicPage = () => {
   const router = useRouter();
@@ -41,10 +42,37 @@ const TopicPage = () => {
     description: string;
   } | null>(null);
   const [userGender, setUserGender] = useState<"male" | "female">("female");
+  const [milestonesStatus, setMilestonesStatus] = useState<{
+    [key: string]: number;
+  }>({});
+
+  // Fetch milestones status
+  useEffect(() => {
+    const fetchMilestonesStatus = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      const { data, error } = await supabase
+        .from("user_activity")
+        .select("topics_and_milestones")
+        .eq("id", session?.user.id)
+        .single();
+
+      if (error) {
+        console.error("Error fetching milestones status:", error);
+      } else {
+        const milestones =
+          data?.topics_and_milestones[normalizedTopic]?.milestones;
+        if (!milestones) {
+          throw new Error("No milestones found");
+        }
+        setMilestonesStatus(milestones);
+      }
+    };
+    fetchMilestonesStatus();
+  }, [normalizedTopic]);
 
   useEffect(() => {
-    const supabase = createClient();
-
     const fetchGender = async () => {
       const {
         data: { session },
@@ -70,6 +98,11 @@ const TopicPage = () => {
     });
     setDictionary(dict);
   }, []);
+
+  // Replaces spaces with underscores
+  const topicNameToTopicId = (topicName: string) => {
+    return topicName.replace(/\s+/g, "_");
+  };
 
   const processTextWithTerms = (text: string): string => {
     return text.replace(
@@ -119,7 +152,13 @@ const TopicPage = () => {
                 href={`/${topic}/${milestone.title}`}
                 style={{ textDecoration: "none" }}
               >
-                <button className="milestone-button">
+                <button
+                  className={`milestone-button ${
+                    milestonesStatus[topicNameToTopicId(milestone.title)] === 1
+                      ? "completed"
+                      : "incomplete"
+                  }`}
+                >
                   <span className="milestone-text">{milestone.title}</span>
                 </button>
               </Link>
