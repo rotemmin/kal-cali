@@ -1,84 +1,145 @@
+.main-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+}
+
 .grid-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: clamp(var(--spacing-2), 4vw, var(--spacing-8));
+  gap: clamp(var(--spacing-2), 3vw, var(--spacing-6));
   padding: clamp(var(--spacing-2), 1vw, var(--spacing-4));
   width: min(90%, 800px);
   margin: 0 auto;
-  min-height: calc(100vh - var(--navbar-height) - var(--footer-height));
+  margin-top: -20px;
+  /* Increase bottom margin for nav buttons */
+  margin-bottom: 90px;
+  /* Use flex-grow instead of fixed height */
+  flex: 1;
+  align-content: center;
+  padding-top: 10px;
 }
 
 .icon-container {
-  width: 142px;
-  height: 142px;
+  width: clamp(min(30vw, 110px), 32vw, 140px);
+  height: clamp(min(30vw, 110px), 32vw, 140px);
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   animation: wiggle 4s linear infinite;
   animation-fill-mode: backwards;
+  margin: 0 auto;
 }
 
 .page-header {
   text-align: right;
-  padding: var(--spacing-4);
+  padding: var(--spacing-2) var(--spacing-4);
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .main-title {
   font-family: var(--font-family-secondary);
-  font-size: var(--text-2xl);
+  font-size: min(1.75rem, var(--text-2xl));
   color: var(--color-text);
   margin: 0;
-  margin-bottom: var(--spacing-2);
+  margin-bottom: calc(var(--spacing-2) / 2);
   text-align: right;
   font-style: italic;
   font-weight: 700;
-  line-height: 94%; /* 30.08px */
+  line-height: 1.1;
 }
 
 .sub-title {
   font-family: var(--font-family-primary);
-  font-size: var(--text-lg);
+  font-size: min(1.1rem, var(--text-lg));
   color: var(--color-text);
   margin: 0;
-  color: #000;
   text-align: right;
-  font-family: SimplerPro;
-  font-size: 20px;
   font-style: normal;
   font-weight: 400;
-  line-height: 130%; /* 26px */
+  line-height: 1.2;
   letter-spacing: 0.2px;
 }
 
+.nav-buttons {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--spacing-4);
+  background-color: var(--color-background);
+  z-index: 10;
+}
+
 @keyframes wiggle {
-  0% {
-    transform: rotate(0deg);
-    animation-timing-function: ease-in-out;
+  0% { transform: rotate(0deg); animation-timing-function: ease-in-out; }
+  10% { transform: rotate(-7deg); }
+  20% { transform: rotate(0deg); }
+  30% { transform: rotate(7deg); animation-timing-function: ease-in-out; }
+  40% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* Small devices (phones) */
+@media screen and (max-height: 667px) and (max-width: 376px) {
+  .grid-container {
+    gap: 0.8rem;
+    margin-top: -15px;
+    margin-bottom: 80px;
   }
-  10% {
-    transform: rotate(-7deg);
+  
+  .icon-container {
+    width: clamp(min(28vw, 100px), 30vw, 110px);
+    height: clamp(min(28vw, 100px), 30vw, 110px);
   }
-  20% {
-    transform: rotate(0deg);
-  }
-  30% {
-    transform: rotate(7deg);
-    animation-timing-function: ease-in-out;
-  }
-  40% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(0deg);
+  
+  .page-header {
+    height: 80px;
+    padding: var(--spacing-2);
   }
 }
 
-body {
-  background-image: url("/pattern.svg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  min-height: 100vh;
-  margin: 0;
+
+/* Medium devices (tablets) */
+@media screen and (min-width: 768px) {
+  .icon-container {
+    width: clamp(130px, 38vw, 180px);
+    height: clamp(130px, 38vw, 180px);
+  }
+  
+  .grid-container {
+    gap: 1.5rem;
+  }
+}
+
+/* Large devices (laptops/desktops) */
+@media screen and (min-width: 1024px) {
+  .main-container {
+    height: auto;
+    overflow-y: auto;
+  }
+
+  .grid-container {
+    margin-bottom: 100px;
+  }
+}
+
+@media screen and (max-height: 667px) {
+  .grid-container {
+    gap: 1rem;
+  }
+  
+  .icon-container {
+    width: min(40vw, 180px);
+    height: min(40vw, 180px);
+  }
 }
