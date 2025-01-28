@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { supabase } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import NavigationButton from "@/components/NavigationButton";
 import Modal from "@/components/modal";
 import Header from "@/lib/components/Header";
@@ -39,6 +39,8 @@ const TopicPage = () => {
   const [userGender, setUserGender] = useState<"male" | "female">("female");
 
   useEffect(() => {
+    const supabase = createClient();
+
     const fetchGender = async () => {
       const {
         data: { session },

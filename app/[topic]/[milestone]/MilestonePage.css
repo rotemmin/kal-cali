@@ -271,9 +271,8 @@
 
 .closeButton {
   position: absolute;
-  top: 120px;
-  right: 330px;
-  /**todo: not px*/
+  top: 8.2rem; /* Increase from 2rem to move it further down */
+  left: 1rem; /* Keep it on the left */
   cursor: pointer;
   color: var(--color-disabled);
 }

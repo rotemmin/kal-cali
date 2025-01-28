@@ -1,11 +1,13 @@
 "use client";
 import React, { useState, useMemo, useEffect, useCallback } from "react";
-import { supabase } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import { debounce } from "lodash";
 import styles from "./page.module.css";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Header from "@/lib/components/Header";
+
+const supabase = createClient();
 
 const englishToHebrewTopics: { [key: string]: string } = {
   pension: "פנסיה",

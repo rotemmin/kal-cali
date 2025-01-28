@@ -1,5 +1,5 @@
 "use client";
-import { supabase } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import NavigationButton from "@/components/NavigationButton";
@@ -10,8 +10,7 @@ import ProgressBar from "../milestones_progress_bar/ProgressBar";
 import dictionaryIcon from "@/public/icons/dictionary.svg";
 import notebookIcon from "@/public/icons/notebook.svg";
 import { X } from "lucide-react";
-import ChatInterface from '../chat/page';
-
+import ChatInterface from "../chat/page";
 
 interface MilestoneDescription {
   text: string;
@@ -43,6 +42,7 @@ interface TopicData {
 }
 
 const MilestonePage: React.FC = () => {
+  const supabase = createClient();
   const params = useParams();
   const router = useRouter();
   const { topic, milestone } = params as { topic: string; milestone: string };
@@ -60,7 +60,6 @@ const MilestonePage: React.FC = () => {
   } | null>(null);
 
   const [milestoneCompleted, setMilestoneCompleted] = useState(false);
-  // NEW: Add states for progress bar
   const [totalMilestones, setTotalMilestones] = useState(0);
   const [completedMilestones, setCompletedMilestones] = useState(0);
 
@@ -68,10 +67,9 @@ const MilestonePage: React.FC = () => {
 
   const handleChatFinish = async () => {
     await completeMilestone();
-    router.back(); // חזרה לדף הקודם אחרי השלמת המיילסטון
+    router.back();
   };
 
-  // NEW: Add function to fetch milestone progress
   const fetchMilestoneProgress = async () => {
     try {
       const {
@@ -132,7 +130,6 @@ const MilestonePage: React.FC = () => {
 
   useEffect(() => {
     updateCurrentTopic();
-    // NEW: Fetch milestone progress on component mount
     fetchMilestoneProgress();
   }, [normalizedTopic]);
 
@@ -225,7 +222,10 @@ const MilestonePage: React.FC = () => {
     const description = currentMilestone?.description?.[userGender];
     const handleAdditionalLinkClick = () => {
       if (currentMilestone?.additionalLink) {
-        const finalLink = currentMilestone.additionalLink.replace('[topic]', topic);
+        const finalLink = currentMilestone.additionalLink.replace(
+          "[topic]",
+          topic
+        );
         router.push(finalLink);
       }
     };
@@ -236,42 +236,45 @@ const MilestonePage: React.FC = () => {
         {currentMilestone?.title2 && (
           <h2 className="subtitle">{currentMilestone.title2}</h2>
         )}
-    
+
         {description && renderDescription(description)}
-        
-        {currentMilestone?.additionalbutton && currentMilestone?.additionalLink && (
-        <div className="text-center my-4">
-          <button 
-            onClick={handleAdditionalLinkClick}
-            className="secondary-button text-blue-600 hover:text-blue-800 underline text-sm"
-          >
-            {currentMilestone.additionalbutton}
-          </button>
-        </div>
-      )}
+
+        {currentMilestone?.additionalbutton &&
+          currentMilestone?.additionalLink && (
+            <div className="text-center my-4">
+              <button
+                onClick={handleAdditionalLinkClick}
+                className="secondary-button text-blue-600 hover:text-blue-800 underline text-sm"
+              >
+                {currentMilestone.additionalbutton}
+              </button>
+            </div>
+          )}
 
         {currentMilestone?.note?.[userGender] && (
           <div className="note">
             <div
               dangerouslySetInnerHTML={{
-                __html: currentMilestone.note[userGender].replace(/\n/g, "<br />"),
+                __html: currentMilestone.note[userGender].replace(
+                  /\n/g,
+                  "<br />"
+                ),
               }}
             />
           </div>
         )}
 
-      <div className="button-container">
-        {currentMilestone?.help?.type === 'chat' ? (
-          <button onClick={() => setShowChat(true)} className="main-button">
-            הבא
-          </button>
-        ) : (
-          <button onClick={completeMilestone} className="main-button">
-            {currentMilestone?.button}
-          </button>
-        )}
-      </div>
-    
+        <div className="button-container">
+          {currentMilestone?.help?.type === "chat" ? (
+            <button onClick={() => setShowChat(true)} className="main-button">
+              הבא
+            </button>
+          ) : (
+            <button onClick={completeMilestone} className="main-button">
+              {currentMilestone?.button}
+            </button>
+          )}
+        </div>
       </>
     );
   };
@@ -359,7 +362,6 @@ const MilestonePage: React.FC = () => {
 
       alert("Milestone completed successfully!");
       setMilestoneCompleted(true);
-      // NEW: Update progress bar after completing milestone
       setCompletedMilestones((prev) => prev + 1);
     } catch (error) {
       console.error("Error completing milestone:", error);
@@ -386,8 +388,6 @@ const MilestonePage: React.FC = () => {
           {renderContent()}
         </div>
 
-        
-
         <Modal
           isOpen={!!selectedTerm}
           onClose={() => setSelectedTerm(null)}
@@ -398,25 +398,24 @@ const MilestonePage: React.FC = () => {
       </div>
 
       <div className="nav-buttons">
-          <NavigationButton
-            icon={dictionaryIcon}
-            link="/dictionary"
-            position="right"
-            altText="Dictionary"
-          />
-          <NavigationButton
-            icon={notebookIcon}
-            link="/personal_notebook"
-            position="left"
-            altText="Notebook"
-          />
-        </div>
+        <NavigationButton
+          icon={dictionaryIcon}
+          link="/dictionary"
+          position="right"
+          altText="Dictionary"
+        />
+        <NavigationButton
+          icon={notebookIcon}
+          link="/personal_notebook"
+          position="left"
+          altText="Notebook"
+        />
+      </div>
     </>
   );
 };
 
 export default MilestonePage;
-
 
 //   return (
 //     <>

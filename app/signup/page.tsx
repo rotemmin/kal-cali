@@ -59,7 +59,6 @@ export default function SignUp({
 
       const userId = signUpData.user.id;
 
-      // Insert initial data into user_activity table
       const initialTopicsAndMilestones = {
         pension: {
           status: 0,
@@ -112,7 +111,6 @@ export default function SignUp({
         );
       }
 
-      // Insert user metadata into user_metadata table
       const { error: metadataError } = await supabase
         .from("user_metadata")
         .insert([

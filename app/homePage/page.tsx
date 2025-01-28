@@ -1,5 +1,5 @@
 "use client";
-import { supabase } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,6 +8,8 @@ import "./home.css";
 import NavigationButton from "@/lib/components/NavigationButton";
 import dictionaryIcon from "@/public/icons/dictionary.svg";
 import notebookIcon from "@/public/icons/notebook.svg";
+
+const supabase = createClient();
 
 const topics = [
   {
@@ -149,14 +151,7 @@ const HomePage = () => {
         </div>
         <div className="grid-container rtl">
           {topics.map((topic, index) => {
-            // Use the explicit dbKey instead of normalizing the link
             const isCompleted = completedTopics[topic.dbKey];
-
-            // Log the status for each topic as it's being rendered
-            console.log(`Rendering ${topic.dbKey}:`, {
-              isCompleted,
-              iconToShow: isCompleted ? topic.completedIcon : topic.icon,
-            });
 
             return (
               <Link
