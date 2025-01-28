@@ -1,7 +1,7 @@
 /* HeaderMenu.module.css */
 .menuContainer {
   position: absolute;
-  top: 65px;
+  top: 63px;
   left: 0;
   width: 120px; /* Made width smaller */
   z-index: 1000;
