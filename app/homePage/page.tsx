@@ -165,9 +165,19 @@ const HomePage = () => {
                     src={isCompleted ? topic.completedIcon : topic.icon}
                     alt={topic.title}
                     fill
+                    sizes="(max-width: 480px) 100px,
+                          (max-width: 768px) 120px,
+                          142px"
                     style={{ objectFit: "contain" }}
                     priority={index < 2}
-                  />
+                  />  
+                  {/* <Image
+                    src={isCompleted ? topic.completedIcon : topic.icon}
+                    alt={topic.title}
+                    fill
+                    style={{ objectFit: "contain" }}
+                    priority={index < 2}
+                  /> */}
                 </div>
               </Link>
             );
