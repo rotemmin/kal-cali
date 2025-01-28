@@ -5,6 +5,8 @@
     width: 100%;
     position: relative;
     background: var(--color-background-secondary);
+    min-height: 100dvh;
+    padding-bottom: env(safe-area-inset-bottom);
 }
 
 .sidebar {
@@ -62,11 +64,14 @@
 }
 
 .content {
-    padding: 40px 20px 20px 60px;
+    padding: 40px 20px 80px 60px;
     overflow-y: auto;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    height: 100dvh;
+    box-sizing: border-box;
 }
 
 .notesSection {
@@ -96,12 +101,15 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
     align-items: flex-start;
-    overflow: hidden;
+    overflow: visible;
+    padding-bottom: 20px;
+    margin-bottom: env(safe-area-inset-bottom);
 }
-
 
 .sticker {
     object-fit: contain;
+    max-width: 100%;
+    height: auto;
 }
 
 .notesContainer {
@@ -207,4 +215,21 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
+}
+
+@media screen and (max-width: 768px) {
+    .content {
+        padding: 40px 15px 100px 45px;
+    }
+
+    .stickersArea {
+        gap: 5px;
+        padding-bottom: 30px;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .stickersArea {
+        grid-template-columns: repeat(3, minmax(80px, 1fr));
+    }
 }
