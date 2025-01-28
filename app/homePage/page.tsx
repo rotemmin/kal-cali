@@ -189,7 +189,6 @@ const HomePage = () => {
             altText="Notebook"
           />
         </div>
-
         <HomeProgressBar />
       </main>
     </>

@@ -1,4 +1,4 @@
-.progress-bar-wrapper {
+.homepage-progress-wrapper {
   width: 100%;
   margin-top: 40px; /* Increase spacing */
   text-align: center;
@@ -6,13 +6,13 @@
   flex-direction: column;
   align-items: center;
   position: absolute;
-  bottom: 82px; /* Adjust position to be above the purple buttons */
+  bottom: 48px; /* Adjust position to be above the purple buttons */
   left: 50%;
   transform: translateX(-50%);
 }
 
-.progress-bar-container {
-  width: 80%;
+.homepage-progress-container {
+  width: 52%;
   height: 12px;
   background-color: #d9d6d6;
   border-radius: 6px;
@@ -22,7 +22,7 @@
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.progress-bar {
+.homepage-progress-bar {
   height: 100%;
   transition: width 0.5s ease-in-out, background-color 0.3s ease-in-out;
   background-color: var(--color-primary);

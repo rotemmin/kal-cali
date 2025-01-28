@@ -5,7 +5,7 @@ import "./homeProgressBar.css";
 
 const supabase = createClient();
 
-const ProgressBar = () => {
+const HomePageProgress = () => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -47,10 +47,10 @@ const ProgressBar = () => {
   }, []);
 
   return (
-    <div className="progress-bar-wrapper moved-down">
-      <div className="progress-bar-container">
+    <div className="homepage-progress-wrapper">
+      <div className="homepage-progress-container">
         <div
-          className="progress-bar"
+          className="homepage-progress-bar"
           style={{
             width: `${progress}%`,
             backgroundColor: "var(--color-primary)",
@@ -61,4 +61,4 @@ const ProgressBar = () => {
   );
 };
 
-export default ProgressBar;
+export default HomePageProgress;
