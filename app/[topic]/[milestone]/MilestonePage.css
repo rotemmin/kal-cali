@@ -484,12 +484,12 @@
   }
 }
 
-.close-button {
+/* .close-button {
   position: absolute;
   left: 16px;
   top: 16px;
   z-index: 10;
-}
+} */
 
 .progress-bar-container {
   margin: var(--spacing-4);
