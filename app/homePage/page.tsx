@@ -8,6 +8,7 @@ import "./home.css";
 import NavigationButton from "@/lib/components/NavigationButton";
 import dictionaryIcon from "@/public/icons/dictionary.svg";
 import notebookIcon from "@/public/icons/notebook.svg";
+import HomeProgressBar from "./homePageProgressBar/homeProgressBar";
 
 const supabase = createClient();
 
@@ -188,6 +189,8 @@ const HomePage = () => {
             altText="Notebook"
           />
         </div>
+
+        <HomeProgressBar />
       </main>
     </>
   );
