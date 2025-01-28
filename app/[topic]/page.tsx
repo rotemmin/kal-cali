@@ -41,10 +41,15 @@ const TopicPage = () => {
     title: string;
     description: string;
   } | null>(null);
+
+  const [nextMilestoneToComplete, setNextMilestoneToComplete] = useState<
+    string | null
+  >(null);
+
   const [userGender, setUserGender] = useState<"male" | "female">("female");
-  const [milestonesStatus, setMilestonesStatus] = useState<{
-    [key: string]: number;
-  }>({});
+  const [milestonesStatus, setMilestonesStatus] = useState<
+    Record<string, number>
+  >({});
 
   // Fetch milestones status
   useEffect(() => {
@@ -71,6 +76,17 @@ const TopicPage = () => {
     };
     fetchMilestonesStatus();
   }, [normalizedTopic]);
+
+  useEffect(() => {
+    if (Object.keys(milestonesStatus).length === 0) return;
+    for (const [key, value] of Object.entries(milestonesStatus)) {
+      if (value === 0) {
+        setNextMilestoneToComplete(key);
+        return;
+      }
+    }
+    router.push(`/${topic}/finalPage`);
+  }, [milestonesStatus]);
 
   useEffect(() => {
     const fetchGender = async () => {
@@ -154,10 +170,19 @@ const TopicPage = () => {
               >
                 <button
                   className={`milestone-button ${
-                    milestonesStatus[topicNameToTopicId(milestone.title)] === 1
+                    milestonesStatus[topicNameToTopicId(milestone.title)] ===
+                      1 ||
+                    nextMilestoneToComplete ===
+                      topicNameToTopicId(milestone.title)
                       ? "completed"
                       : "incomplete"
                   }`}
+                  disabled={
+                    milestonesStatus[topicNameToTopicId(milestone.title)] ===
+                      0 &&
+                    nextMilestoneToComplete !==
+                      topicNameToTopicId(milestone.title)
+                  }
                 >
                   <span className="milestone-text">{milestone.title}</span>
                 </button>
