@@ -1,0 +1,45 @@
+/* HeaderMenu.module.css */
+.menuContainer {
+  position: absolute;
+  top: 65px;
+  left: 0;
+  width: 120px; /* Made width smaller */
+  z-index: 1000;
+}
+
+.topBlock {
+  height: 15px; /* Made shorter */
+  background-color: #c1ff7e; /* Updated to lighter green */
+  margin-bottom: 1px;
+  gap: 3px; /* Reduced gap */
+}
+
+.menuContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px; /* Reduced gap */
+  background-color: white;
+  padding: 0;
+}
+
+.menuButton {
+  width: 100%;
+  padding: 3px 10px; /* Reduced padding to make buttons smaller */
+  text-align: right;
+  background-color: #c1ff7e; /* Updated to lighter green */
+  border: none;
+  color: black;
+  font-size: 14px; /* Slightly smaller font */
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+  border-radius: 0; /* Removed rounded corners */
+}
+
+.menuButton:last-child {
+  position: relative;
+  border-bottom-right-radius: 15px; /* Smooth bottom-right corner */
+}
+
+.menuButton:hover {
+  background-color: #c1ff7e; /* Slightly darker on hover */
+}
