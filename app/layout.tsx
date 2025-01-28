@@ -32,11 +32,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Navbar />
-          {children}
-          <Footer />
-        </Suspense>
+        <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
       </body>
     </html>
   );
