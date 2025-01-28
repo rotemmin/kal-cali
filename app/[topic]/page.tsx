@@ -10,6 +10,8 @@ import dictionaryData from "@/public/dictionary.json";
 import "./[topic].css";
 import dictionaryIcon from "@/public/icons/dictionary.svg";
 import notebookIcon from "@/public/icons/notebook.svg";
+import { X } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface Milestone {
   title: string;
@@ -26,6 +28,7 @@ interface TopicData {
 }
 
 const TopicPage = () => {
+  const router = useRouter();
   const params = useParams();
   const { topic } = params as { topic: string };
   console.log("Topic: ", topic);
@@ -95,6 +98,7 @@ const TopicPage = () => {
     <>
       <Header />
       <div className="topic-page">
+        <X className="closeButton" onClick={() => router.back()} />
         <main className="topic-content">
           <h1 className="topic-title">{data.title}</h1>
 

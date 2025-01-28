@@ -186,6 +186,14 @@
   }
 }
 
+.closeButton {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  cursor: pointer;
+  color: var(--color-disabled);
+}
+
 /* topic.css לא רספונסיבי */
 /* .topic-page {
     width: 393px;
