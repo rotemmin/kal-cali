@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   background-color: var(--color-primary);
-  padding: 1rem;
+  padding: 0.2rem;
   flex-direction: row-reverse;
   border-radius: 0 0 1rem 1rem;
   z-index: 20;

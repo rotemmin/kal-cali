@@ -51,7 +51,7 @@ const topics = [
   {
     title: "חשבון בנק",
     icon: "/icons/onlyTitleStickers/bank.svg",
-    completedIcon: "/icons/stickers/bank_account3.svg",
+    completedIcon: "/icons/stickers/final_bank.svg",
     link: "/bank_account",
     dbKey: "bank_account",
   },
@@ -171,7 +171,7 @@ const HomePage = () => {
                           142px"
                     style={{ objectFit: "contain" }}
                     priority={index < 2}
-                  />  
+                  />
                   {/* <Image
                     src={isCompleted ? topic.completedIcon : topic.icon}
                     alt={topic.title}
