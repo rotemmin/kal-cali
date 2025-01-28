@@ -1,5 +1,6 @@
 .milestone-page {
   overflow: auto;
+  padding-bottom: 100px;
 }
 
 .milestone-page .title {
