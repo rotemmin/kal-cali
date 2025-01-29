@@ -3,7 +3,8 @@
   flex-direction: column;
   min-height: 100vh;
   background-color: white;
-  font-family: "Sunday", sans-serif; /* Default font */
+  font-family: "Sunday", sans-serif;
+  /* Default font */
 }
 
 .content {
@@ -18,15 +19,21 @@
   color: black;
   position: relative;
   text-align: right;
-  padding-bottom: 8px; /* Ensures space for underline */
-  margin-bottom: 20px; /* Adds spacing */
+  padding-bottom: 8px;
+  /* Ensures space for underline */
+  margin-bottom: 20px;
+  /* Adds spacing */
   background-image: url("/icons/purple_underline.svg");
   background-repeat: no-repeat;
-  background-position: bottom right; /* Ensures line is exactly under text */
-  background-size: 100% 4px; /* Matches underline size to text */
-  line-height: 1; /* Ensures underline stays close */
+  background-position: bottom right;
+  /* Ensures line is exactly under text */
+  background-size: 100% 4px;
+  /* Matches underline size to text */
+  line-height: 1;
+  /* Ensures underline stays close */
   font-family: "SimplerPro", sans-serif;
-  display: inline-block; /* Makes underline fit text width */
+  display: inline-block;
+  /* Makes underline fit text width */
 }
 
 .form {
@@ -49,13 +56,16 @@
   background-color: white;
   box-shadow: 0 0 0 1px rgba(128, 128, 255, 0.3);
   resize: none;
-  margin-bottom: 20px; /* Adds spacing */
+  margin-bottom: 20px;
+  /* Adds spacing */
 }
 
 .buttonContainer {
   display: flex;
-  justify-content: flex-start; /* Aligns button to the left */
-  width: 100%; /* Ensures full width for proper alignment */
+  justify-content: flex-start;
+  /* Aligns button to the left */
+  width: 100%;
+  /* Ensures full width for proper alignment */
 }
 
 .sendButton {
@@ -68,5 +78,14 @@
   color: white;
   font-family: "SimplerPro", sans-serif;
   font-weight: bold;
-  margin-left: 0; /* Ensures it sticks to the left */
+  margin-left: 0;
+  /* Ensures it sticks to the left */
+}
+
+.closeButtonContact {
+  position: absolute;
+  top: 6rem;
+  left: 1rem;
+  cursor: pointer;
+  color: var(--color-disabled);
 }

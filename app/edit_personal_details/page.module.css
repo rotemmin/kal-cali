@@ -81,7 +81,8 @@
   flex-direction: column;
   min-height: 100vh;
   background-color: white;
-  font-family: "Sunday", sans-serif; /* Default font */
+  font-family: "Sunday", sans-serif;
+  /* Default font */
 }
 
 .content {
@@ -103,7 +104,8 @@
   background-position: bottom center;
   background-size: 100% 4px;
   line-height: 0.8;
-  font-family: "SimplerPro", sans-serif !important; /* Force font application */
+  font-family: "SimplerPro", sans-serif !important;
+  /* Force font application */
   font-weight: bold !important;
 }
 

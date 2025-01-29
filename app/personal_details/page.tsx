@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import Header from "@/components/Header";
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
+import { X } from "lucide-react";
 
 interface UserData {
   name: string;
@@ -49,6 +50,10 @@ const PersonalDetails = () => {
   return (
     <div className={styles.container}>
       <Header />
+      <X
+        className={styles.closeButtonPersonalDetails}
+        onClick={() => router.back()}
+      />
       <div className={styles.content}>
         <div className={styles.titleContainer}>
           <h1 className={styles.title}>פרטים אישיים</h1>
