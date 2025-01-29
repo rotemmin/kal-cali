@@ -28,6 +28,14 @@ interface TopicData {
 }
 const supabase = createClient();
 
+const saveDidSeeFinalPage = () => {
+  localStorage.setItem("didSeeFinalPage", "true");
+};
+
+const didSeeFinalPage = () => {
+  return localStorage.getItem("didSeeFinalPage") === "true";
+};
+
 const TopicPage = () => {
   const router = useRouter();
   const params = useParams();
@@ -85,7 +93,10 @@ const TopicPage = () => {
         return;
       }
     }
-    router.push(`/${topic}/finalPage`);
+    if (!didSeeFinalPage()) {
+      router.push(`/${topic}/finalPage`);
+      saveDidSeeFinalPage();
+    }
   }, [milestonesStatus]);
 
   useEffect(() => {
