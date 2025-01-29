@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import Header from "@/components/Header";
 import styles from "./page.module.css";
+import { useRouter } from "next/navigation";
 
 interface UserData {
   name: string;
@@ -14,6 +15,7 @@ interface UserData {
 
 const PersonalDetails = () => {
   const [user, setUser] = useState<UserData | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -50,7 +52,12 @@ const PersonalDetails = () => {
       <div className={styles.content}>
         <div className={styles.titleContainer}>
           <h1 className={styles.title}>פרטים אישיים</h1>
-          <button className={styles.editButton}>עריכה</button>
+          <button
+            className={styles.editButton}
+            onClick={() => router.push("/edit_personal_details")}
+          >
+            עריכה
+          </button>
         </div>
         {user ? (
           <div className={styles.details}>

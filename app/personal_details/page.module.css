@@ -8,13 +8,15 @@
 .content {
   padding: 20px;
   direction: rtl;
+  margin-top: 180px; /* Added margin to push content down */
 }
 
 .titleContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 50px; /* Increased margin */
+  padding: 0 10px; /* Added padding */
 }
 
 .editButton {
@@ -28,7 +30,7 @@
 }
 
 .title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
   color: black;
 }
@@ -36,7 +38,8 @@
 .details {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 35px; /* Increased gap between items */
+  padding: 0 10px; /* Added padding */
 }
 
 .detailItem {
@@ -46,11 +49,12 @@
 .subHeading {
   color: #8080ff;
   font-weight: 500;
-  margin-bottom: 4px;
+  margin-bottom: 8px; /* Increased margin */
 }
 
 .value {
   color: black;
+  font-size: 16px; /* Added specific font size */
 }
 
 .loadingText {
