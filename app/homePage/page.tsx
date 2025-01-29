@@ -51,7 +51,7 @@ const topics = [
   {
     title: "חשבון בנק",
     icon: "/icons/onlyTitleStickers/bank.svg",
-    completedIcon: "/icons/stickers/final_bank.svg",
+    completedIcon: "/icons/stickers/final_bank_account.svg",
     link: "/bank_account",
     dbKey: "bank_account",
   },
