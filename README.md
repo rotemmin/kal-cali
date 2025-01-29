@@ -1,33 +1,16 @@
-# FinanStep
-<<<<<<< HEAD
-=======
+# Kal-Cali
 
->>>>>>> 8b7d7b837dccaef51857f8de2bc47f0abf9035cc
+Let's make finance fun! 
 
-The codebase is set up with a number of commands you can run. These are defined
-in the `package.json` file, in the `scripts` section. The following are
-available:
+In Kal-Cali app you can choose your favorite topics in finance, learn and enrich your knowledge and even receive valuable stickers and gifts!
 
-**Lint your code to detect style and some syntax errors**
+Come join us for an innovative and specially designed experience!
 
-```bash
-npm run lint
-```
+![image](https://github.com/user-attachments/assets/d9890060-899e-4c65-9b07-c0440118df08)
 
-**Compile a production build of your app**
 
-```bash
-npm run build
-```
+Ready? Go!
 
-**Run the compiled production build of the server**
+https://kal-cali.vercel.app/
 
-```bash
-npm run start
-```
-
-**Print out some system info related to your server**
-
-```bash
-npm run info
-```
+Enjoy!

@@ -1,0 +1,177 @@
+@font-face {
+  font-family: "SimplerPro";
+  src: url("/styles/fonts/SimplerPro-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SimplerPro";
+  src: url("/styles/fonts/SimplerPro-Bold.otf") format("opentype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SimplerPro";
+  src: url("/styles/fonts/SimplerPro-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Sunday";
+  src: url("/styles/fonts/Sunday-Black.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Sunday";
+  src: url("/styles/fonts/Sunday-BlackItalic.otf") format("opentype");
+  font-weight: 900;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Sunday";
+  src: url("/styles/fonts/Sunday-Bold.otf") format("opentype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Sunday";
+  src: url("/styles/fonts/Sunday-BoldItalic.otf") format("opentype");
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Sunday";
+  src: url("/styles/fonts/Sunday-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Sunday";
+  src: url("/styles/fonts/Sunday-LightItalic.otf") format("opentype");
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Sunday";
+  src: url("/styles/fonts/Sunday-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Sunday";
+  src: url("/styles/fonts/Sunday-MediumItalic.otf") format("opentype");
+  font-weight: 500;
+  font-style: italic;
+}
+
+/* Apply Fonts */
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: white;
+  font-family: "Sunday", sans-serif; /* Default font */
+}
+
+.content {
+  padding: 20px;
+  direction: rtl;
+  margin-top: 110px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: bold;
+  color: black;
+  position: absolute;
+  display: inline-block;
+  padding-bottom: 1px;
+  margin-top: -20px;
+  background-image: url("/icons/purple_underline.svg");
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  background-size: 100% 4px;
+  line-height: 0.8;
+  font-family: "SimplerPro", sans-serif !important; /* Force font application */
+  font-weight: bold !important;
+}
+
+.form {
+  padding-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 100 10px;
+}
+
+.nameContainer {
+  display: flex;
+  gap: 20px;
+}
+
+.input,
+.inputHalf {
+  padding: 12px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 16px;
+  font-size: 16px;
+  width: 100%;
+  outline: none;
+  transition: all 0.2s ease;
+  background-color: white;
+  box-shadow: 0 0 0 1px rgba(128, 128, 255, 0.3);
+  font-family: "Sunday", sans-serif;
+  font-weight: 300;
+}
+
+.inputHalf {
+  width: 50%;
+}
+
+/* Default state (gray text) */
+.default {
+  color: #9ca3af;
+}
+
+/* Edited state (black text) */
+.edited {
+  color: #000000;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.saveButton {
+  padding: 10px 24px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  border: none;
+  background-color: #8080ff;
+  color: white;
+  font-family: "SimplerPro", sans-serif;
+  font-weight: bold;
+}
+
+/* Style for select element */
+select.input {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%238080ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: left 12px center;
+  padding-left: 40px;
+}

@@ -128,7 +128,7 @@
 
 .genderToggle {
   display: flex;
-  background: #E6E4FF;
+  background: #e6e4ff;
   border-radius: 30px;
   padding: 4px;
   width: 200px;
@@ -156,7 +156,7 @@
   position: absolute;
   top: -120px;
   right: -20px;
-  background: #E6E4FF;
+  background: #e6e4ff;
   padding: 20px;
   border-radius: 12px;
   width: 300px;

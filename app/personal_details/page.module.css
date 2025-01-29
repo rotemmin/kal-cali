@@ -1,58 +1,141 @@
+@font-face {
+  font-family: "SimplerPro";
+  src: url("/styles/fonts/SimplerPro-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SimplerPro";
+  src: url("/styles/fonts/SimplerPro-Bold.otf") format("opentype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SimplerPro";
+  src: url("/styles/fonts/SimplerPro-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Sunday";
+  src: url("/styles/fonts/Sunday-Black.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Sunday";
+  src: url("/styles/fonts/Sunday-Bold.otf") format("opentype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Sunday";
+  src: url("/styles/fonts/Sunday-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Sunday";
+  src: url("/styles/fonts/Sunday-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* Apply Fonts */
 .container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   background-color: white;
+  font-family: "Sunday", sans-serif; /* Default font */
 }
 
 .content {
   padding: 20px;
   direction: rtl;
+  margin-top: 110px;
 }
 
 .titleContainer {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 30px;
+  padding: 0 10px;
 }
 
 .editButton {
-  background-color: #8080ff;
-  color: white;
+  color: black;
+  background: none;
   border: none;
-  padding: 8px 24px;
-  border-radius: 20px;
   cursor: pointer;
   font-size: 14px;
+  padding: 0;
+  margin-top: 10px;
+  font-family: "SimplerPro", sans-serif;
+  font-weight: 500;
 }
 
 .title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
   color: black;
+  position: relative;
+  padding-bottom: 0;
+  background-image: url("/icons/purple_underline.svg");
+  background-repeat: no-repeat;
+  background-position: bottom 0 right 0;
+  background-size: 100% 4px;
+  line-height: 1;
+  font-family: "SimplerPro", sans-serif;
 }
 
 .details {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
+  padding: 0 10px;
+  font-family: "Sunday", sans-serif;
 }
 
 .detailItem {
   text-align: right;
+  font-family: "Sunday", sans-serif;
 }
 
 .subHeading {
   color: #8080ff;
   font-weight: 500;
   margin-bottom: 4px;
+  font-family: "SimplerPro", sans-serif;
 }
 
 .value {
   color: black;
+  font-size: 16px;
+  font-family: "Sunday", sans-serif;
 }
 
 .loadingText {
   text-align: center;
+  font-family: "SimplerPro", sans-serif;
+  font-weight: 300;
+}
+
+.editButton {
+  background-color: #8080ff;
+  color: black;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 17px;
+  font-family: "SimplerPro", sans-serif;
+  font-weight: bold;
 }

@@ -323,6 +323,36 @@ const PersonalNotebookPage = () => {
     textarea.style.height = `${textarea.scrollHeight}px`;
   };
 
+  // Inside PersonalNotebookPage component
+  const [gender, setGender] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUserGender = async () => {
+      const { data: user, error } = await supabase.auth.getUser();
+
+      if (error || !user?.user) return;
+
+      const userId = user.user.id;
+      const { data: userMetadata, error: metadataError } = await supabase
+        .from("user_metadata")
+        .select("sex")
+        .eq("id", userId)
+        .single();
+
+      if (!metadataError && userMetadata) {
+        setGender(userMetadata.sex);
+      }
+    };
+
+    fetchUserGender();
+  }, []);
+
+  // Determine the correct placeholder text
+  const notePlaceholder =
+    gender === "male"
+      ? "רשום כאן את ההערות שלך..."
+      : "רשמי כאן את ההערות שלך...";
+
   return (
     <>
       <Header />
@@ -370,7 +400,7 @@ const PersonalNotebookPage = () => {
                       value={noteText}
                       onChange={handleNoteChange}
                       onInput={handleTextareaInput}
-                      placeholder="רשמי כאן את ההערות שלך..."
+                      placeholder={notePlaceholder}
                       dir="rtl"
                     />
                   )}
