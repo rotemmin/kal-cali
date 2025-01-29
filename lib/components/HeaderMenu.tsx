@@ -76,7 +76,7 @@ const HeaderMenu: React.FC<HeaderMenuProps> = ({ isOpen, onClose }) => {
       <div className={styles.menuContent}>
         <button
           className={styles.menuButton}
-          onClick={() => handleNavigation("/homePage")}
+          onClick={() => handleNavigation("/contact")}
         >
           {contactText}
         </button>
