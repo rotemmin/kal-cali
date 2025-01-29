@@ -21,13 +21,13 @@ const englishToHebrewTopics: { [key: string]: string } = {
 const topicFields = {
   pension: [
     { label: "שם החברה ושם היועץ", field: "company_advisor_name" },
-    { label: "דפי הניהול מצבירה", field: "management_saving_pages" },
+    { label: "דמי הניהול מצבירה", field: "management_saving_pages" },
     { label: "תשלומים חודשיים", field: "monthly_payments" },
     { label: "פרטי קשר נוספים", field: "additional_contact_details" },
     { label: "תיאור כללי", field: "general_description" },
   ],
   national_insurance: [
-    { label: "דפי הניהול מהפקדה", field: "management_deposit_pages" },
+    { label: "דמי הניהול מהפקדה", field: "management_deposit_pages" },
     { label: "מסלול הפנסיה שנראה לי מתאים", field: "pension_fit" },
     { label: "סטטוס תשלומים", field: "payment_status" },
     { label: "מידע רלוונטי לניהול עתידי", field: "future_management_info" },
