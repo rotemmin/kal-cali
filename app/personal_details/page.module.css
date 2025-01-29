@@ -8,38 +8,45 @@
 .content {
   padding: 20px;
   direction: rtl;
-  margin-top: 180px; /* Added margin to push content down */
+  margin-top: 180px;
 }
 
 .titleContainer {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 50px; /* Increased margin */
-  padding: 0 10px; /* Added padding */
+  align-items: flex-start; /* Changed to align items at the top */
+  margin-bottom: 30px; /* Reduced margin */
+  padding: 0 10px;
 }
 
 .editButton {
-  background-color: #8080ff;
-  color: white;
+  color: black;
+  background: none;
   border: none;
-  padding: 8px 24px;
-  border-radius: 20px;
   cursor: pointer;
   font-size: 14px;
+  padding: 0;
+  margin-top: 10px; /* Align with title text */
 }
 
 .title {
   font-size: 28px;
   font-weight: bold;
   color: black;
+  position: relative;
+  padding-bottom: 0; /* Removed padding to bring underline closer */
+  background-image: url("/icons/purple_underline.svg");
+  background-repeat: no-repeat;
+  background-position: bottom 0 right 0; /* Adjusted position */
+  background-size: 100% 4px;
+  line-height: 1; /* Reduced line height to bring underline closer */
 }
 
 .details {
   display: flex;
   flex-direction: column;
-  gap: 35px; /* Increased gap between items */
-  padding: 0 10px; /* Added padding */
+  gap: 20px; /* Reduced gap to bring headings closer */
+  padding: 0 10px;
 }
 
 .detailItem {
@@ -49,14 +56,24 @@
 .subHeading {
   color: #8080ff;
   font-weight: 500;
-  margin-bottom: 8px; /* Increased margin */
+  margin-bottom: 4px; /* Reduced margin to bring value closer */
 }
 
 .value {
   color: black;
-  font-size: 16px; /* Added specific font size */
+  font-size: 16px;
 }
 
 .loadingText {
   text-align: center;
+}
+
+.editButton {
+  background-color: #8080ff;
+  color: black;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 17px;
 }

@@ -8,30 +8,35 @@
 .content {
   padding: 20px;
   direction: rtl;
-  margin-top: 40px;
+  margin-top: 180px;
 }
 
 .title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
   color: black;
-  margin-bottom: 40px;
-  padding: 0 10px;
-  border-bottom: 2px solid #8080ff;
-  padding-bottom: 10px;
-  display: inline-block;
+  position: relative;
+  display: inline-block; /* Makes the underline match text width */
+  padding-bottom: 1px; /* Reduces space between text and underline */
+  margin-top: -20px; /* Moves the title up */
+  background-image: url("/icons/purple_underline.svg");
+  background-repeat: no-repeat;
+  background-position: bottom center; /* Centers the underline below the text */
+  background-size: 100% 4px; /* Adjusts underline length to fit the text */
+  line-height: 1.2; /* Ensures text and underline stay closely attached */
 }
 
 .form {
+  padding-top: 15px;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 0 10px;
+  padding: 100 10px;
 }
 
 .nameContainer {
   display: flex;
-  gap: 10px;
+  gap: 20px;
 }
 
 .input,
@@ -64,7 +69,7 @@
 .buttonContainer {
   display: flex;
   justify-content: flex-end;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .saveButton {
