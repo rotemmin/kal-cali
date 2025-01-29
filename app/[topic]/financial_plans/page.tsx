@@ -1,7 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import Header from "@/lib/components/Header";
+import { X } from "lucide-react";
+import styles from "./page.module.css";
 
 interface Plan {
   title: string;
@@ -30,6 +33,7 @@ interface CreditAccountPlansData {
 
 const CreditAccountPlans: React.FC = () => {
   const params = useParams();
+  const router = useRouter();
   const { topic } = params as { topic: string };
   const [data, setData] = useState<CreditAccountPlansData | null>(null);
   const userGender: "male" | "female" = "female";
@@ -52,22 +56,45 @@ const CreditAccountPlans: React.FC = () => {
   }
 
   return (
-    <div>
-      <h1>{data.title}</h1>
-      <p>{data.description[userGender]}</p>
-      <h2>סוגי מסלולי אשראי</h2>
-      {data.plans.map((plan, index) => (
-        <div key={index}>
-          <h3>{plan.title}</h3>
-          <p>{plan.description[userGender]}</p>
-          <h4>הטבות</h4>
-          <p>{plan.benefits[userGender]}</p>
-          <h4>עמלות</h4>
-          <p>{plan.fees[userGender]}</p>
+    <>
+      <Header />
+      <div className={styles.pageContainer}>
+        <X className={styles.closeButton} onClick={() => router.back()} />
+        <div className={styles.contentContainer}>
+          <h1 className={styles.title}>{data.title}</h1>
+          <p className={styles.description}>{data.description[userGender]}</p>
+
+          <h2 className={styles.subtitle}>סוגי מסלולי אשראי</h2>
+
+          <div className={styles.cardsContainer}>
+            {data.plans.map((plan, index) => (
+              <div key={index} className={styles.cardBox}>
+                <h3 className={styles.cardTitle}>{plan.title}</h3>
+                <p className={styles.cardText}>
+                  {plan.description[userGender]}
+                </p>
+
+                <div className={styles.cardSection}>
+                  <h4 className={styles.sectionTitle}>הטבות</h4>
+                  <p className={styles.cardText}>{plan.benefits[userGender]}</p>
+                </div>
+
+                <div className={styles.cardSection}>
+                  <h4 className={styles.sectionTitle}>עמלות</h4>
+                  <p className={styles.cardText}>{plan.fees[userGender]}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className={styles.buttonContainer}>
+            <button className={styles.mainButton} onClick={() => router.back()}>
+              חזרה
+            </button>
+          </div>
         </div>
-      ))}
-      <button onClick={() => window.history.back()}>חזרה</button>
-    </div>
+      </div>
+    </>
   );
 };
 
