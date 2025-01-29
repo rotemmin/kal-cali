@@ -81,8 +81,8 @@ export default function FinalPage() {
           <div className="image-wrapper">
             <div className="cochevet-container">
               <Image
-                src="/cochevet.svg"
-                alt="Cochevet"
+                src={userGender === 'male' ? '/cochav.svg' : '/cochevet.svg'}
+                alt={userGender === 'male' ? 'Cochav' : 'Cochevet'}
                 fill
                 style={{ objectFit: 'contain' }}
                 priority
