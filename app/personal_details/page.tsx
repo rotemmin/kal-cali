@@ -59,7 +59,7 @@ const PersonalDetails = () => {
             עריכה
           </button>
         </div>
-        {user ? (
+        {user && (
           <div className={styles.details}>
             <div className={styles.detailItem}>
               <div className={styles.subHeading}>שם</div>
@@ -81,8 +81,6 @@ const PersonalDetails = () => {
               <div className={styles.value}>{user.gender}</div>
             </div>
           </div>
-        ) : (
-          <p className={styles.loadingText}>...טוען</p>
         )}
       </div>
     </div>

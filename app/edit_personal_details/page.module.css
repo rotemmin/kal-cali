@@ -1,29 +1,110 @@
+@font-face {
+  font-family: "SimplerPro";
+  src: url("/styles/fonts/SimplerPro-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SimplerPro";
+  src: url("/styles/fonts/SimplerPro-Bold.otf") format("opentype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SimplerPro";
+  src: url("/styles/fonts/SimplerPro-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Sunday";
+  src: url("/styles/fonts/Sunday-Black.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Sunday";
+  src: url("/styles/fonts/Sunday-BlackItalic.otf") format("opentype");
+  font-weight: 900;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Sunday";
+  src: url("/styles/fonts/Sunday-Bold.otf") format("opentype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Sunday";
+  src: url("/styles/fonts/Sunday-BoldItalic.otf") format("opentype");
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Sunday";
+  src: url("/styles/fonts/Sunday-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Sunday";
+  src: url("/styles/fonts/Sunday-LightItalic.otf") format("opentype");
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Sunday";
+  src: url("/styles/fonts/Sunday-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Sunday";
+  src: url("/styles/fonts/Sunday-MediumItalic.otf") format("opentype");
+  font-weight: 500;
+  font-style: italic;
+}
+
+/* Apply Fonts */
 .container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   background-color: white;
+  font-family: "Sunday", sans-serif; /* Default font */
 }
 
 .content {
   padding: 20px;
   direction: rtl;
-  margin-top: 180px;
+  margin-top: 110px;
 }
 
 .title {
   font-size: 28px;
   font-weight: bold;
   color: black;
-  position: relative;
-  display: inline-block; /* Makes the underline match text width */
-  padding-bottom: 1px; /* Reduces space between text and underline */
-  margin-top: -20px; /* Moves the title up */
+  position: absolute;
+  display: inline-block;
+  padding-bottom: 1px;
+  margin-top: -20px;
   background-image: url("/icons/purple_underline.svg");
   background-repeat: no-repeat;
-  background-position: bottom center; /* Centers the underline below the text */
-  background-size: 100% 4px; /* Adjusts underline length to fit the text */
-  line-height: 1.2; /* Ensures text and underline stay closely attached */
+  background-position: bottom center;
+  background-size: 100% 4px;
+  line-height: 0.8;
+  font-family: "SimplerPro", sans-serif !important; /* Force font application */
+  font-weight: bold !important;
 }
 
 .form {
@@ -50,6 +131,8 @@
   transition: all 0.2s ease;
   background-color: white;
   box-shadow: 0 0 0 1px rgba(128, 128, 255, 0.3);
+  font-family: "Sunday", sans-serif;
+  font-weight: 300;
 }
 
 .inputHalf {
@@ -80,6 +163,8 @@
   border: none;
   background-color: #8080ff;
   color: white;
+  font-family: "SimplerPro", sans-serif;
+  font-weight: bold;
 }
 
 /* Style for select element */
