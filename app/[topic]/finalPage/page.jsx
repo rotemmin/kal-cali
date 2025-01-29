@@ -16,10 +16,11 @@ export default function FinalPage() {
   const { topic } = params;
   const normalizedTopic = topic.replace(/-/g, "_");
 
-  const [userGender, setUserGender] = useState('female');
+  const [userGender, setUserGender] = useState(null);
   const [topicData, setTopicData] = useState(null);
   const [showSticker, setShowSticker] = useState(false);
   const [animateToNotebook, setAnimateToNotebook] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Show sticker with delay for entrance animation
@@ -53,17 +54,19 @@ export default function FinalPage() {
         const { data: { session } } = await supabase.auth.getSession();
         if (session?.user) {
           const { data, error } = await supabase
-            .from('user_activity')
-            .select('gender')
+            .from('user_metadata')
+            .select('sex')
             .eq('id', session.user.id)
             .single();
 
-          if (!error && data?.gender) {
-            setUserGender(data.gender);
+          if (!error) {
+            setUserGender(data?.sex === 'male' ? 'male' : 'female');
           }
         }
       } catch (error) {
         console.error("Failed to load user preferences:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -71,7 +74,7 @@ export default function FinalPage() {
     loadUserPreferences();
   }, [normalizedTopic, supabase]);
 
-  if (!topicData) return null;
+  if (!topicData || !userGender || isLoading) return null;
 
   return (
     <div className="rtl">
@@ -81,8 +84,8 @@ export default function FinalPage() {
           <div className="image-wrapper">
             <div className="cochevet-container">
               <Image
-                src="/cochevet.svg"
-                alt="Cochevet"
+                src={userGender === 'male' ? '/cochav.svg' : '/cochevet.svg'}
+                alt={userGender === 'male' ? 'Cochav' : 'Cochevet'}
                 fill
                 style={{ objectFit: 'contain' }}
                 priority
