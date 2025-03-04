@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import Header from "@/components/Header";
 import styles from "./page.module.css";
+import { X } from "lucide-react";
 
 const ContactUs = () => {
   const router = useRouter();
@@ -53,6 +54,7 @@ const ContactUs = () => {
   return (
     <div className={styles.container}>
       <Header />
+      <X className={styles.closeButtonContact} onClick={() => router.back()} />
       <div className={styles.content}>
         <h1 className={styles.title}>צור קשר</h1>
 

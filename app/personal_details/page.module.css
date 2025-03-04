@@ -53,13 +53,14 @@
   flex-direction: column;
   min-height: 100vh;
   background-color: white;
-  font-family: "Sunday", sans-serif; /* Default font */
+  font-family: "Sunday", sans-serif;
+  /* Default font */
 }
 
 .content {
   padding: 20px;
   direction: rtl;
-  margin-top: 110px;
+  margin-top: 50px;
 }
 
 .titleContainer {
@@ -138,4 +139,12 @@
   font-size: 17px;
   font-family: "SimplerPro", sans-serif;
   font-weight: bold;
+}
+
+.closeButtonPersonalDetails {
+  position: absolute;
+  top: 6rem;
+  left: 1rem;
+  cursor: pointer;
+  color: var(--color-disabled);
 }
