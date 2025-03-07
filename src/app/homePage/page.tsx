@@ -206,3 +206,8 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+// const HomePage = () => {
+//   return(<h1>היי</h1>)
+// }
+// export default HomePage;

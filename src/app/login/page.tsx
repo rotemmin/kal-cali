@@ -1,53 +1,38 @@
-import { createClient } from "@/lib/supabase/server";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import styles from "./page.module.css";
+'use client';
 
-export default function Login({
-  searchParams,
-}: {
-  searchParams?: { message?: string };
-}) {
-  const signIn = async (formData: FormData) => {
-    "use server";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
+import styles from './page.module.css';
+import Link from 'next/link';
 
-    const email = formData.get("email") as string | null;
-    const password = formData.get("password") as string | null;
+export default function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const router = useRouter();
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email || !emailRegex.test(email)) {
-      return redirect("/login?message=Invalid email format");
+      setError('פורמט אימייל לא תקין');
+      return;
     }
+    
     if (!password || password.length < 6) {
-      return redirect(
-        "/login?message=Password must be at least 6 characters long"
-      );
+      setError('סיסמה חייבת להיות באורך 6 תווים לפחות');
+      return;
     }
-
-    const supabase = createClient(cookies());
-
+    
     try {
-      const { data: signInData, error: signInError } =
-        await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-
-      if (signInError) {
-        return redirect(
-          `/login?message=${encodeURIComponent(signInError.message)}`
-        );
-      }
-
-      if (!signInData?.user) {
-        return redirect(
-          "/login?message=Login succeeded but no user object returned"
-        );
-      }
-
-      return redirect("/homePage");
-    } catch (err) {
-      return redirect("/homePage");
+      await signInWithEmailAndPassword(auth, email, password);
+      router.push('/homePage');
+    } catch (error: any) {
+      setError(error.message);
     }
   };
 
@@ -55,30 +40,37 @@ export default function Login({
     <div className={styles.container}>
       <div className={styles.main}>
         <p className={styles.introText}>הזינו את הפרטים הבאים כדי להתחיל</p>
-        <form className={styles.loginForm} action={signIn}>
+        
+        <form className={styles.loginForm} onSubmit={handleSubmit}>
           <input
             type="email"
             name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="כתובת מייל"
             required
-            className={`${styles.inputContainer} ${
-              searchParams?.message ? styles.error : ""
-            }`}
+            className={`${styles.inputContainer} ${error ? styles.error : ''}`}
           />
           <input
             type="password"
             name="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             placeholder="סיסמה"
             required
-            className={`${styles.inputContainer} ${
-              searchParams?.message ? styles.error : ""
-            }`}
+            className={`${styles.inputContainer} ${error ? styles.error : ''}`}
           />
           <button type="submit">כניסה</button>
         </form>
-        {searchParams?.message && (
-          <p style={{ color: "red" }}>{searchParams.message}</p>
-        )}
+        
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        
+        <p className="mt-4 text-center">
+          אין לך חשבון עדיין?{' '}
+          <Link href="/signup">
+            הירשם כאן
+          </Link>
+        </p>
       </div>
     </div>
   );

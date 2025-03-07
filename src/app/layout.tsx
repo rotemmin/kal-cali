@@ -1,9 +1,10 @@
 import "@/styles/global.css";
+import { AuthProvider } from '@/components/AuthContext';
 
 import type { Metadata } from "next";
 import { Suspense, type ReactNode } from "react";
-import Navbar from "@/src/components/Navbar";
-import Footer from "@/src/components/Footer";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Kal-Cali",
@@ -32,8 +33,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body>
-        <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
 }
+
+
