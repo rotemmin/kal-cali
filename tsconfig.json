@@ -20,12 +20,12 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@/components/*": ["./lib/components/*"],
+      "@/components/*": ["/src/components/*"],
       "@/lib/*": ["./lib/*"],
       "@/styles/*": ["./styles/*"],
       "@/public/*": ["./public/*"],
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "lib/components/modal.jsx", "lib/components/milestoneSticker.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/modal.jsx", "src/components/milestoneSticker.tsx"],
   "exclude": ["node_modules"]
 }
