@@ -1,5 +1,6 @@
 import "@/styles/global.css";
 import { AuthProvider } from '@/components/AuthContext';
+import { UserGenderProvider } from '@/components/UserGenderContext';
 
 import type { Metadata } from "next";
 import { Suspense, type ReactNode } from "react";
@@ -34,7 +35,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body>
         <AuthProvider>
-          {children}
+          <UserGenderProvider>
+            {children}
+          </UserGenderProvider>
         </AuthProvider>
       </body>
     </html>

@@ -1,17 +1,18 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
-import NavigationButton from "@/src/components/NavigationButton";
-import Modal from "@/src/components/modal";
-import Header from "@/src/components/Header";
-import dictionaryData from "@/public/dictionary.json";
-import "./[topic].css";
+import { useParams, useRouter } from "next/navigation";
+import NavigationButton from "@/components/NavigationButton";
+import Modal from "@/components/modal";
+import Header from "@/components/Header";
+import dictionaryData from "@/lib/content/dictionary.json";
 import dictionaryIcon from "@/public/icons/dictionary.svg";
 import notebookIcon from "@/public/icons/notebook.svg";
 import { X } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { doc, getDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { db } from "@/lib/firebase";
+import "./topic.css"; // שינינו את שם הקובץ מ-[topic].css ל-topic.css
 
 interface Milestone {
   title: string;
@@ -26,7 +27,6 @@ interface TopicData {
   };
   milestones: Milestone[];
 }
-const supabase = createClient();
 
 const saveDidSeeFinalPage = () => {
   localStorage.setItem("didSeeFinalPage", "true");
@@ -40,10 +40,12 @@ const TopicPage = () => {
   const router = useRouter();
   const params = useParams();
   const { topic } = params as { topic: string };
-  console.log("Topic: ", topic);
   const normalizedTopic = topic.replace(/-/g, "_");
-  const data: TopicData = require(`@/lib/content/topics/${normalizedTopic}.json`);
-
+  
+  const [data, setData] = useState<TopicData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  
   const [dictionary, setDictionary] = useState<{ [key: string]: string }>({});
   const [selectedTerm, setSelectedTerm] = useState<{
     title: string;
@@ -59,65 +61,26 @@ const TopicPage = () => {
     Record<string, number>
   >({});
 
-  // Fetch milestones status
+  // טעינת נתוני הנושא מה-API
   useEffect(() => {
-    const fetchMilestonesStatus = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      const { data, error } = await supabase
-        .from("user_activity")
-        .select("topics_and_milestones")
-        .eq("id", session?.user.id)
-        .single();
-
-      if (error) {
-        console.error("Error fetching milestones status:", error);
-      } else {
-        const milestones =
-          data?.topics_and_milestones[normalizedTopic]?.milestones;
-        if (!milestones) {
-          throw new Error("No milestones found");
-        }
-        setMilestonesStatus(milestones);
-      }
-    };
-    fetchMilestonesStatus();
-  }, [normalizedTopic]);
-
-  useEffect(() => {
-    if (Object.keys(milestonesStatus).length === 0) return;
-    for (const [key, value] of Object.entries(milestonesStatus)) {
-      if (value === 0) {
-        setNextMilestoneToComplete(key);
-        return;
+    async function fetchTopicData() {
+      try {
+        const response = await fetch(`/api/topics/${topic}`);
+        if (!response.ok) throw new Error('Failed to load topic data');
+        const topicData = await response.json();
+        setData(topicData);
+      } catch (err) {
+        console.error("Error fetching topic data:", err);
+        setError("Failed to load topic information");
+      } finally {
+        setLoading(false);
       }
     }
-    if (!didSeeFinalPage()) {
-      router.push(`/${topic}/finalPage`);
-      saveDidSeeFinalPage();
-    }
-  }, [milestonesStatus]);
+    
+    fetchTopicData();
+  }, [topic]);
 
-  useEffect(() => {
-    const fetchGender = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      if (session?.user) {
-        const { data, error } = await supabase
-          .from("user_metadata")
-          .select("sex")
-          .eq("id", session.user.id)
-          .single();
-
-        if (!error) setUserGender(data?.sex === "male" ? "male" : "female");
-      }
-    };
-    fetchGender();
-  }, []);
-
+  // הגדרת המילון
   useEffect(() => {
     const dict: { [key: string]: string } = {};
     dictionaryData.dictionary.forEach((entry) => {
@@ -126,11 +89,94 @@ const TopicPage = () => {
     setDictionary(dict);
   }, []);
 
-  // Replaces spaces with underscores
+  // טעינת סטטוס אבני הדרך מ-Firebase
+  useEffect(() => {
+    const fetchMilestonesStatus = async () => {
+      try {
+        const auth = getAuth();
+        const user = auth.currentUser;
+        
+        if (!user) {
+          console.error("User not authenticated");
+          return;
+        }
+        
+        const userActivityRef = doc(db, "user_activity", user.uid);
+        const docSnap = await getDoc(userActivityRef);
+        
+        if (docSnap.exists()) {
+          const userData = docSnap.data();
+          const milestones = userData?.topics_and_milestones?.[normalizedTopic]?.milestones;
+          
+          if (milestones) {
+            setMilestonesStatus(milestones);
+          } else {
+            console.warn(`No milestones found for topic: ${normalizedTopic}`);
+            setMilestonesStatus({});
+          }
+        } else {
+          console.error("No user activity document found");
+        }
+      } catch (error) {
+        console.error("Error fetching milestones status:", error);
+      }
+    };
+    
+    fetchMilestonesStatus();
+  }, [normalizedTopic]);
+
+  // בדיקת אבן הדרך הבאה להשלמה
+  useEffect(() => {
+    if (Object.keys(milestonesStatus).length === 0) return;
+    
+    for (const [key, value] of Object.entries(milestonesStatus)) {
+      if (value === 0) {
+        setNextMilestoneToComplete(key);
+        return;
+      }
+    }
+    
+    if (!didSeeFinalPage()) {
+      router.push(`/${topic}/finalPage`);
+      saveDidSeeFinalPage();
+    }
+  }, [milestonesStatus, router, topic]);
+
+  // טעינת מגדר המשתמש מ-Firebase
+  useEffect(() => {
+    const fetchGender = async () => {
+      try {
+        const auth = getAuth();
+        const user = auth.currentUser;
+        
+        if (!user) {
+          console.error("User not authenticated");
+          return;
+        }
+        
+        const userMetadataRef = doc(db, "user_metadata", user.uid);
+        const docSnap = await getDoc(userMetadataRef);
+        
+        if (docSnap.exists()) {
+          const userData = docSnap.data();
+          if (userData.sex) {
+            setUserGender(userData.sex === "male" ? "male" : "female");
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user gender:", error);
+      }
+    };
+    
+    fetchGender();
+  }, []);
+
+  // המרת שם אבן דרך למזהה (מחליף רווחים בקווים תחתונים)
   const topicNameToTopicId = (topicName: string) => {
     return topicName.replace(/\s+/g, "_");
   };
 
+  // עיבוד הטקסט עם המונחים
   const processTextWithTerms = (text: string): string => {
     return text.replace(
       /<span data-term=['"]([^'"]+)['"]>([^<]+)<\/span>/g,
@@ -141,6 +187,7 @@ const TopicPage = () => {
     );
   };
 
+  // טיפול בלחיצה על מונח במילון
   const handleTermClick = (event: React.MouseEvent) => {
     const target = event.target as HTMLElement;
     if (target.hasAttribute("data-term")) {
@@ -153,6 +200,11 @@ const TopicPage = () => {
       }
     }
   };
+
+  // מצבי טעינה ושגיאה
+  if (loading) return <div className="loading-container">טוען נתונים...</div>;
+  if (error) return <div className="error-container">שגיאה: {error}</div>;
+  if (!data) return <div className="error-container">לא נמצאו נתונים עבור נושא זה</div>;
 
   return (
     <>
@@ -181,18 +233,14 @@ const TopicPage = () => {
               >
                 <button
                   className={`milestone-button ${
-                    milestonesStatus[topicNameToTopicId(milestone.title)] ===
-                      1 ||
-                    nextMilestoneToComplete ===
-                      topicNameToTopicId(milestone.title)
+                    milestonesStatus[topicNameToTopicId(milestone.title)] === 1 ||
+                    nextMilestoneToComplete === topicNameToTopicId(milestone.title)
                       ? "completed"
                       : "incomplete"
                   }`}
                   disabled={
-                    milestonesStatus[topicNameToTopicId(milestone.title)] ===
-                      0 &&
-                    nextMilestoneToComplete !==
-                      topicNameToTopicId(milestone.title)
+                    milestonesStatus[topicNameToTopicId(milestone.title)] === 0 &&
+                    nextMilestoneToComplete !== topicNameToTopicId(milestone.title)
                   }
                 >
                   <span className="milestone-text">{milestone.title}</span>

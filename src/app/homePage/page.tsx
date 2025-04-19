@@ -1,16 +1,16 @@
 "use client";
-import { createClient } from "@/lib/supabase/client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import Header from "@/src/components/Header";
+import Header from "@/components/Header";
 import "./home.css";
-import NavigationButton from "@/src/components/NavigationButton";
+import NavigationButton from "@/components/NavigationButton";
 import dictionaryIcon from "@/public/icons/dictionary.svg";
 import notebookIcon from "@/public/icons/notebook.svg";
-import HomeProgressBar from "./homePageProgressBar/homeProgressBar";
-
-const supabase = createClient();
+import HomeProgressBar from "./homePageProgressBar/page";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 const topics = [
   {
@@ -18,7 +18,7 @@ const topics = [
     icon: "/icons/onlyTitleStickers/national_insurance.svg",
     completedIcon: "/icons/stickers/final_national_insurance.svg",
     link: "/national_insurance",
-    dbKey: "national_insurance", // NEW: Added explicit database key
+    dbKey: "national_insurance",
   },
   {
     title: "מס הכנסה",
@@ -66,70 +66,72 @@ const HomePage = () => {
   }>({});
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const auth = getAuth();
+    
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        console.error("User not logged in");
+        setLoading(false);
+        // Optional: Redirect to login page
+        // router.push('/login');
+        return;
+      }
+
       try {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-
-        if (!session?.user) {
-          console.error("User session not found");
-          setLoading(false);
-          return;
+        // Fetch user metadata from Firestore
+        const userMetadataRef = doc(db, "user_metadata", user.uid);
+        const userMetadataSnap = await getDoc(userMetadataRef);
+        
+        if (userMetadataSnap.exists()) {
+          const userData = userMetadataSnap.data();
+          setFirstName(userData.first_name || null);
+          setUserGender(userData.sex === "male" ? "male" : "female");
+        } else {
+          console.error("User metadata not found");
         }
 
-        const userId = session.user.id;
-
-        const { data: userData, error: userError } = await supabase
-          .from("user_metadata")
-          .select("first_name, sex")
-          .eq("id", userId)
-          .single();
-
-        if (userError) {
-          console.error("Error fetching user metadata:", userError);
-        } else {
-          setFirstName(userData?.first_name || null);
-          setUserGender(userData?.sex === "male" ? "male" : "female");
-        }
-
-        // Fetch and log user's topics completion status
-        const { data: activityData, error: activityError } = await supabase
-          .from("user_activity")
-          .select("topics_and_milestones")
-          .eq("id", userId)
-          .single();
-
-        if (activityError) {
-          console.error("Error fetching user activity:", activityError);
-        } else {
+        // Fetch user activity data from Firestore
+        const userActivityRef = doc(db, "user_activity", user.uid);
+        const userActivitySnap = await getDoc(userActivityRef);
+        
+        if (userActivitySnap.exists()) {
+          const activityData = userActivitySnap.data();
+          
           // Log the raw data to debug
           console.log(
             "Raw topics_and_milestones data:",
-            activityData?.topics_and_milestones
+            activityData.topics_and_milestones
           );
-
+          
           const completedTopicsObj: { [key: string]: boolean } = {};
-          Object.entries(activityData?.topics_and_milestones || {}).forEach(
-            ([topic, data]) => {
-              completedTopicsObj[topic] = (data as any).status === 1;
-              // Log each topic's completion status
-              console.log(`Topic ${topic} status:`, (data as any).status);
-            }
-          );
-
+          
+          // Check if topics_and_milestones exists
+          if (activityData.topics_and_milestones) {
+            Object.entries(activityData.topics_and_milestones).forEach(
+              ([topic, data]) => {
+                // Cast data to any to access status
+                completedTopicsObj[topic] = (data as any).status === 1;
+                // Log each topic's completion status
+                console.log(`Topic ${topic} status:`, (data as any).status);
+              }
+            );
+          }
+          
           // Log the final completed topics object
           console.log("Completed topics:", completedTopicsObj);
           setCompletedTopics(completedTopicsObj);
+        } else {
+          console.error("User activity data not found");
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
       } finally {
         setLoading(false);
       }
-    };
+    });
 
-    fetchUserData();
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
   }, []);
 
   return (
@@ -153,7 +155,6 @@ const HomePage = () => {
         <div className="grid-container rtl">
           {topics.map((topic, index) => {
             const isCompleted = completedTopics[topic.dbKey];
-
             return (
               <Link
                 href={topic.link}
@@ -172,19 +173,11 @@ const HomePage = () => {
                     style={{ objectFit: "contain" }}
                     priority={index < 2}
                   />
-                  {/* <Image
-                    src={isCompleted ? topic.completedIcon : topic.icon}
-                    alt={topic.title}
-                    fill
-                    style={{ objectFit: "contain" }}
-                    priority={index < 2}
-                  /> */}
                 </div>
               </Link>
             );
           })}
         </div>
-
         <div className="nav-buttons">
           <NavigationButton
             icon={dictionaryIcon}
@@ -206,8 +199,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
-// const HomePage = () => {
-//   return(<h1>היי</h1>)
-// }
-// export default HomePage;
