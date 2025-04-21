@@ -5,7 +5,7 @@ import { debounce } from "lodash";
 import styles from "./page.module.css";
 import { Loader, X } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import Header from "@/src/components/Header";
+import Header from "@/components/Header";
 
 const supabase = createClient();
 
@@ -335,12 +335,12 @@ const PersonalNotebookPage = () => {
       const userId = user.user.id;
       const { data: userMetadata, error: metadataError } = await supabase
         .from("user_metadata")
-        .select("sex")
+        .select("gender")
         .eq("id", userId)
         .single();
 
       if (!metadataError && userMetadata) {
-        setGender(userMetadata.sex);
+        setGender(userMetadata.gender);
       }
     };
 

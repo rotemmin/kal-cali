@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import Header from "@/src/components/Header";
+import Header from "@/components/Header";
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 import { X } from "lucide-react";
@@ -28,7 +28,7 @@ const PersonalDetails = () => {
       if (session && session.user) {
         const { data, error } = await supabase
           .from("user_metadata")
-          .select("first_name, second_name, sex")
+          .select("first_name, second_name, gender")
           .eq("id", session.user.id)
           .single();
 
@@ -38,7 +38,7 @@ const PersonalDetails = () => {
               data.second_name ?? ""
             }`.trim(),
             email: session.user.email ?? "לא ידוע",
-            gender: data.sex ?? "לא ידוע",
+            gender: data.gender ?? "לא ידוע",
             password: "********",
           });
         }

@@ -55,12 +55,12 @@ export default function FinalPage() {
         if (session?.user) {
           const { data, error } = await supabase
             .from('user_metadata')
-            .select('sex')
+            .select('gender')
             .eq('id', session.user.id)
             .single();
 
           if (!error) {
-            setUserGender(data?.sex === 'male' ? 'male' : 'female');
+            setUserGender(data?.gender === 'male' ? 'male' : 'female');
           }
         }
       } catch (error) {

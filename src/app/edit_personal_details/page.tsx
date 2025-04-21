@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import Header from "@/src/components/Header";
+import Header from "@/components/Header";
 import styles from "./page.module.css";
 
 interface FormData {
@@ -11,7 +11,7 @@ interface FormData {
   lastName: string;
   email: string;
   password: string;
-  sex: string;
+  gender: string;
 }
 
 interface EditState {
@@ -19,7 +19,7 @@ interface EditState {
   lastName: boolean;
   email: boolean;
   password: boolean;
-  sex: boolean;
+  gender: boolean;
 }
 
 const EditPersonalDetails = () => {
@@ -30,7 +30,7 @@ const EditPersonalDetails = () => {
     lastName: "",
     email: "",
     password: "",
-    sex: "",
+    gender: "",
   });
 
   // Track which fields have been edited
@@ -39,7 +39,7 @@ const EditPersonalDetails = () => {
     lastName: false,
     email: false,
     password: false,
-    sex: false,
+    gender: false,
   });
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const EditPersonalDetails = () => {
       if (session?.user) {
         const { data: metadata, error: metadataError } = await supabase
           .from("user_metadata")
-          .select("first_name, second_name, sex")
+          .select("first_name, second_name, gender")
           .eq("id", session.user.id)
           .single();
 
@@ -61,7 +61,7 @@ const EditPersonalDetails = () => {
             lastName: metadata.second_name || "",
             email: session.user.email || "",
             password: "********",
-            sex: metadata.sex || "",
+            gender: metadata.gender || "",
           });
         }
       }
@@ -94,7 +94,7 @@ const EditPersonalDetails = () => {
         .update({
           first_name: formData.firstName,
           second_name: formData.lastName,
-          sex: formData.sex,
+          gender: formData.gender,
         })
         .eq("id", session.user.id);
 
@@ -185,10 +185,10 @@ const EditPersonalDetails = () => {
           />
 
           <select
-            value={formData.sex}
-            onChange={(e) => handleChange("sex", e.target.value)}
+            value={formData.gender}
+            onChange={(e) => handleChange("gender", e.target.value)}
             className={`${styles.input} ${
-              edited.sex ? styles.edited : styles.default
+              edited.gender ? styles.edited : styles.default
             }`}
           >
             <option value="">בחר מין</option>

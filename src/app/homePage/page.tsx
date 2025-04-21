@@ -85,7 +85,7 @@ const HomePage = () => {
         if (userMetadataSnap.exists()) {
           const userData = userMetadataSnap.data();
           setFirstName(userData.first_name || null);
-          setUserGender(userData.sex === "male" ? "male" : "female");
+          setUserGender(userData.gender === "male" ? "male" : "female");
         } else {
           console.error("User metadata not found");
         }

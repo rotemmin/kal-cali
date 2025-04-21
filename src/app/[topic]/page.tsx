@@ -159,8 +159,8 @@ const TopicPage = () => {
         
         if (docSnap.exists()) {
           const userData = docSnap.data();
-          if (userData.sex) {
-            setUserGender(userData.sex === "male" ? "male" : "female");
+          if (userData.gender) {
+            setUserGender(userData.gender === "male" ? "male" : "female");
           }
         }
       } catch (error) {

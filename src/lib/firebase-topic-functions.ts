@@ -117,7 +117,7 @@ export async function getUserGender() {
     }
 
     const userData = docSnap.data();
-    return userData.sex === "male" ? "male" : "female";
+    return userData.gender === "male" ? "male" : "female";
   } catch (error) {
     console.error("Error fetching user gender:", error);
     return "female"; // ברירת מחדל במקרה של שגיאה
