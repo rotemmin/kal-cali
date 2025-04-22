@@ -1,5 +1,4 @@
 import "@/styles/global.css";
-import { AuthProvider } from '@/components/AuthContext';
 import { UserGenderProvider } from '@/components/UserGenderContext';
 
 import type { Metadata } from "next";
@@ -34,11 +33,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body>
-        <AuthProvider>
-          <UserGenderProvider>
-            {children}
-          </UserGenderProvider>
-        </AuthProvider>
+        <UserGenderProvider>
+          {children}
+        </UserGenderProvider>
       </body>
     </html>
   );

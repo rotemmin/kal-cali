@@ -15,34 +15,112 @@ if (!admin.apps.length) {
   }
 }
 
-export async function cleanupUnverifiedUsers(threshold: number = 24) {
+interface CleanupResult {
+  unverifiedUsers: number;
+  incompleteProfiles: number;
+  errors: string[];
+}
+
+export async function cleanupInactiveUsers(thresholdHours: number = 48): Promise<CleanupResult> {
+  const result: CleanupResult = {
+    unverifiedUsers: 0,
+    incompleteProfiles: 0,
+    errors: []
+  };
+
   try {
     // Get all users from authentication
     const listUsersResult = await admin.auth().listUsers();
-    const unverifiedUsers = listUsersResult.users.filter(
-      user => !user.emailVerified && 
-      user.metadata.creationTime && 
-      (new Date().getTime() - new Date(user.metadata.creationTime).getTime()) > threshold * 60 * 60 * 1000
-    );
+    const now = new Date().getTime();
+    const thresholdMs = thresholdHours * 60 * 60 * 1000;
 
-    // Delete unverified users
-    for (const user of unverifiedUsers) {
-      console.log(`Deleting unverified user: ${user.email}`);
-      await admin.auth().deleteUser(user.uid);
-      
-      // Optionally delete the user's data from Firestore
+    // Get Firestore instance
+    const firestore = admin.firestore();
+    
+    for (const user of listUsersResult.users) {
       try {
-        await admin.firestore().collection('user_metadata').doc(user.uid).delete();
-        await admin.firestore().collection('user_activity').doc(user.uid).delete();
-      } catch (err) {
-        console.log(`No Firestore data to delete for user ${user.uid}`);
+        if (!user.metadata.creationTime) continue;
+        
+        const creationTime = new Date(user.metadata.creationTime).getTime();
+        const timeSinceCreation = now - creationTime;
+
+        // Skip if user was created less than threshold hours ago
+        if (timeSinceCreation < thresholdMs) continue;
+
+        // Get user metadata from Firestore
+        const userMetadataDoc = await firestore
+          .collection('user_metadata')
+          .doc(user.uid)
+          .get();
+
+        const shouldDelete = await shouldDeleteUser(user, userMetadataDoc);
+        
+        if (shouldDelete) {
+          // Delete user and their data
+          await deleteUserAndData(user.uid);
+          
+          // Update counters
+          if (!user.emailVerified) {
+            result.unverifiedUsers++;
+          }
+          if (!userMetadataDoc.exists || !userMetadataDoc.data()?.profileComplete) {
+            result.incompleteProfiles++;
+          }
+        }
+      } catch (error) {
+        const errorMessage = `Error processing user ${user.uid}: ${error instanceof Error ? error.message : 'Unknown error'}`;
+        result.errors.push(errorMessage);
+        console.error(errorMessage);
       }
     }
 
-    console.log(`Cleaned up ${unverifiedUsers.length} unverified users`);
-    return unverifiedUsers.length;
+    console.log(`Cleanup completed:
+      - Unverified users deleted: ${result.unverifiedUsers}
+      - Incomplete profiles deleted: ${result.incompleteProfiles}
+      - Errors encountered: ${result.errors.length}`);
+
+    return result;
   } catch (error) {
-    console.error('Error cleaning up unverified users:', error);
+    const errorMessage = `Error in cleanup process: ${error instanceof Error ? error.message : 'Unknown error'}`;
+    result.errors.push(errorMessage);
+    console.error(errorMessage);
+    return result;
+  }
+}
+
+async function shouldDeleteUser(
+  user: admin.auth.UserRecord, 
+  userMetadataDoc: admin.firestore.DocumentSnapshot
+): Promise<boolean> {
+  // Case 1: Unverified email
+  if (!user.emailVerified) {
+    return true;
+  }
+
+  // Case 2: No metadata document or incomplete profile
+  if (!userMetadataDoc.exists || !userMetadataDoc.data()?.profileComplete) {
+    return true;
+  }
+
+  return false;
+}
+
+async function deleteUserAndData(userId: string): Promise<void> {
+  const firestore = admin.firestore();
+  
+  try {
+    // Delete user authentication
+    await admin.auth().deleteUser(userId);
+    
+    // Delete user metadata
+    await firestore.collection('user_metadata').doc(userId).delete();
+    
+    // Delete user activity
+    await firestore.collection('user_activity').doc(userId).delete();
+    
+    console.log(`Successfully deleted user ${userId} and all associated data`);
+  } catch (error) {
+    console.error(`Error deleting user ${userId}:`, error);
     throw error;
   }
 }
