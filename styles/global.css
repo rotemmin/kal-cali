@@ -318,77 +318,77 @@ fieldset {
 /*rotem*/
 @font-face {
   font-family: "SimplerPro";
-  src: url("../public/fonts/SimplerPro-Regular.otf") format("opentype");
+  src: url("/fonts/SimplerPro-Regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: "SimplerPro";
-  src: url("../public/fonts/SimplerPro-Light.otf") format("opentype");
+  src: url("/fonts/SimplerPro-Light.otf") format("opentype");
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
   font-family: "SimplerPro";
-  src: url("../public/fonts/SimplerPro-Bold.otf") format("opentype");
+  src: url("/fonts/SimplerPro-Bold.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Sunday";
-  src: url("../public/fonts/Sunday-Black.otf") format("opentype");
+  src: url("/fonts/Sunday-Black.otf") format("opentype");
   font-weight: 900;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Sunday";
-  src: url("../public/fonts/Sunday-BlackItalic.otf") format("opentype");
+  src: url("/fonts/Sunday-BlackItalic.otf") format("opentype");
   font-weight: 900;
   font-style: italic;
 }
 
 @font-face {
   font-family: "Sunday";
-  src: url("../public/fonts/Sunday-Bold.otf") format("opentype");
+  src: url("/fonts/Sunday-Bold.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Sunday";
-  src: url("../public/fonts/Sunday-BoldItalic.otf") format("opentype");
+  src: url("/fonts/Sunday-BoldItalic.otf") format("opentype");
   font-weight: 700;
   font-style: italic;
 }
 
 @font-face {
   font-family: "Sunday";
-  src: url("../public/fonts/Sunday-Light.otf") format("opentype");
+  src: url("/fonts/Sunday-Light.otf") format("opentype");
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Sunday";
-  src: url("../public/fonts/Sunday-LightItalic.otf") format("opentype");
+  src: url("/fonts/Sunday-LightItalic.otf") format("opentype");
   font-weight: 300;
   font-style: italic;
 }
 
 @font-face {
   font-family: "Sunday";
-  src: url("../public/fonts/Sunday-Medium.otf") format("opentype");
+  src: url("/fonts/Sunday-Medium.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Sunday";
-  src: url("../public/fonts/Sunday-MediumItalic.otf") format("opentype");
+  src: url("/fonts/Sunday-MediumItalic.otf") format("opentype");
   font-weight: 500;
   font-style: italic;
 }

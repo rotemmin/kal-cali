@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import { SearchIcon, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import Header from "@/src/components/Header";
+import Header from "@/components/Header";
 
 const DictionaryPage = () => {
   const router = useRouter();

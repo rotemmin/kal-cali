@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { X } from "lucide-react";
-import Header from "@/src/components/Header";
+import Header from "@/components/Header";
 import "./investment_options.css";
 import ProgressBar from "../milestones_progress_bar/ProgressBar";
 

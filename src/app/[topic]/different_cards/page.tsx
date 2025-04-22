@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Header from "@/src/components/Header";
+import Header from "@/components/Header";
 import { X } from "lucide-react";
 import styles from "./page.module.css";
 

@@ -12,7 +12,7 @@ import { FirebaseError } from 'firebase/app';
 export default function SignUp() {
   const [firstName, setFirstName] = useState('');
   const [familyName, setFamilyName] = useState('');
-  const [gender, setGender] = useState('');
+  const [isMale, setIsMale] = useState(false); 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [signupMethod, setSignupMethod] = useState('google');
@@ -125,7 +125,7 @@ export default function SignUp() {
     setError('');
     setLoading(true);
     
-    if (!firstName.trim() || !familyName.trim() || !gender) {
+    if (!firstName.trim() || !familyName.trim()) {
       setError('יש למלא את כל השדות');
       setLoading(false);
       return;
@@ -186,7 +186,7 @@ export default function SignUp() {
           id: userId,
           first_name: firstName.trim(),
           second_name: familyName.trim(),
-          gender: gender,
+          gender: isMale ? 'male': 'female',
           email: user.email,
           created_at: new Date(),
           profileComplete: true
@@ -283,7 +283,7 @@ export default function SignUp() {
                       <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z" />
                     </svg>
                   </div>
-                  <span>{loading ? 'מתחבר...' : 'התחברות עם Google'}</span>
+                  <span>{loading ? 'מתחבר...' : 'הרשמה עם חשבון Google'}</span>
                 </button>
                 
                 <p className={styles.googleInstruction}>
@@ -366,20 +366,22 @@ export default function SignUp() {
                       disabled={loading}
                     />
                   </div>
+
                   <div className={styles.nameInputsRow}>
-                    <select 
-                      name="gender" 
-                      value={gender}
-                      onChange={(e) => setGender(e.target.value)}
-                      required 
-                      className={styles.inputContainer}
-                      disabled={loading}
-                    >
-                      <option value="">מה המגדר שלך?</option>
-                      <option value="male">זכר</option>
-                      <option value="female">נקבה</option>
-                    </select>
-                  </div>
+                    <div className={styles.genderToggleConteiner}>
+                        {isMale && <span className={styles.genderActive}>נקבה</span>}
+                        <label className={styles.toggleSwitch}>
+                          <input
+                            type="checkbox"
+                            checked={isMale}
+                            onChange={() => setIsMale(!isMale)}
+                            disabled={loading}
+                          />
+                          <span className={styles.toggleSlider}></span>
+                        </label>
+                        {isMale && <span className={styles.ganderActive}>זכר</span>}
+                      </div>
+                    </div>
                   
                   {auth.currentUser?.email && (
                     <div className={styles.userEmail}>
@@ -420,18 +422,19 @@ export default function SignUp() {
               />
             </div>
             <div className={styles.nameInputsRow}>
-              <select 
-                name="gender" 
-                value={gender}
-                onChange={(e) => setGender(e.target.value)}
-                required 
-                className={styles.inputContainer}
-                disabled={loading}
-              >
-                <option value="">מה המגדר שלך?</option>
-                <option value="male">זכר</option>
-                <option value="female">נקבה</option>
-              </select>
+              <div className={styles.genderToggleConteiner}>
+                {!isMale && <span className={styles.genderActive}>נקבה</span>}
+                <label className={styles.toggleSwitch}>
+                  <input 
+                    type="checkbox"
+                    checked={isMale}
+                    onChange={() => setIsMale(!isMale)}
+                    disabled={loading} 
+                  />
+                  <span className={styles.toggleSlider}></span>
+                </label>
+                {isMale && <span className={styles.ganderActive}>זכר</span>}
+              </div>
             </div>
             
             {auth.currentUser?.email && (

@@ -1,7 +1,7 @@
 .final-page {
     position: relative;
     min-height: 100vh;
-    background-image: url("/pattern.svg");
+    background-image: url("@/public/pattern");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

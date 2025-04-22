@@ -74,7 +74,7 @@ export default function Login() {
     } catch (error) {
       console.error('Email login error:', error);
       
-      let errorMessage = 'נראה שיש טעות בפרטי ההתחברות';
+      let errorMessage = 'שגיאה בהתחברות';
       
       if (error instanceof FirebaseError) {
         if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
@@ -127,17 +127,28 @@ export default function Login() {
   const handleGoogleLogin = async () => {
     setError('');
     setLoading(true);
+    
     try {
-      // התחברות באמצעות גוגל
-      const user = await signInWithGoogle();
+      // לבדוק אם כבר קיים משתמש עם המייל הזה בטבלת המשתמשים בפיירסטור
+      // לפני שמנסים להתחבר עם גוגל ויוצרים משתמש חדש
       
-      if (user) {
-        // בדיקה אם המשתמש קיים במערכת
-        const userMetadataRef = doc(db, "user_metadata", user.uid);
+      // במקום להשתמש בפונקציית signInWithGoogle, נשתמש באפשרות להציג רק 
+      // את חלון הבחירה של גוגל כדי לקבל את המייל, ורק אז לבדוק אם הוא קיים במערכת
+      
+      // ראשית, נציג את חלון הבחירה של גוגל ונקבל את המידע על המשתמש
+      const googleProvider = new (await import('firebase/auth')).GoogleAuthProvider();
+      const result = await (await import('firebase/auth')).signInWithPopup(auth, googleProvider);
+      
+      // אם הגענו לכאן, המשתמש כבר קיים בטבלת האותנטיקציה (או נוצר כרגע)
+      // אבל אנחנו רוצים לבדוק אם הוא קיים בטבלת המשתמשים בפיירסטור
+      
+      if (result.user) {
+        // בדיקה אם המשתמש קיים בטבלת משתמשים בפיירסטור
+        const userMetadataRef = doc(db, "user_metadata", result.user.uid);
         const userMetadataDoc = await getDoc(userMetadataRef);
         
         if (userMetadataDoc.exists()) {
-          // בדיקה אם המשתמש השלים את פרטי הפרופיל
+          // אם המשתמש קיים בפיירסטור, בדוק אם הוא השלים את הפרופיל
           if (userMetadataDoc.data().profileComplete) {
             // אם כן, נווט לדף הבית
             router.push('/homePage');
@@ -146,14 +157,21 @@ export default function Login() {
             router.push('/signup');
           }
         } else {
-          setError('משתמש לא קיים במערכת. אנא הירשם תחילה.');
-          // התנתקות מהמשתמש שנוצר
+          // אם המשתמש לא קיים בפיירסטור, מציגים הודעה ומתנתקים
+          setError('חשבון זה אינו רשום במערכת. אנא הירשם תחילה דרך דף ההרשמה.');
+          // התנתקות מהמשתמש שנוצר בטבלת האותנטיקציה
           await auth.signOut();
         }
       }
     } catch (error: any) {
       console.error('Google login error:', error);
-      setError('שגיאה בהתחברות עם גוגל: ' + (error.message || ''));
+      
+      // אם המשתמש ביטל את החלון של גוגל, לא נציג הודעת שגיאה
+      if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
+        // לא עושים כלום, המשתמש פשוט סגר את החלון
+      } else {
+        setError('שגיאה בהתחברות עם גוגל: ' + (error.message || ''));
+      }
     } finally {
       setLoading(false);
     }

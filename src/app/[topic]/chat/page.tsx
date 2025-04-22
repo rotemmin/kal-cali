@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import "./chat.css";
 import pensionData from "@/lib/content/topics/pension.json";
 import ScrollToTopButton from "./ScrollToTopButton";
-import Modal from "@/src/components/modal";
+import Modal from "@/components/modal";
 
 interface Message {
   from: string;

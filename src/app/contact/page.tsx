@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import Header from "@/src/components/Header";
+import Header from "@/components/Header";
 import styles from "./page.module.css";
 import { X } from "lucide-react";
 
