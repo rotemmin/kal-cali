@@ -1,0 +1,148 @@
+.emailSignupForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+/* .inputRow {
+  width: 100%;
+} */
+
+/* .inputContainer {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+} */
+
+.inputContainer.invalid {
+  border-color: #ff4444;
+  background-color: #fff8f8;
+}
+
+.passwordStrength {
+  margin-top: 0.5rem;
+}
+
+.strengthBar {
+  height: 4px;
+  background-color: #eee;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.strengthIndicator {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.strengthIndicator.weak {
+  background-color: #ff4444;
+}
+
+.strengthIndicator.medium {
+  background-color: #ffbb33;
+}
+
+.strengthIndicator.strong {
+  background-color: #00C851;
+}
+
+.strengthLabel {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.passwordRequirements {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.passwordRequirements h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+  color: #333;
+}
+
+.passwordRequirements ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.passwordRequirements li {
+  margin: 0.25rem 0;
+  font-size: 0.875rem;
+  color: #666;
+  display: flex;
+  align-items: center;
+}
+
+.passwordRequirements li:before {
+  content: "•";
+  margin-left: 0.5rem;
+  color: #ccc;
+}
+
+.passwordRequirements li.fulfiled {
+  color: #00C851;
+}
+
+.passwordRequirements li.fulfiled:before {
+  content: "✓";
+  color: #00C851;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submitButton:hover {
+  background-color: #0056b3;
+}
+
+.submitButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.submitButton.disabledButton {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.toggleMethodButton {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: transparent;
+  color: #007bff;
+  border: 1px solid #007bff;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.toggleMethodButton:hover {
+  background-color: #f8f9fa;
+}
+
+.toggleMethodButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+} 

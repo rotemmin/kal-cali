@@ -170,3 +170,59 @@ export const updateUserProfile = async (userId: string, userData: any): Promise<
 };
 
 export { app, auth, db };
+
+// strong password requirements
+export const PASSWORD_MIN_LENGTH = 8;
+export const PASSWORD_REQUIRES_NUMBERS = true;
+export const PASSWORD_REQUIRES_SPECIAL_CHARS = true;
+export const PASSWORD_REQUIRES_UPPERCASE = true;
+
+export const validatePassword = (password: string): { isValid: boolean; errors: string[] } => {
+  const errors: string[] = [];
+  
+  if (password.length < PASSWORD_MIN_LENGTH) {
+    errors.push(`הסיסמה חייבת להיות באורך ${PASSWORD_MIN_LENGTH} תווים לפחות`);
+  }
+  
+  if (PASSWORD_REQUIRES_NUMBERS && !/\d/.test(password)) {
+    errors.push('הסיסמה חייבת לכלול מספר אחד לפחות');
+  }
+  
+  if (PASSWORD_REQUIRES_SPECIAL_CHARS && !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+    errors.push('הסיסמה חייבת לכלול תו מיוחד אחד לפחות: !@#$%^&*(),.?":{}|<>');
+  }
+  
+  if (PASSWORD_REQUIRES_UPPERCASE && !/[A-Z]/.test(password)) {
+    errors.push('הסיסמה חייבת לכלול אות גדולה אחת לפחות באנגלית');
+  }
+  
+  return {
+    isValid: errors.length === 0,
+    errors
+  };
+};
+
+export const getPasswordStrength = (password: string): { strength: number; label: string } => {
+  if (!password) return { strength: 0, label: '' };
+  
+  let strength = 0;
+  
+  if (password.length >= 8) strength += 1;
+  if (password.length >= 12) strength += 1;
+  
+  if (/\d/.test(password)) strength += 1;  
+  if (/[a-z]/.test(password)) strength += 1;  
+  if (/[A-Z]/.test(password)) strength += 1;  
+  if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) strength += 1;  
+  
+
+  let label = '';
+  if (strength <= 2) label = 'חלשה';
+  else if (strength <= 4) label = 'בינונית';
+  else label = 'חזקה';
+  
+  return { 
+    strength: Math.min(Math.floor((strength / 6) * 100), 100), 
+    label 
+  };
+};
