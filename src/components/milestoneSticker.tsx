@@ -1,47 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import './MilestoneSticker.css';
+import Image from 'next/image';
 
-type MilestoneStickerProps = {
-  stickerPath: string;
-  isCompleted: boolean;
+interface MilestoneStickerProps {
+  sticker?: string | {
+    male: string;
+    female: string;
+  };
+  userGender?: string;
 }
 
-const MilestoneSticker: React.FC<MilestoneStickerProps> = ({ stickerPath, isCompleted }) => {
-  const [isFloating, setIsFloating] = useState(false);
-  const [shouldRender, setShouldRender] = useState(true);
+export default function MilestoneSticker({ sticker, userGender = "female" }: MilestoneStickerProps) {
+  if (!sticker) return null;
 
-  useEffect(() => {
-    if (isCompleted) {
-      // מתחילים את אנימציית התזוזה
-      setIsFloating(true);
-      
-      // מסירים מה-DOM אחרי שהאנימציה מסתיימת
-      const removeTimeout = setTimeout(() => {
-        setShouldRender(false);
-      }, 2000); // 2 שניות - מספיק זמן לאנימציה להסתיים
+  const stickerPath = typeof sticker === "string" 
+    ? sticker 
+    : userGender === "male" ? sticker.male : sticker.female;
 
-      return () => clearTimeout(removeTimeout);
-    }
-  }, [isCompleted]);
-
-  if (!stickerPath || !shouldRender) return null;
- 
-  const cleanPath = stickerPath
-    .replace('@', '')
-    .replace('app\\', '')
-    .replace(/\\/g, '/');
- 
   return (
-    <div className="sticker-container">
-      <div className={`sticker-wrapper ${isFloating ? 'animate-to-notebook' : ''}`}>
-        <img
-          src={cleanPath}
-          alt="Milestone sticker"
-          className="sticker-image"
-        />
-      </div>
+    <div className="milestone-sticker">
+      <Image
+        src={stickerPath}
+        alt="milestone sticker"
+        width={200}
+        height={200}
+        className="sticker-image"
+      />
     </div>
   );
-};
-
-export default MilestoneSticker;
+}

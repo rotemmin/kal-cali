@@ -1,11 +1,13 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { auth, db } from "@/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 import "./chat.css";
 import pensionData from "@/lib/content/topics/pension.json";
 import ScrollToTopButton from "./ScrollToTopButton";
-import Modal from "@/components/modal";
+import Modal from "@/components/general/Modal";
 
 interface Message {
   from: string;
@@ -17,8 +19,6 @@ interface ChatMessageProps {
   text: string;
   isAdvisor: boolean;
 }
-
-const supabase = createClient();
 
 const ChatMessage: React.FC<ChatMessageProps> = ({ from, text, isAdvisor }) => (
   <div className={`chat-message ${isAdvisor ? "advisor" : "user"}`}>
@@ -35,34 +35,25 @@ const ChatInterface: React.FC = () => {
   const chatStartRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        console.error("User not found");
+        return;
+      }
+
       try {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
+        const userMetadataRef = doc(db, "user_metadata", user.uid);
+        const userMetadataDoc = await getDoc(userMetadataRef);
 
-        if (!session?.user) {
-          console.error("User session not found");
-          return;
-        }
-
-        const { data: userData, error: userError } = await supabase
-          .from("user_metadata")
-          .select("first_name")
-          .eq("id", session.user.id)
-          .single();
-
-        if (userError) {
-          console.error("Error fetching user metadata:", userError);
-        } else {
-          setFirstName(userData?.first_name || null);
+        if (userMetadataDoc.exists()) {
+          setFirstName(userMetadataDoc.data()?.first_name || null);
         }
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error("Error fetching user metadata:", error);
       }
-    };
+    });
 
-    fetchUserData();
+    return () => unsubscribe();
   }, []);
 
   const handleModalClose = () => {

@@ -47,7 +47,10 @@
       },
       "button": "סיימתי!",
       "link": "/[topic]",
-      "sticker": "/national_insurance_stickers/national_insurance1.svg"
+      "sticker": {
+        "male": "/stickers/littleStickersTitle/male/title_insurance.svg",
+        "female": "/stickers/littleStickersTitle/female/title_insurance.svg"
+      }
     },
     {
       "title": "איך משלמים ביטוח לאומי",
@@ -91,7 +94,7 @@
       },
       "button": "סיימתי!",
       "link": "/[topic]",
-      "sticker": "/national_insurance_stickers/national_insurance2.svg"
+      "sticker": "/stickers/littleStickersDrawing/drawing_insurance.svg"
     },
     {
       "title": "מי פטור מביטוח לאומי",

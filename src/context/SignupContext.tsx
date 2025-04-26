@@ -5,6 +5,15 @@ import { auth, db, sendVerificationEmail, signInWithGoogle, validatePassword } f
 import { setDoc } from 'firebase/firestore';
 import { doc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
+import pensionData from '@/lib/content/topics/pension.json';
+import nationalInsuranceData from '@/lib/content/topics/national_insurance.json';
+import creditCardData from '@/lib/content/topics/credit_card.json';
+
+const topicDataMap = {
+  pension: pensionData,
+  national_insurance: nationalInsuranceData,
+  credit_card: creditCardData
+};
 
 interface SignupContextType {
   firstName: string;
@@ -41,21 +50,21 @@ const SignupContext = createContext<SignupContextType | undefined>(undefined);
 
 export function SignupProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
-  const [firstName, setFirstName] = useState('');
-  const [familyName, setFamilyName] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [familyName, setFamilyName] = useState("");
   const [isMale, setIsMale] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [passwordFocus, setPasswordFocus] = useState(false);
   const [signupMethod, setSignupMethod] = useState<'google' | 'email'>('google');
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [verificationSent, setVerificationSent] = useState(false);
   const [showEmailForm, setShowEmailForm] = useState(true);
 
   const handleGoogleSignUp = async () => {
-    setError('');
+    setError("");
     setLoading(true);
     
     try {
@@ -79,7 +88,7 @@ export function SignupProvider({ children }: { children: ReactNode }) {
 
   const handleEmailSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     if (!email || !password) {
@@ -118,9 +127,30 @@ export function SignupProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const getInitialMilestones = () => {
+    const createMilestonesObject = (milestones: any[]) => {
+      return milestones.reduce((acc, milestone) => {
+        const key = milestone.title.replace(/\s+/g, '_');
+        acc[key] = 0;
+        return acc;
+      }, {});
+    };
+
+    const topicsAndMilestones: Record<string, { status: number; milestones: Record<string, number> }> = {};
+
+    Object.entries(topicDataMap).forEach(([topicName, topicData]) => {
+      topicsAndMilestones[topicName] = {
+        status: 0,
+        milestones: createMilestonesObject(topicData.milestones)
+      };
+    });
+
+    return topicsAndMilestones;
+  };
+
   const handleProfileSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
     
     if (!firstName.trim() || !familyName.trim()) {
@@ -136,38 +166,8 @@ export function SignupProvider({ children }: { children: ReactNode }) {
       }
       
       const userId = user.uid;
+      const initialTopicsAndMilestones = getInitialMilestones();
       
-      const initialTopicsAndMilestones = {
-        pension: {
-          status: 0,
-          milestones: {
-            מה_זה_בכלל_פנסיה: 0,
-            מה_קורה_היום_בשוק: 0,
-            שיחה_עם_נציג: 0,
-            נקודות_לייעוץ: 0,
-          },
-        },
-        national_insurance: {
-          status: 0,
-          milestones: {
-            מה_זה_בכלל_ביטוח_לאומי: 0,
-            איך_משלמים_ביטוח_לאומי: 0,
-            מי_פטור_מביטוח_לאומי: 0,
-            תשלומי_חוב_לביטוח_לאומי_וקנסות: 0,
-          },
-        },
-        bank_account: {
-          status: 0,
-          milestones: {
-            פתיחת_חשבון_בנק: 0,
-            בחירת_כרטיס_אשראי: 0,
-            ניהול_מסגרת_אשראי: 0,
-            מידע_על_עמלות_ותשלומים: 0,
-            שיחה_עם_נציג_בנק: 0,
-          },
-        },
-      };
-
       await setDoc(doc(db, "user_activity", userId), {
         id: userId,
         activity_type: "initial_signup",
@@ -209,7 +209,7 @@ export function SignupProvider({ children }: { children: ReactNode }) {
 
   const toggleSignupMethod = () => {
     setSignupMethod(signupMethod === 'google' ? 'email' : 'google');
-    setError('');
+    setError("");
     setVerificationSent(false);
     setShowEmailForm(true);
   };

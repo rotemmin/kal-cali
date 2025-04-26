@@ -1,21 +1,21 @@
 "use client";
 import React, { useState, useMemo, useEffect, useCallback } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { db } from "@/lib/firebase/client";
+import { collection, doc, getDoc, setDoc, onSnapshot } from "firebase/firestore";
 import { debounce } from "lodash";
 import styles from "./page.module.css";
 import { Loader, X } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import Header from "@/components/Header";
-
-const supabase = createClient();
+import Header from "@/components/general/Header";
+import { useAuth } from "@/lib/firebase/auth";
 
 const englishToHebrewTopics: { [key: string]: string } = {
   pension: "פנסיה",
   national_insurance: "ביטוח לאומי",
-  bank_account: "חשבון בנק",
-  income_tax: "מס הכנסה",
-  pay_slips: "תלושי שכר",
-  credit_card: "אשראי",
+  credit_card: "חשבון בנק",
+  tax: "מס הכנסה",
+  salary: "תלושי שכר",
+  insurance: "ביטוחים",
 };
 
 const topicFields = {
@@ -48,35 +48,37 @@ interface Topic {
   fromDb: boolean;
 }
 
+interface Sticker {
+  type: 'littleStickersTitle' | 'littleStickersDrawing' | 'finalStickers';
+  path: string;
+}
+
 const PersonalNotebookPage = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
   const [topics, setTopics] = useState<Topic[]>([]);
-  const [userId, setUserId] = useState<string | null>(null);
   const [currentTopic, setCurrentTopic] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [noteText, setNoteText] = useState<string>("");
   const [loadingNote, setLoadingNote] = useState<boolean>(false);
-  const [additionalFields, setAdditionalFields] = useState<
-    Record<string, string>
-  >({});
+  const [additionalFields, setAdditionalFields] = useState<Record<string, string>>({});
   const [milestones, setMilestones] = useState<any>({});
+  const { user } = useAuth();
+  const [gender, setGender] = useState<string | null>(null);
+  const [stickers, setStickers] = useState<Record<string, Sticker[]>>({});
 
   useEffect(() => {
     const topic = searchParams.get("topic");
     if (!currentTopic) {
       setCurrentTopic(topic);
     }
-    // remove topic from search params in order to avoid maintaining it in the url
     window.history.replaceState(null, "", pathname);
   }, [searchParams]);
 
   useEffect(() => {
-    const textarea = document.querySelector(
-      `.${styles.notesTextarea}`
-    ) as HTMLTextAreaElement;
+    const textarea = document.querySelector(`.${styles.notesTextarea}`) as HTMLTextAreaElement;
     if (textarea) {
       textarea.style.height = "auto";
       textarea.style.height = `${textarea.scrollHeight}px`;
@@ -85,55 +87,49 @@ const PersonalNotebookPage = () => {
 
   const fetchTopics = useCallback(async () => {
     try {
-      if (!userId) {
+      if (!user?.uid) {
         console.error("User ID is null. Cannot fetch user activity.");
         return;
       }
 
-      const { data, error } = await supabase
-        .from("user_activity")
-        .select("topics_and_milestones, curr_topic")
-        .eq("id", userId)
-        .single();
+      const userDocRef = doc(db, "user_activity", user.uid);
+      const userDoc = await getDoc(userDocRef);
 
-      if (error) throw error;
+      if (userDoc.exists()) {
+        const data = userDoc.data();
+        const topicsData = data?.topics_and_milestones || {};
+        setMilestones(topicsData);
 
-      const topicsData = data?.topics_and_milestones || {};
-      setMilestones(topicsData);
-
-      // Generate dbTopics with unique IDs
-      const dbTopics: Topic[] = Object.keys(topicsData).map((topic, index) => ({
-        id: `db-${index}`,
-        curr_topic: topic,
-        fromDb: true,
-      }));
-
-      // Generate predefinedTopics with unique IDs
-      const predefinedTopics: Topic[] = Object.keys(englishToHebrewTopics).map(
-        (topic, index) => ({
-          id: `predefined-${index}`,
+        const dbTopics: Topic[] = Object.keys(topicsData).map((topic, index) => ({
+          id: `db-${index}`,
           curr_topic: topic,
-          fromDb: false,
-        })
-      );
+          fromDb: true,
+        }));
 
-      // Merge dbTopics and predefinedTopics, ensuring no duplicates
-      const mergedTopics: Topic[] = [...dbTopics, ...predefinedTopics].reduce(
-        (uniqueTopics, topic) => {
-          if (!uniqueTopics.find((t) => t.curr_topic === topic.curr_topic)) {
-            uniqueTopics.push(topic);
-          }
-          return uniqueTopics;
-        },
-        [] as Topic[]
-      );
+        const predefinedTopics: Topic[] = Object.keys(englishToHebrewTopics).map(
+          (topic, index) => ({
+            id: `predefined-${index}`,
+            curr_topic: topic,
+            fromDb: false,
+          })
+        );
 
-      setTopics(mergedTopics);
-      if (!currentTopic || currentTopic === "O") {
-        console.log("Setting current topic to pension");
-        setCurrentTopic("pension");
-      } else if (data?.curr_topic && !currentTopic) {
-        setCurrentTopic(data.curr_topic);
+        const mergedTopics: Topic[] = [...dbTopics, ...predefinedTopics].reduce(
+          (uniqueTopics, topic) => {
+            if (!uniqueTopics.find((t) => t.curr_topic === topic.curr_topic)) {
+              uniqueTopics.push(topic);
+            }
+            return uniqueTopics;
+          },
+          [] as Topic[]
+        );
+
+        setTopics(mergedTopics);
+        if (!currentTopic || currentTopic === "O") {
+          setCurrentTopic("pension");
+        } else if (data?.curr_topic && !currentTopic) {
+          setCurrentTopic(data.curr_topic);
+        }
       }
     } catch (error) {
       setErrorMessage("לא הצלחנו לטעון את הנושאים");
@@ -141,29 +137,17 @@ const PersonalNotebookPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [userId, currentTopic]);
+  }, [user?.uid, currentTopic]);
 
   const fetchNotes = useCallback(async () => {
-    if (!userId || !currentTopic) return;
+    if (!user?.uid || !currentTopic) return;
 
     try {
-      const { data, error } = await supabase
-        .from("notes")
-        .select("note, field_1, field_2, field_3, field_4, field_5")
-        .eq("user_id", userId)
-        .eq("curr_topic", currentTopic)
-        .single();
+      const noteDocRef = doc(db, "notes", `${user.uid}_${currentTopic}`);
+      const noteDoc = await getDoc(noteDocRef);
 
-      if (error) {
-        setNoteText("");
-        setAdditionalFields({});
-        if (error.code !== "PGRST116") {
-          // means no notes found
-          throw error;
-        }
-      }
-
-      if (data) {
+      if (noteDoc.exists()) {
+        const data = noteDoc.data();
         setNoteText(data.note || "");
 
         const newFields = Object.entries(data)
@@ -191,7 +175,7 @@ const PersonalNotebookPage = () => {
       setErrorMessage("לא הצלחנו לטעון את ההערות");
       console.error("Error fetching notes:", error);
     }
-  }, [userId, currentTopic]);
+  }, [user?.uid, currentTopic]);
 
   useEffect(() => {
     fetchTopics();
@@ -207,69 +191,74 @@ const PersonalNotebookPage = () => {
   }, [fetchNotes, currentTopic]);
 
   useEffect(() => {
-    const { data } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session?.user) {
-        setUserId((prevUserId) => {
-          if (prevUserId !== session.user.id) {
-            return session.user.id;
-          }
-          return prevUserId;
-        });
-      } else {
-        console.log("No user session found.");
-      }
-    });
+    if (!user) return;
 
-    return () => {
-      data.subscription.unsubscribe();
+    const loadStickers = async () => {
+      try {
+        const notebookRef = doc(db, `users/${user.uid}/notebook`);
+        const notebookDoc = await getDoc(notebookRef);
+        
+        if (notebookDoc.exists()) {
+          const data = notebookDoc.data();
+          setStickers(data.stickers || {});
+        }
+      } catch (error) {
+        console.error('Error loading stickers:', error);
+      }
     };
-  }, []);
+
+    const unsubscribe = onSnapshot(
+      doc(db, `users/${user.uid}/notebook`),
+      (doc) => {
+        if (doc.exists()) {
+          const data = doc.data();
+          setStickers(data.stickers || {});
+        }
+      }
+    );
+
+    loadStickers();
+    return () => unsubscribe();
+  }, [user]);
 
   const getStickerImage = (topic: string, index: number) => {
-    console.log(topic);
-    if (!topic) {
-      console.error(`No English equivalent found for topic: ${topic}`);
-      return "";
-    }
+    const topicStickers = stickers[topic] || [];
+    
+    // Helper function to get pre-sticker path
+    const getPreStickerPath = (type: string) => {
+      return `/stickers/${type}/pre_${topic}`;
+    };
 
-    const topicMilestones = milestones[topic]?.milestones || {};
-    const totalMilestones = Object.keys(topicMilestones).length;
-    const completedMilestones = Object.values(topicMilestones).filter(
-      (status) => status === 1
-    ).length;
-
-    const folderPath = `/${topic}_stickers/`;
-
+    // First sticker (title)
     if (index === 0) {
-      return completedMilestones > 0
-        ? `${folderPath}${topic}1.svg`
-        : `${folderPath}pre${topic}1.svg`;
-    } else if (index === 1) {
-      return completedMilestones >= totalMilestones / 2
-        ? `${folderPath}${topic}2.svg`
-        : `${folderPath}pre${topic}2.svg`;
-    } else if (index === 2) {
-      return completedMilestones === totalMilestones
-        ? `${folderPath}${topic}3.svg`
-        : `${folderPath}pre${topic}3.svg`;
+      const titleSticker = topicStickers.find(s => s.type === 'littleStickersTitle');
+      return titleSticker ? titleSticker.path : getPreStickerPath('littleStickersTitle');
+    }
+    
+    // Second sticker (drawing)
+    if (index === 1) {
+      const drawingSticker = topicStickers.find(s => s.type === 'littleStickersDrawing');
+      return drawingSticker ? drawingSticker.path : getPreStickerPath('littleStickersDrawing');
+    }
+    
+    // Third sticker (final)
+    if (index === 2) {
+      const finalSticker = topicStickers.find(s => s.type === 'finalStickers');
+      return finalSticker ? finalSticker.path : `/stickers/finalStickers/final_${topic}.svg`;
     }
 
-    return `${folderPath}pre${topic}1.svg`;
+    return '';
   };
 
   const debouncedUpdateNote = useMemo(
     () =>
-      debounce(async (userId, topicInEnglish, newNote) => {
+      debounce(async (userId: string, topicInEnglish: string, newNote: string) => {
         try {
           if (!userId || !topicInEnglish) return;
-          await supabase.from("notes").upsert(
-            {
-              user_id: userId,
-              curr_topic: topicInEnglish,
-              note: newNote,
-            },
-            { onConflict: "user_id, curr_topic" }
-          );
+          const noteDocRef = doc(db, "notes", `${userId}_${topicInEnglish}`);
+          await setDoc(noteDocRef, {
+            note: newNote,
+          }, { merge: true });
         } catch (error) {
           console.error("Failed to save note:", error);
         }
@@ -279,17 +268,13 @@ const PersonalNotebookPage = () => {
 
   const debouncedUpdateField = useMemo(
     () =>
-      debounce(async (userId, topicInEnglish, field, value) => {
+      debounce(async (userId: string, topicInEnglish: string, field: string, value: string) => {
         try {
           if (!userId || !topicInEnglish) return;
-          await supabase.from("notes").upsert(
-            {
-              user_id: userId,
-              curr_topic: topicInEnglish,
-              [field]: value,
-            },
-            { onConflict: "user_id, curr_topic" }
-          );
+          const noteDocRef = doc(db, "notes", `${userId}_${topicInEnglish}`);
+          await setDoc(noteDocRef, {
+            [field]: value,
+          }, { merge: true });
         } catch (error) {
           console.error("Failed to save field:", error);
         }
@@ -305,14 +290,14 @@ const PersonalNotebookPage = () => {
     const newNote = event.target.value;
     setNoteText(newNote);
 
-    debouncedUpdateNote(userId, currentTopic!, newNote);
+    debouncedUpdateNote(user?.uid!, currentTopic!, newNote);
   };
 
   const handleFieldChange = (field: string, value: string) => {
     const fieldKey = `${currentTopic}_${field}`;
 
     setAdditionalFields((prev) => ({ ...prev, [fieldKey]: value }));
-    debouncedUpdateField(userId, currentTopic!, field, value);
+    debouncedUpdateField(user?.uid!, currentTopic!, field, value);
   };
 
   const handleTextareaInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -323,29 +308,25 @@ const PersonalNotebookPage = () => {
     textarea.style.height = `${textarea.scrollHeight}px`;
   };
 
-  // Inside PersonalNotebookPage component
-  const [gender, setGender] = useState<string | null>(null);
-
   useEffect(() => {
     const fetchUserGender = async () => {
-      const { data: user, error } = await supabase.auth.getUser();
+      if (!user) return;
 
-      if (error || !user?.user) return;
+      try {
+        const userMetadataRef = doc(db, "user_metadata", user.uid);
+        const userMetadataDoc = await getDoc(userMetadataRef);
 
-      const userId = user.user.id;
-      const { data: userMetadata, error: metadataError } = await supabase
-        .from("user_metadata")
-        .select("gender")
-        .eq("id", userId)
-        .single();
-
-      if (!metadataError && userMetadata) {
-        setGender(userMetadata.gender);
+        if (userMetadataDoc.exists()) {
+          const userData = userMetadataDoc.data();
+          setGender(userData.gender);
+        }
+      } catch (error) {
+        console.error("Error fetching user gender:", error);
       }
     };
 
     fetchUserGender();
-  }, []);
+  }, [user]);
 
   // Determine the correct placeholder text
   const notePlaceholder =

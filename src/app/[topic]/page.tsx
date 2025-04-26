@@ -2,17 +2,15 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import NavigationButton from "@/components/NavigationButton";
-import Modal from "@/components/modal";
-import Header from "@/components/Header";
+import NavigationButton from "@/components/general/NavigationButton";
+import Modal from "@/components/general/Modal";
+import Header from "@/components/general/Header";
 import dictionaryData from "@/lib/content/dictionary.json";
-import dictionaryIcon from "@/public/icons/dictionary.svg";
-import notebookIcon from "@/public/icons/notebook.svg";
 import { X } from "lucide-react";
 import { doc, getDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { db } from "@/lib/firebase";
-import "./topic.css"; // שינינו את שם הקובץ מ-[topic].css ל-topic.css
+import "./topic.css";
 
 interface Milestone {
   title: string;
@@ -61,13 +59,10 @@ const TopicPage = () => {
     Record<string, number>
   >({});
 
-  // טעינת נתוני הנושא מה-API
   useEffect(() => {
     async function fetchTopicData() {
       try {
-        const response = await fetch(`/api/topics/${topic}`);
-        if (!response.ok) throw new Error('Failed to load topic data');
-        const topicData = await response.json();
+        const topicData: TopicData = require(`@/lib/content/topics/${normalizedTopic}.json`);
         setData(topicData);
       } catch (err) {
         console.error("Error fetching topic data:", err);
@@ -78,7 +73,7 @@ const TopicPage = () => {
     }
     
     fetchTopicData();
-  }, [topic]);
+  }, [normalizedTopic]);
 
   // הגדרת המילון
   useEffect(() => {
@@ -127,20 +122,25 @@ const TopicPage = () => {
 
   // בדיקת אבן הדרך הבאה להשלמה
   useEffect(() => {
-    if (Object.keys(milestonesStatus).length === 0) return;
+    if (Object.keys(milestonesStatus).length === 0 || !data) return;
     
-    for (const [key, value] of Object.entries(milestonesStatus)) {
-      if (value === 0) {
-        setNextMilestoneToComplete(key);
+    // מעבר על המיילסטונים לפי הסדר שלהם ב-data
+    for (const milestone of data.milestones) {
+      const milestoneId = topicNameToTopicId(milestone.title);
+      
+      // אם המיילסטון הזה לא הושלם, זה המיילסטון הבא
+      if (milestonesStatus[milestoneId] === 0) {
+        setNextMilestoneToComplete(milestoneId);
         return;
       }
     }
     
+    // אם כל המיילסטונים הושלמו
     if (!didSeeFinalPage()) {
       router.push(`/${topic}/finalPage`);
       saveDidSeeFinalPage();
     }
-  }, [milestonesStatus, router, topic]);
+  }, [milestonesStatus, data, router, topic]);
 
   // טעינת מגדר המשתמש מ-Firebase
   useEffect(() => {
@@ -207,10 +207,10 @@ const TopicPage = () => {
   if (!data) return <div className="error-container">לא נמצאו נתונים עבור נושא זה</div>;
 
   return (
-    <>
+    <div className="topic-container">
       <Header />
+      <X className="close-button" onClick={() => router.back()} />
       <div className="topic-page">
-        <X className="closeButtonTopic" onClick={() => router.back()} />
         <main className="topic-content">
           <h1 className="topic-title">{data.title}</h1>
 
@@ -225,40 +225,53 @@ const TopicPage = () => {
           />
 
           <div className="milestones-container">
-            {data.milestones.map((milestone, index) => (
-              <Link
-                key={index}
-                href={`/${topic}/${milestone.title}`}
-                style={{ textDecoration: "none" }}
-              >
-                <button
-                  className={`milestone-button ${
-                    milestonesStatus[topicNameToTopicId(milestone.title)] === 1 ||
-                    nextMilestoneToComplete === topicNameToTopicId(milestone.title)
-                      ? "completed"
-                      : "incomplete"
-                  }`}
-                  disabled={
-                    milestonesStatus[topicNameToTopicId(milestone.title)] === 0 &&
-                    nextMilestoneToComplete !== topicNameToTopicId(milestone.title)
-                  }
+            {data.milestones.map((milestone, index) => {
+              const milestoneId = topicNameToTopicId(milestone.title);
+              const isCompleted = milestonesStatus[milestoneId] === 1;
+              const isNext = milestoneId === nextMilestoneToComplete;
+              
+              // בדיקה האם כל המיילסטונים הקודמים הושלמו
+              const previousMilestonesCompleted = data.milestones
+                .slice(0, index)
+                .every(prevMilestone => milestonesStatus[topicNameToTopicId(prevMilestone.title)] === 1);
+              
+              return (
+                <Link
+                  key={index}
+                  href={`/${topic}/${milestone.title}`}
+                  style={{ textDecoration: "none" }}
+                  onClick={(e) => {
+                    // מניעת ניווט אם הכפתור לא זמין
+                    if (!isCompleted && !isNext) {
+                      e.preventDefault();
+                    }
+                  }}
                 >
-                  <span className="milestone-text">{milestone.title}</span>
-                </button>
-              </Link>
-            ))}
+                  <button
+                    className={`milestone-button ${
+                      isCompleted || (isNext && previousMilestonesCompleted)
+                        ? "completed"
+                        : "incomplete"
+                    }`}
+                    disabled={!isCompleted && (!isNext || !previousMilestonesCompleted)}
+                  >
+                    <span className="milestone-text">{milestone.title}</span>
+                  </button>
+                </Link>
+              );
+            })}
           </div>
         </main>
 
         <div className="nav-buttons">
           <NavigationButton
-            icon={dictionaryIcon}
+            icon="/icons/dictionary.svg"
             link="/dictionary"
             position="right"
             altText="Dictionary"
           />
           <NavigationButton
-            icon={notebookIcon}
+            icon="/icons/notebook.svg"
             link={`/personal_notebook${topic ? `?topic=${topic}` : ""}`}
             position="left"
             altText="Notebook"
@@ -273,7 +286,7 @@ const TopicPage = () => {
           <p>{selectedTerm?.description}</p>
         </Modal>
       </div>
-    </>
+    </div>
   );
 };
 

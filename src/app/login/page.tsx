@@ -10,19 +10,19 @@ import Link from 'next/link';
 import { FirebaseError } from 'firebase/app';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loginMethod, setLoginMethod] = useState('google'); // 'email' או 'google'
-  const [showToggle, setShowToggle] = useState(true); // האם להציג את האפשרות לעבור בין שיטות התחברות
-  
+  const [showToggle, setShowToggle] = useState(true); 
+
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const handleEmailLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     if (!email || !password) {
@@ -125,7 +125,7 @@ export default function Login() {
   }, [searchParams]);
   
   const handleGoogleLogin = async () => {
-    setError('');
+    setError("");
     setLoading(true);
     
     try {
@@ -179,7 +179,7 @@ export default function Login() {
 
   const toggleLoginMethod = () => {
     setLoginMethod(loginMethod === 'google' ? 'email' : 'google');
-    setError('');
+    setError("");
   };
 
   return (
@@ -279,7 +279,7 @@ export default function Login() {
                   onClick={async () => {
                     try {
                       setLoading(true);
-                      setError('');
+                      setError("");
                       
                       if (auth.currentUser) {
                         await sendVerificationEmail(auth.currentUser);

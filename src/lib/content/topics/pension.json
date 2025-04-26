@@ -48,7 +48,10 @@
       "button": "סיימתי!",
       "type": "info",
       "link": "/[topic]",
-      "sticker": "/pension_stickers/pension1.svg"
+      "sticker": {
+        "male": "/stickers/littleStickersTitle/male/title_pension.svg",
+        "female": "/stickers/littleStickersTitle/female/title_pension.svg"
+      }
       },
       {
         "title": "מה קורה היום בשוק",
@@ -62,7 +65,7 @@
         },
         "button": "סיימתי!",
         "link": "\\pension",
-        "sticker": "/pension_stickers/pension2.svg"
+        "sticker": "/stickers/littleStickersDrawing/drawing_pension.svg"
       },
       {
         "title": "שיחה עם נציג",

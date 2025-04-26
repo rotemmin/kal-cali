@@ -1,0 +1,304 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 110vh;
+  background-color: #f5f5f5;
+  direction: rtl;
+  overflow: hidden;
+}
+
+.content {
+  flex: 1;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+  position: relative;
+  overflow-y: auto;
+  max-height: calc(100vh - 4rem);
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .content {
+    max-width: 100%;
+    border-radius: 0;
+    margin-top: 0;
+    max-height: calc(100vh - 3.5rem);
+  }
+}
+
+.closeButtonPersonalDetails {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.closeButtonPersonalDetails:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.titleContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.editButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.editButton:hover {
+  background-color: #0056b3;
+}
+
+.editButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.cancelButton {
+  background-color: #f8f9fa;
+  color: #dc3545;
+  border: 1px solid #dc3545;
+}
+
+.cancelButton:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+.cancelButton:disabled {
+  background-color: #f8f9fa;
+  color: #ccc;
+  border-color: #ccc;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.detailItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.subHeading {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.value {
+  font-size: 1rem;
+  color: #333;
+  padding: 0.5rem 0;
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  direction: rtl;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+.select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: white;
+  direction: rtl;
+}
+
+.select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+.passwordContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.passwordStrength {
+  margin-top: 0.5rem;
+}
+
+.strengthBar {
+  height: 4px;
+  background-color: #eee;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.strengthIndicator {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.strengthIndicator.weak {
+  background-color: #ff4444;
+}
+
+.strengthIndicator.medium {
+  background-color: #ffbb33;
+}
+
+.strengthIndicator.strong {
+  background-color: #00C851;
+}
+
+.strengthLabel {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.passwordRequirements {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.passwordRequirements h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+  color: #333;
+}
+
+.passwordRequirements ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.passwordRequirements li {
+  margin: 0.25rem 0;
+  font-size: 0.875rem;
+  color: #666;
+  display: flex;
+  align-items: center;
+}
+
+.passwordRequirements li:before {
+  content: "•";
+  margin-left: 0.5rem;
+  color: #ccc;
+}
+
+.passwordRequirements li.fulfiled {
+  color: #00C851;
+}
+
+.passwordRequirements li.fulfiled:before {
+  content: "✓";
+  color: #00C851;
+}
+
+.input.invalid {
+  border-color: #ff4444;
+  background-color: #fff8f8;
+}
+
+.passwordDisplay {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.changePasswordButton {
+  background-color: #f8f9fa;
+  color: #007bff;
+  border: 1px solid #007bff;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  align-self: flex-start;
+}
+
+.changePasswordButton:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.changePasswordButton:active {
+  transform: scale(0.98);
+}
+
+.errorMessage {
+  background-color: #fff8f8;
+  border: 1px solid #dc3545;
+  color: #dc3545;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.successMessage {
+  background-color: #f8fff8;
+  border: 1px solid #28a745;
+  color: #28a745;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.googleAuthMessage {
+  color: #666;
+  font-size: 0.875rem;
+  padding: 0.5rem 0;
+  font-style: italic;
+}

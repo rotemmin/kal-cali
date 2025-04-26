@@ -2,52 +2,52 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
-import Header from "@/components/Header";
+import Header from "@/components/general/Header";
 import styles from "./page.module.css";
 import { X } from "lucide-react";
 
 const ContactUs = () => {
   const router = useRouter();
-  const supabase = createClient();
   const [message, setMessage] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!message.trim()) {
+      setError("אנא הזן הודעה");
       return;
     }
 
+    setIsLoading(true);
+    setError("");
+
     try {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      if (!session?.user) {
-        console.error("No user session found");
-        return;
-      }
-
-      // Insert the message into a contact messages table
-      const { error } = await supabase.from("contact_messages").insert([
-        {
-          user_id: session.user.id,
-          message,
+      const response = await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      ]);
+        body: JSON.stringify({ message }),
+      });
 
-      if (error) {
-        console.error("Error submitting message:", error);
-        return;
+      if (!response.ok) {
+        throw new Error("Failed to send message");
       }
 
       setMessage("");
-
-      // Navigate to homePage after successful submission
-      router.push("/homePage");
+      setIsSubmitted(true);
+      
+      setTimeout(() => {
+        router.push("/homePage");
+      }, 2000);
     } catch (error) {
       console.error("Error in form submission:", error);
+      setError("שגיאה בשליחת ההודעה. אנא נסה שוב.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -58,20 +58,32 @@ const ContactUs = () => {
       <div className={styles.content}>
         <h1 className={styles.title}>צור קשר</h1>
 
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <textarea
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            className={styles.textarea}
-            placeholder="כתוב כאן את ההודעה שלך..."
-          ></textarea>
-
-          <div className={styles.buttonContainer}>
-            <button type="submit" className={styles.sendButton}>
-              שליחה
-            </button>
+        {isSubmitted ? (
+          <div className={styles.successMessage}>
+            תודה על פנייתך! נחזור אליך בהקדם.
           </div>
-        </form>
+        ) : (
+          <form onSubmit={handleSubmit} className={styles.form}>
+            <textarea
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              className={styles.textarea}
+              placeholder="כתוב כאן את ההודעה שלך..."
+            ></textarea>
+
+            {error && <div className={styles.errorMessage}>{error}</div>}
+
+            <div className={styles.buttonContainer}>
+              <button 
+                type="submit" 
+                className={styles.sendButton}
+                disabled={isLoading}
+              >
+                {isLoading ? "שולח..." : "שליחה"}
+              </button>
+            </div>
+          </form>
+        )}
       </div>
     </div>
   );

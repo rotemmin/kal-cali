@@ -2,11 +2,11 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import Header from "@/components/Header";
+import Header from "@/components/general/Header";
 import "./home.css";
-import NavigationButton from "@/components/NavigationButton";
-import dictionaryIcon from "@/public/icons/dictionary.svg";
-import notebookIcon from "@/public/icons/notebook.svg";
+import NavigationButton from "@/components/general/NavigationButton.jsx";
+import dictionaryIcon from "/icons/dictionary.svg";
+import notebookIcon from "/icons/notebook.svg";
 import HomeProgressBar from "./homePageProgressBar/page";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
@@ -15,45 +15,45 @@ import { db } from "@/lib/firebase";
 const topics = [
   {
     title: "ביטוח לאומי",
-    icon: "/icons/onlyTitleStickers/national_insurance.svg",
-    completedIcon: "/icons/stickers/final_national_insurance.svg",
+    icon: "/stickers/finalStickersTitle/title_national_insurance.svg",
+    completedIcon: "/stickers/finalStickers/final_national_insurance.svg",
     link: "/national_insurance",
     dbKey: "national_insurance",
   },
   {
     title: "מס הכנסה",
-    icon: "/icons/onlyTitleStickers/tax.svg",
-    completedIcon: "/icons/stickers/final_tax.svg",
+    icon: "/stickers/finalStickersTitle/title_tax.svg",
+    completedIcon: "/stickers/finalStickers/final_tax.svg",
     link: "/homePage",
     dbKey: "tax",
   },
   {
     title: "פנסיה",
-    icon: "/icons/onlyTitleStickers/pension.svg",
-    completedIcon: "/icons/stickers/final_pension.svg",
+    icon: "/stickers/finalStickersTitle/title_pension.svg",
+    completedIcon: "/stickers/finalStickers/final_pension.svg",
     link: "/pension",
     dbKey: "pension",
   },
   {
     title: "ביטוחים",
-    icon: "/icons/onlyTitleStickers/insurance.svg",
-    completedIcon: "/icons/stickers/final_bituchim.svg",
+    icon: "/stickers/finalStickersTitle/title_insurance.svg",
+    completedIcon: "/stickers/finalStickers/final_insurance.svg",
     link: "/homePage",
     dbKey: "insurance",
   },
   {
     title: "תלושי שכר",
-    icon: "/icons/onlyTitleStickers/salary.svg",
-    completedIcon: "/icons/stickers/final_tlushim.svg",
+    icon: "/stickers/finalStickersTitle/title_salary.svg",
+    completedIcon: "/stickers/finalStickers/final_salary.svg",
     link: "/homePage",
     dbKey: "salary",
   },
   {
-    title: "חשבון בנק",
-    icon: "/icons/onlyTitleStickers/bank.svg",
-    completedIcon: "/icons/stickers/final_bank_account.svg",
-    link: "/bank_account",
-    dbKey: "bank_account",
+    title: "כרטיסי אשראי",
+    icon: "/stickers/finalStickersTitle/title_credit_card.svg",
+    completedIcon: "/stickers/finalStickers/final_credit_card.svg",
+    link: "/credit_card",
+    dbKey: "credit_card",
   },
 ];
 
@@ -180,13 +180,13 @@ const HomePage = () => {
         </div>
         <div className="nav-buttons">
           <NavigationButton
-            icon={dictionaryIcon}
+            icon="/icons/dictionary.svg"
             link="/dictionary"
             position="right"
             altText="Dictionary"
           />
           <NavigationButton
-            icon={notebookIcon}
+            icon="/icons/notebook.svg"
             link="/personal_notebook"
             position="left"
             altText="Notebook"
