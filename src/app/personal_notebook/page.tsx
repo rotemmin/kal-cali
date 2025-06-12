@@ -8,6 +8,13 @@ import { Loader, X } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Header from "@/components/general/Header";
 import { useAuth } from "@/lib/firebase/auth";
+import pensionData from '@/lib/content/topics/pension.json';
+import nationalInsuranceData from '@/lib/content/topics/national_insurance.json';
+import creditCardData from '@/lib/content/topics/credit_card.json';
+import salaryData from '@/lib/content/topics/salary.json';  
+import insuranceData from '@/lib/content/topics/insurance.json';
+import taxData from '@/lib/content/topics/tax.json';
+
 
 const englishToHebrewTopics: { [key: string]: string } = {
   pension: "פנסיה",
@@ -52,6 +59,20 @@ interface Sticker {
   type: 'littleStickersTitle' | 'littleStickersDrawing' | 'finalStickers' | "finalStickersTitle";
   path: string;
 }
+
+const topicDataMap = {
+  pension: pensionData,
+  national_insurance: nationalInsuranceData,
+  credit_card: creditCardData,
+  salary: salaryData,
+  insurance: insuranceData,
+  tax: taxData,
+};
+
+const milestoneOrders: { [topic: string]: string[] } = {};
+Object.entries(topicDataMap).forEach(([topic, data]) => {
+  milestoneOrders[topic] = data.milestones.map((m: any) => m.title.replace(/\s+/g, '_'));
+});
 
 const PersonalNotebookPage = () => {
   const searchParams = useSearchParams();
@@ -223,10 +244,10 @@ const PersonalNotebookPage = () => {
 
   const getStickerImage = (topic: string, index: number) => {
     const topicMilestones = milestones[topic]?.milestones || {};
-    const allMilestones = Object.values(topicMilestones);
-    const isFirstMilestoneDone = allMilestones[0] === 1;
-    const isSecondMilestoneDone = allMilestones[1] === 1;
-    const isAllMilestonesDone = allMilestones.length > 0 && allMilestones.every((v: any) => v === 1);
+    const milestoneOrder = milestoneOrders[topic] || [];
+    const isFirstMilestoneDone = topicMilestones[milestoneOrder[0]] === 1;
+    const isSecondMilestoneDone = topicMilestones[milestoneOrder[1]] === 1;
+    const isAllMilestonesDone = milestoneOrder.length > 0 && milestoneOrder.every(key => topicMilestones[key] === 1);
 
     if (index === 0) {
       if (isFirstMilestoneDone && gender) {
@@ -355,7 +376,7 @@ const PersonalNotebookPage = () => {
                     topic.fromDb && currentTopic === topic.curr_topic
                       ? styles.selected
                       : ""
-                  } ${!topic.fromDb ? styles.nonClickable : ""}`}
+                  } `}
                   onClick={() => {
                     if (currentTopic !== topic.curr_topic) {
                       handleChangeTopic(topic.curr_topic);
