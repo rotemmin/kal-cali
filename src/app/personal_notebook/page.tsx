@@ -12,7 +12,7 @@ import { useAuth } from "@/lib/firebase/auth";
 const englishToHebrewTopics: { [key: string]: string } = {
   pension: "פנסיה",
   national_insurance: "ביטוח לאומי",
-  credit_card: "חשבון בנק",
+  credit_card: "כרטיסי אשראי",
   tax: "מס הכנסה",
   salary: "תלושי שכר",
   insurance: "ביטוחים",
@@ -49,7 +49,7 @@ interface Topic {
 }
 
 interface Sticker {
-  type: 'littleStickersTitle' | 'littleStickersDrawing' | 'finalStickers';
+  type: 'littleStickersTitle' | 'littleStickersDrawing' | 'finalStickers' | "finalStickersTitle";
   path: string;
 }
 
@@ -195,7 +195,7 @@ const PersonalNotebookPage = () => {
 
     const loadStickers = async () => {
       try {
-        const notebookRef = doc(db, `users/${user.uid}/notebook`);
+        const notebookRef = doc(db, "notebooks", user.uid);
         const notebookDoc = await getDoc(notebookRef);
         
         if (notebookDoc.exists()) {
@@ -208,7 +208,7 @@ const PersonalNotebookPage = () => {
     };
 
     const unsubscribe = onSnapshot(
-      doc(db, `users/${user.uid}/notebook`),
+      doc(db, "notebooks", user.uid),
       (doc) => {
         if (doc.exists()) {
           const data = doc.data();
@@ -222,29 +222,31 @@ const PersonalNotebookPage = () => {
   }, [user]);
 
   const getStickerImage = (topic: string, index: number) => {
-    const topicStickers = stickers[topic] || [];
-    
-    // Helper function to get pre-sticker path
-    const getPreStickerPath = (type: string) => {
-      return `/stickers/${type}/pre_${topic}`;
-    };
+    const topicMilestones = milestones[topic]?.milestones || {};
+    const allMilestones = Object.values(topicMilestones);
+    const isFirstMilestoneDone = allMilestones[0] === 1;
+    const isSecondMilestoneDone = allMilestones[1] === 1;
+    const isAllMilestonesDone = allMilestones.length > 0 && allMilestones.every((v: any) => v === 1);
 
-    // First sticker (title)
     if (index === 0) {
-      const titleSticker = topicStickers.find(s => s.type === 'littleStickersTitle');
-      return titleSticker ? titleSticker.path : getPreStickerPath('littleStickersTitle');
+      if (isFirstMilestoneDone && gender) {
+        return `/stickers/littleStickersTitle/${gender}/title_${topic}.svg`;
+      }
+      return `/stickers/littleStickersTitle/pre_title_${topic}.svg`;
     }
-    
-    // Second sticker (drawing)
+
     if (index === 1) {
-      const drawingSticker = topicStickers.find(s => s.type === 'littleStickersDrawing');
-      return drawingSticker ? drawingSticker.path : getPreStickerPath('littleStickersDrawing');
+      if (isSecondMilestoneDone) {
+        return `/stickers/littleStickersDrawing/drawing_${topic}.svg`;
+      }
+      return `/stickers/littleStickersDrawing/pre_drawing_${topic}.svg`;
     }
-    
-    // Third sticker (final)
+
     if (index === 2) {
-      const finalSticker = topicStickers.find(s => s.type === 'finalStickers');
-      return finalSticker ? finalSticker.path : `/stickers/finalStickers/final_${topic}.svg`;
+      if (isAllMilestonesDone) {
+        return `/stickers/finalStickers/final_${topic}.svg`;
+      }
+      return `/stickers/finalStickersTitle/title_${topic}.svg`;
     }
 
     return '';
