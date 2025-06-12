@@ -5,7 +5,7 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import NavigationButton from "@/components/general/NavigationButton";
-import Modal from "@/components/general/modal";
+import Modal from "@/components/general/Modal";
 import Header from "@/components/general/Header";
 import "./MilestonePage.css";
 import ProgressBar from "../milestones_progress_bar/ProgressBar";
@@ -273,7 +273,9 @@ const MilestonePage: React.FC = () => {
 
         {currentMilestone?.sticker && (
           <MilestoneSticker 
-            sticker={currentMilestone.sticker}
+            sticker={completedMilestones === totalMilestones - 1 ? 
+              `/stickers/finalStickers/final_${normalizedTopic}.svg` : 
+              currentMilestone.sticker}
             userGender={userGender}
           />
         )}
@@ -354,7 +356,11 @@ const MilestonePage: React.FC = () => {
         (val) => val === 1
       );
 
-      console.log("Updating database with new milestone status");
+      if (allComplete) {
+        topicObj.status = 1;
+        currentBudget += 1;
+      }
+
       await updateDoc(userRef, {
         topics_and_milestones: topicsAndMilestones,
         budget: currentBudget
@@ -364,13 +370,8 @@ const MilestonePage: React.FC = () => {
       setCompletedMilestones((prev) => prev + 1);
 
       if (allComplete) {
-        console.log("All milestones complete, updating topic status");
-        topicObj.status = 1;
-        currentBudget += 1;
-        
         router.push(`/${topic}/finalPage`);
       } else {
-        console.log("Navigating back");
         if (currentMilestone?.help?.type === "chat") {
           router.back();
         } else if (currentMilestone?.sticker) {

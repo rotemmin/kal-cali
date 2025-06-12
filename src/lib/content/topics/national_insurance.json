@@ -48,8 +48,8 @@
       "button": "סיימתי!",
       "link": "/[topic]",
       "sticker": {
-        "male": "/stickers/littleStickersTitle/male/title_insurance.svg",
-        "female": "/stickers/littleStickersTitle/female/title_insurance.svg"
+        "male": "/stickers/littleStickersTitle/male/title_national_insurance.svg",
+        "female": "/stickers/littleStickersTitle/female/title_national_insurance.svg"
       }
     },
     {
