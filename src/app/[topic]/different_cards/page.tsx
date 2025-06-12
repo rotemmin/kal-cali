@@ -41,7 +41,7 @@ const CreditCardOptions: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const jsonData: CreditCardOptionsData = require("@/lib/content/topics/different_cards.json");
+        const jsonData: CreditCardOptionsData = require("@/lib/content/others/different_cards.json");
         setData(jsonData);
       } catch (error) {
         console.error("Failed to load data:", error);

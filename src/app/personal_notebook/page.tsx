@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useMemo, useEffect, useCallback } from "react";
+import React, { useState, useMemo, useEffect, useCallback, Suspense } from "react";
 import { db } from "@/lib/firebase/client";
 import { collection, doc, getDoc, setDoc, onSnapshot } from "firebase/firestore";
 import { debounce } from "lodash";
@@ -74,7 +74,7 @@ Object.entries(topicDataMap).forEach(([topic, data]) => {
   milestoneOrders[topic] = data.milestones.map((m: any) => m.title.replace(/\s+/g, '_'));
 });
 
-const PersonalNotebookPage = () => {
+function PersonalNotebookContent() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
@@ -456,6 +456,14 @@ const PersonalNotebookPage = () => {
         </div>
       )}
     </>
+  );
+}
+
+const PersonalNotebookPage = () => {
+  return (
+    <Suspense fallback={<div>טוען...</div>}>
+      <PersonalNotebookContent />
+    </Suspense>
   );
 };
 

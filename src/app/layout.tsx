@@ -3,8 +3,6 @@ import { UserGenderProvider } from '@/components/UserGenderContext';
 
 import type { Metadata } from "next";
 import { Suspense, type ReactNode } from "react";
-import Navbar from "@/components/general/Navbar";
-import Footer from "@/components/general/Footer";
 
 export const metadata: Metadata = {
   title: "Kal-Cali",
