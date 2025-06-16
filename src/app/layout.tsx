@@ -19,14 +19,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <link
           rel="apple-touch-icon"
           sizes="180x180"
-          href="/icons/app_logo.svg"
+          href="/icons/logo.png"
         />
         {/* Android Icon */}
         <link
           rel="icon"
           type="image/png"
           sizes="192x192"
-          href="/icons/app_logo.svg"
+          href="/icons/logo.png"
         />
         <link rel="manifest" href="/manifest.json" />
       </head>

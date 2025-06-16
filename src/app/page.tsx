@@ -10,10 +10,10 @@ export default function Home() {
           <h1 className={styles.welcome}>ברוכ.ה הבא.ה ל-</h1>
 
           <Image
-            src="/icons/firstPageLogo.svg"
+            src="/icons/logo.png"
             alt="FinanStep Logo"
-            width={349}
-            height={261}
+            width={281}
+            height={185}
             priority
             className={styles.logo}
           />

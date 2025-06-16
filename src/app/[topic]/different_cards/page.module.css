@@ -1,7 +1,7 @@
 .pageContainer {
     overflow: auto;
     min-height: 100dvh;
-    background: var(--color-background-secondary);
+    background: var(--color-background);
     padding: 82px 20px 30px;
     padding-bottom: calc(env(safe-area-inset-bottom) + 80px);
 }

@@ -5,7 +5,7 @@
     justify-content: flex-start;
     position: relative;
     min-height: 100vh;
-    background: var(--color-background-secondary);
+    background: var(--color-background);
     padding: 30px 20px 30px 40px;
 }
 

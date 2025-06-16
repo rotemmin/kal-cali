@@ -4,7 +4,7 @@
     overflow: hidden;
     width: 100%;
     position: relative;
-    background: var(--color-background-secondary);
+    background: var(--color-background);
     min-height: 100dvh;
     padding-bottom: env(safe-area-inset-bottom);
 }
@@ -166,7 +166,7 @@
 .notesTextarea {
     width: 100%;
     border: none;
-    background-color: var(--color-background-secondary);
+    background-color: var(--color-background);
     font-size: 1rem;
     line-height: 1.5;
     resize: none;

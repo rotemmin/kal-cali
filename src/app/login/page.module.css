@@ -4,7 +4,7 @@
     flex-direction: column;
     justify-content: center;
     height: 100vh;
-    background-color: var(--color-background-secondary);
+    background-color: var(--color-background);
     background-image: url('/pattern.svg');
     background-size: cover;
     background-position: center;
@@ -80,7 +80,7 @@
     font-size: var(--text-2xl);
     line-height: 31px;
     font-style: italic;
-    color: #210E46;
+    color: var(--color-text);
     transition: transform 0.2s ease;
     margin-right: auto;
   }

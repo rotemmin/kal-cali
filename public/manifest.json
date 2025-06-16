@@ -3,13 +3,12 @@
   "short_name": "KalCali",
   "icons": [
     {
-      "src": "/icons/app_logo.svg",
+      "src": "/icons/logo.png",
       "sizes": "192x192",
-      "type": "svg",
-      "purpose": "maskable"
+      "type": "image/png"
     }
   ],
   "display": "standalone",
-  "theme_color": "#2b2d40",
-  "background_color": "#ffffff"
+  "theme_color": "#c1ff7e",
+  "background_color": "#fcfffa"
 }

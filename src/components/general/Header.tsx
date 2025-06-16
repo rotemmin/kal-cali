@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "@/styles/Header.module.css";
 import HeaderMenu from "./HeaderMenu";
+import Image from "next/image";
 
 export default function Header() {
   const router = useRouter();
@@ -33,10 +34,12 @@ export default function Header() {
         />
       </div>
       <button className={styles.logoButton} onClick={handleLogoClick}>
-        <img
-          src="/icons/logo.svg"
+        <Image
+          src="/icons/logo.png"
           alt="Logo Icon"
           className={styles.logoIcon}
+          width={70}
+          height={70}
         />
       </button>
     </header>
