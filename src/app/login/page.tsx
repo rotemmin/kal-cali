@@ -189,7 +189,7 @@ function LoginContent() {
         
         {loginMethod === 'google' ? (
           <>
-            <p className={styles.subtitle}>התחברו באמצעות חשבון Google שלכם</p>
+            <p className={styles.subtitle}>התחברו באמצעות חשבון Google</p>
             
             <button 
               className={styles.googleButton}
@@ -305,9 +305,9 @@ function LoginContent() {
         {error && <p className={styles.errorMessage}>{error}</p>}
         
         <p className={styles.registerLink}>
-          אין לך חשבון עדיין?{' '}
+          אין לכם.ן חשבון עדיין?{' '}
           <Link href="/signup">
-            הירשם כאן
+            הירשמו כאן
           </Link>
         </p>
       </div>
