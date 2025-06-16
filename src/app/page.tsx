@@ -20,16 +20,16 @@ export default function Home() {
 
           <p className={styles.description}>
             {/* אם את.ה רוצה ללמוד על תהליך כלכלי נכון תרים.י את היד! (או לחצ.י על הכפתור) */}
-            אם בא לך ללמוד על תהליך כלכלי נכון תרימ.י את היד! (או לחצ.י על הכפתור) 
+            רוצים ללמוד על תהליך כלכלי נכון? הרימו יד! (או לחצו על הכפתור)
           </p>
 
           <div className={styles.buttonContainer}>
             <Link href="/login" className={styles.buttonLink}>
-              <button className={styles.loginButton}>לכניסה</button>
+              <button className={styles.loginButton}>כניסה</button>
             </Link>
 
             <Link href="/signup" className={styles.buttonLink}>
-              <button className={styles.signupButton}>להרשמה</button>
+              <button className={styles.signupButton}>הרשמה</button>
             </Link>
           </div>
         </div>

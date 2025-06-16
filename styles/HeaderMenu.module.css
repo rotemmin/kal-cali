@@ -1,45 +1,44 @@
-/* HeaderMenu.module.css */
 .menuContainer {
   position: absolute;
   top: 63px;
   left: 0;
-  width: 120px; /* Made width smaller */
+  width: 120px; 
   z-index: 1000;
 }
 
 .topBlock {
-  height: 15px; /* Made shorter */
-  background-color: #c1ff7e; /* Updated to lighter green */
+  height: 15px; 
+  background-color: var(--color-primary); 
   margin-bottom: 1px;
-  gap: 3px; /* Reduced gap */
+  gap: 3px; 
 }
 
 .menuContent {
   display: flex;
   flex-direction: column;
-  gap: 2px; /* Reduced gap */
-  background-color: white;
+  gap: 2px; 
+  background-color: var(--color-background);
   padding: 0;
 }
 
 .menuButton {
   width: 100%;
-  padding: 3px 10px; /* Reduced padding to make buttons smaller */
+  padding: 3px 10px; 
   text-align: right;
-  background-color: #c1ff7e; /* Updated to lighter green */
+  background-color: var(--color-primary); 
   border: none;
-  color: black;
-  font-size: 14px; /* Slightly smaller font */
+  color: var(--color-text);
+  font-size: 14px; 
   transition: background-color 0.2s ease;
   cursor: pointer;
-  border-radius: 0; /* Removed rounded corners */
+  border-radius: 0; 
 }
 
 .menuButton:last-child {
   position: relative;
-  border-bottom-right-radius: 15px; /* Smooth bottom-right corner */
+  border-bottom-right-radius: 15px; 
 }
 
 .menuButton:hover {
-  background-color: #c1ff7e; /* Slightly darker on hover */
+  background-color: var(--color-accent); 
 }
