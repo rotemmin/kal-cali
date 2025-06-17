@@ -1,90 +1,284 @@
-  .container {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-    height: 100vh;
-    background-color: var(--color-background);
-    background-image: url('/pattern.svg');
-    background-size: cover;
-    background-position: center;
-  }
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 100vh;
+  background-color: var(--color-background);
+  background-image: url('/pattern.svg');
+  background-size: cover;
+  background-position: center;
+  padding-top: calc(130 / 852 * 100vh);
+  position: relative;
+}
 
-  .main {
-    width: 100%;
-    padding: 0 var(--spacing-8);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 3rem;
-  }
+.main {
+  width: 100%;
+  padding: 0 var(--spacing-8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(20 / 852 * 100vh);
+}
 
+/* Common elements for both states */
+.titleMain {
+  margin-left: calc(49 / 393 * 100vw);
+  align-self: flex-start;
+}
 
-  .introText {
-    font-family: var(--font-family-priamry);
-    font-weight: 400;
-    font-size: var(--text-xl);
-    line-height: var(--text-xl);
-    color: var(--color-text);
-  }
+.subtitleMain {
+  margin-top: calc(60 / 852 * 100vh);
+  margin-left: calc(55 / 393 * 100vw);
+  align-self: flex-start;
+}
 
-  .loginForm {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 2.25rem;
-    width: 100%;
-  }
+.introText {
+  font-family: var(--font-family-priamry);
+  font-weight: 400;
+  font-size: var(--text-xl);
+  line-height: var(--text-xl);
+  color: var(--color-text);
+}
 
-  .inputContainer {
-    width: 100%;
-    padding: 4px 16px 3px 0px;
-    border: 2px solid var(--color-secondary);
-    border-radius: 24px;
-    height: 42px;
-    background-color: var(--color-background);
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2.25rem;
+  width: 100%;
+}
 
-    font-family: var(--font-family-priamry);
-    font-weight: 400;
-    font-size: var(--text-xl);
-    line-height: var(--text-xl);
-  }
+.inputContainer {
+  width: 100%;
+  padding: 4px 16px 3px 16px;
+  border: 2px solid var(--color-accent);
+  border-radius: 24px;
+  height: calc(42 / 852 * 100vh);
+  background: #FFF;
 
-  .inputContainer::placeholder {
-    color: var(--color-text)
-  }
+  color: #CECBFF;
+  text-align: right;
+  font-family: var(--font-family-primary);
+  font-size: calc(20 / 852 * 100vh);
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
 
-  .inputContainer:focus {
-    border: 2px solid #A585E5;
-    outline: none;
-  }
+.inputContainer::placeholder {
+  color: #CECBFF;
+}
 
-  .inputContainer:focus-visible {
-    border: 2px solid #A585E5;
-    outline: none;
-  }
+.inputContainer:focus {
+  border: 2px solid var(--color-accent);
+  outline: none;
+}
 
-  .error {
-    border: 2px solid #FC4343;
-  }
+.inputContainer:focus-visible {
+  border: 2px solid var(--color-accent);
+  outline: none;
+}
 
-  .loginForm button {
-    padding: 4px 18px;
-    background-color: var(--color-accent);
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
+.error {
+  border: 2px solid #FC4343;
+}
 
-    font-family: var(--font-family-secondary);
-    font-weight: 400;
-    font-size: var(--text-2xl);
-    line-height: 31px;
-    font-style: italic;
-    color: var(--color-text);
-    transition: transform 0.2s ease;
-    margin-right: auto;
-  }
+.loginForm button {
+  padding: 4px 18px;
+  background-color: var(--color-accent);
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
 
-  .loginForm button:hover {
-    color: var(--color-background);
-  }
+  font-family: var(--font-family-secondary);
+  font-weight: 400;
+  font-size: var(--text-2xl);
+  line-height: 31px;
+  font-style: italic;
+  color: var(--color-text);
+  transition: transform 0.2s ease;
+  margin-right: auto;
+} 
+
+.loginForm button:hover {
+  color: var(--color-background);
+}
+
+/* Common footer elements */
+.registerQuestion {
+  position: absolute;
+  top: calc(550 / 852 * 100vh);
+  left: calc(61 / 393 * 100vw);
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  width: calc(286 / 393 * 100vw);
+  white-space: nowrap;
+}
+
+.registerQuestion a {
+  white-space: nowrap;
+}
+
+.registerLink {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.registerLink:hover {
+  text-decoration: none;
+}
+
+.orText {
+  position: absolute;
+  top: calc(600 / 852 * 100vh);
+  left: calc(180 / 393 * 100vw);
+  color: var(--color-text);
+  text-align: center;
+  font-family: var(--font-family-primary);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+/* Main login container for both states */
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: flex-start;
+}
+
+/* Common button styles */
+.buttonBase {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(316 / 393 * 100vw);
+  height: calc(42 / 852 * 100vh);
+  background: #fff;
+  border: 2px solid var(--color-accent);
+  border-radius: 24px;
+  cursor: pointer;
+  transition: background 0.2s;
+  color: var(--color-text);
+  font-family: var(--font-family-priamry);
+  font-size: calc(20 / 852 * 100vh);
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  align-self: flex-start;
+  margin-left: calc(46 / 393 * 100vw);
+}
+
+.buttonBase:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Google login specific styles */
+.googleLoginState {
+  composes: loginContainer;
+}
+
+.googleLoginSubtitle {
+  composes: subtitleMain;
+}
+
+.googleButton {
+  composes: buttonBase;
+  margin-top: calc(80 / 852 * 100vh);
+  padding-right: calc(16 / 393 * 100vw);
+  padding-left: calc(16 / 393 * 100vw);
+  justify-content: flex-start;
+}
+
+.googleIcon {
+  width: calc(26 / 393 * 100vw);
+  height: calc(26 / 852 * 100vh);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: calc(10 / 393 * 100vw);
+}
+
+.googleButtonText {
+  display: flex;
+  width: calc(224 / 393 * 100vw);
+  height: calc(20 / 852 * 100vh);
+  flex-direction: column;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--color-text);
+  text-align: right;
+  font-family: var(--font-family-priamry);
+  font-size: calc(20 / 852 * 100vh);
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.toggleMethodButton {
+  composes: buttonBase;
+  margin-top: calc(30 / 852 * 100vh);
+  justify-content: center;
+}
+
+/* Email login container - will be styled later */
+.emailLoginContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.emailLoginForm {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: calc(30 / 852 * 100vh);
+}
+
+.inputRow {
+  margin-left: calc(46 / 393 * 100vw);
+  width: calc(316 / 393 * 100vw);
+}
+
+.emailButton {
+  composes: button-base from global;
+  width: 132px;
+  margin-top: calc(30 / 852 * 100vh);
+  align-self: center;
+  font-size: 24px;
+}
+
+.forgotPassword {
+  position: absolute;
+  top: calc(445 / 852 * 100vh);
+  left: calc(270 / 393 * 100vw);
+}
+
+.forgotPassword a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  font-family: var(--font-family-secondary);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.forgotPassword a:hover {
+  text-decoration: none;
+}
+
+.emailLoginGoogleButton {
+  composes: googleButton;
+  position: absolute;
+  top: calc(590 / 852 * 100vh);
+  left: calc(0 / 393 * 100vw);
+}
