@@ -1,22 +1,176 @@
-.error {
-  padding: 1rem;
-  margin: 1rem 0;
-  border-radius: 4px;
-  background-color: #fff8f8;
-  border: 1px solid #ff4444;
-  color: #ff4444;
-  font-size: 0.875rem;
-  text-align: center;
-  animation: fadeIn 0.3s ease-in-out;
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 100vh;
+  background-color: var(--color-background);
+  background-image: url('/pattern.svg');
+  background-size: cover;
+  background-position: center;
+  padding-top: calc(120 / 852 * 100vh);
+  position: relative;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.main {
+  width: 100%;
+  padding: 0 var(--spacing-8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(20 / 852 * 100vh);
+}
+
+.titleMain {
+  composes: title-main from global;
+  margin-left: calc(49 / 393 * 100vw);
+  align-self: flex-start;
+}
+
+.subtitleMain {
+  composes: subtitle-main from global;
+  margin-top: calc(60 / 852 * 100vh);
+  margin-left: calc(55 / 393 * 100vw);
+  align-self: flex-start;
+}
+
+.buttonBase {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(316 / 393 * 100vw);
+  height: calc(42 / 852 * 100vh);
+  background: var(--color-background);
+  border: 2px solid var(--color-accent);
+  border-radius: 24px;
+  cursor: pointer;
+  transition: background 0.2s;
+  color: var(--color-text);
+  font-family: var(--font-family-primary);
+  font-size: calc(20 / 852 * 100vh);
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  align-self: flex-start;
+  margin-left: calc(10 / 393 * 100vw);
+}
+
+.buttonBase:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.googleButton {
+  composes: buttonBase;
+  margin-top: calc(70 / 852 * 100vh);
+  padding-right: calc(16 / 393 * 100vw);
+  padding-left: calc(16 / 393 * 100vw);
+  justify-content: flex-start;
+}
+
+.toggleMethodButton {
+  composes: buttonBase;
+  margin-top: calc(30 / 852 * 100vh);
+  justify-content: center;
+}
+
+.registerQuestion {
+  composes: register-question from global;
+  position: absolute;
+  top: calc(640 / 852 * 100vh);
+  left: calc(61 / 393 * 100vw);
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  width: calc(286 / 393 * 100vw);
+  white-space: nowrap;
+}
+
+.error {
+  position: absolute;
+  top: calc(475 / 852 * 100vh);
+  left: calc(185 / 393 * 100vw);
+  margin-top: calc(-20 / 852 * 100vh);
+  color: #F00;
+  text-align: center;
+  font-family: var(--font-family-primary);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.googleButtonContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.googleIcon {
+  width: calc(26 / 393 * 100vw);
+  height: calc(26 / 852 * 100vh);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: calc(10 / 393 * 100vw);
+}
+
+.googleButtonText {
+  display: flex;
+  width: calc(224 / 393 * 100vw);
+  height: calc(20 / 852 * 100vh);
+  flex-direction: column;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--color-text);
+  text-align: right;
+  font-family: var(--font-family-primary);
+  font-size: calc(20 / 852 * 100vh);
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.emailSignupForm {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: calc(30 / 852 * 100vh);
+}
+
+.inputRow {
+  margin-left: calc(46 / 393 * 100vw);
+  width: calc(316 / 393 * 100vw);
+}
+
+.inputContainer {
+  width: 100%;
+  padding: 4px 16px 3px 16px;
+  border: 2px solid var(--color-accent);
+  border-radius: 24px;
+  height: calc(42 / 852 * 100vh);
+  background: var(--color-background);
+
+  color: #CECBFF;
+  text-align: right;
+  font-family: var(--font-family-primary);
+  font-size: calc(20 / 852 * 100vh);
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.inputContainer::placeholder {
+  color: #CECBFF;
+}
+
+.submitButton {
+  composes: buttonBase;
+  width: 132px;
+  margin-top: calc(30 / 852 * 100vh);
+  align-self: center;
+  font-size: calc(20 / 852 * 100vh);
 }

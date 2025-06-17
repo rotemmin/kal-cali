@@ -76,10 +76,10 @@ export function SignupProvider({ children }: { children: ReactNode }) {
         if (error.code === 'permission-denied') {
           setError('שגיאת הרשאות: אין מספיק הרשאות לגישה לבסיס הנתונים. אנא פנה למנהל המערכת.');
         } else {
-          setError('שגיאה בהתחברות עם גוגל: ' + (error.message || ''));
+          setError('שגיאה בהרשמה עם גוגל');
         }
       } else {
-        setError('שגיאה לא ידועה בהתחברות עם גוגל');
+        setError('שגיאה לא ידועה בהרשמה עם גוגל');
       }
     } finally {
       setLoading(false);

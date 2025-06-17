@@ -55,8 +55,7 @@
   border: 2px solid var(--color-accent);
   border-radius: 24px;
   height: calc(42 / 852 * 100vh);
-  background: #FFF;
-
+  background: var(--color-background);
   color: #CECBFF;
   text-align: right;
   font-family: var(--font-family-primary);
@@ -99,10 +98,6 @@
   color: var(--color-text);
   transition: transform 0.2s ease;
   margin-right: auto;
-} 
-
-.loginForm button:hover {
-  color: var(--color-background);
 }
 
 /* Common footer elements */
@@ -136,11 +131,8 @@
 
 .registerLink {
   color: var(--color-accent);
+  font-family: var(--font-family-secondary);
   text-decoration: underline;
-}
-
-.registerLink:hover {
-  text-decoration: none;
 }
 
 .orText {
@@ -171,7 +163,7 @@
   justify-content: center;
   width: calc(316 / 393 * 100vw);
   height: calc(42 / 852 * 100vh);
-  background: #fff;
+  background: var(--color-background);
   border: 2px solid var(--color-accent);
   border-radius: 24px;
   cursor: pointer;
@@ -297,4 +289,18 @@
 
 .emailLoginContainer .registerQuestion {
   top: calc(100 / 852 * 100vh);
+}
+
+.errorMessage {
+  position: absolute;
+  top: calc(490 / 852 * 100vh);
+  left: calc(185 / 393 * 100vw);
+  margin-top: calc(-20 / 852 * 100vh);
+  color: #F00;
+  text-align: center;
+  font-family: var(--font-family-primary);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }

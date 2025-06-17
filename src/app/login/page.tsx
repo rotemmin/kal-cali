@@ -74,7 +74,7 @@ function LoginContent() {
     } catch (error) {
       console.error('Email login error:', error);
       
-      let errorMessage = 'שגיאה בהתחברות';
+      let errorMessage = 'מייל או סיסמה אינם נכונים';
       
       if (error instanceof FirebaseError) {
         if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
@@ -170,7 +170,7 @@ function LoginContent() {
       if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
         // לא עושים כלום, המשתמש פשוט סגר את החלון
       } else {
-        setError('שגיאה בהתחברות עם גוגל: ' + (error.message || ''));
+        setError('שגיאה בהתחברות עם גוגל');
       }
     } finally {
       setLoading(false);
@@ -189,7 +189,7 @@ function LoginContent() {
         
         {loginMethod === 'google' ? (
           <div className={styles.googleLoginState}>
-            <p className={`subtitle-main ${styles.googleLoginSubtitle}`}>התחברו דרך חשבון הגוגל שלכם.ן</p>
+            <p className={`subtitle-main ${styles.googleLoginSubtitle}`}>בחר.י את דרך ההתחברות המועדפת</p>
             
             <button 
               className={styles.googleButton}
@@ -225,7 +225,7 @@ function LoginContent() {
             <p className={`subtitle-main ${styles.subtitleMain}`}>
               {searchParams.get('mode') === 'verifyEmail' 
                 ? 'המייל שלך אומת בהצלחה! כעת ניתן להתחבר' 
-                : 'התחברו באמצעות המייל והסיסמה שלכם'}
+                : 'התחברו באמצעות המייל והסיסמה שלכם.ן'}
             </p>
             
             <form className={styles.emailLoginForm} onSubmit={handleEmailLogin}>
@@ -320,8 +320,8 @@ function LoginContent() {
         {error && <p className={styles.errorMessage}>{error}</p>}
         
         <p className={`register-question ${loginMethod === 'google' ? styles.registerQuestionGoogle : styles.registerQuestionEmail}`}>
-          אין לכם.ן חשבון עדיין?
-          <Link href="/signup" className={styles.registerLink}>הירשמו כאן</Link>
+          אין לך חשבון עדיין?
+          <Link href="/signup" className={styles.registerLink}>הירשם.י כאן!</Link>
         </p>
       </div>
     </div>

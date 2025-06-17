@@ -1,7 +1,7 @@
 import { useSignup } from '@/context/SignupContext';
 import { validatePassword, getPasswordStrength, PASSWORD_MIN_LENGTH, 
   PASSWORD_REQUIRES_NUMBERS, PASSWORD_REQUIRES_UPPERCASE, PASSWORD_REQUIRES_SPECIAL_CHARS } from '@/lib/firebase';
-import styles from './EmailSignupForm.module.css';
+import styles from './page.module.css';
 import { useState, useEffect } from 'react';
 import PasswordInput from '../PasswordInput';
 
@@ -96,7 +96,7 @@ export default function EmailSignupForm() {
         className={styles.toggleMethodButton}
         disabled={loading}
       >
-        הרשמה עם חשבון Google 
+        הרשמה עם Google 
       </button>
     </form>
   );
