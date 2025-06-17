@@ -216,7 +216,7 @@ function LoginContent() {
                 className={styles.toggleMethodButton}
                 disabled={loading}
               >
-                התחברות עם מייל וסיסמה
+                התחברות עם מייל וסיסמה &emsp; &emsp; 
               </button>
             )}
           </div>

@@ -28,7 +28,7 @@ export default function GoogleSignupButton() {
         className={styles.toggleMethodButton}
         disabled={loading}
       >
-        הרשמה עם מייל וסיסמה
+      הרשמה עם מייל וסיסמה &emsp; &emsp; 
       </button>
     </div>
   );
