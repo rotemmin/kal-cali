@@ -319,7 +319,7 @@ function LoginContent() {
         
         {error && <p className={styles.errorMessage}>{error}</p>}
         
-        <p className={`register-question ${styles.registerQuestion}`}>
+        <p className={`register-question ${loginMethod === 'google' ? styles.registerQuestionGoogle : styles.registerQuestionEmail}`}>
           אין לכם.ן חשבון עדיין?
           <Link href="/signup" className={styles.registerLink}>הירשמו כאן</Link>
         </p>
