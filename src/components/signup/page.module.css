@@ -30,7 +30,7 @@
 .subtitleMain {
   composes: subtitle-main from global;
   margin-top: calc(60 / 852 * 100vh);
-  margin-left: calc(55 / 393 * 100vw);
+  margin-left: calc(60 / 393 * 100vw);
   align-self: flex-start;
 }
 
@@ -89,11 +89,10 @@
 
 .error {
   position: absolute;
-  top: calc(475 / 852 * 100vh);
-  left: calc(185 / 393 * 100vw);
-  margin-top: calc(-20 / 852 * 100vh);
+  top: calc(355 / 852 * 100vh);
+  right: calc(40 / 393 * 100vw);
   color: #F00;
-  text-align: center;
+  text-align: right;
   font-family: var(--font-family-primary);
   font-size: 16px;
   font-style: normal;
@@ -138,12 +137,20 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: calc(30 / 852 * 100vh);
+  /* margin-top: calc(30 / 852 * 100vh); */
 }
 
 .inputRow {
-  margin-left: calc(46 / 393 * 100vw);
+  margin-left: calc(20 / 393 * 100vw);
   width: calc(316 / 393 * 100vw);
+}
+
+.inputRow:first-child {
+  margin-top: calc(-10 / 852 * 100vh);
+}
+
+.inputRow:nth-child(2) {
+  margin-top: calc(20 / 852 * 100vh);
 }
 
 .inputContainer {
@@ -153,14 +160,19 @@
   border-radius: 24px;
   height: calc(42 / 852 * 100vh);
   background: var(--color-background);
-
-  color: #CECBFF;
+  color: var(--color-text);
   text-align: right;
   font-family: var(--font-family-primary);
   font-size: calc(20 / 852 * 100vh);
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  outline: none;
+}
+
+.inputContainer:focus {
+  border-color: var(--color-accent);
+  outline: none;
 }
 
 .inputContainer::placeholder {
@@ -168,9 +180,26 @@
 }
 
 .submitButton {
-  composes: buttonBase;
+  composes: button-base from global;
   width: 132px;
-  margin-top: calc(30 / 852 * 100vh);
+  margin-top: calc(10 / 852 * 100vh);
+  margin-right: calc(10 / 393 * 100vw);
+  margin-bottom: calc(40 / 852 * 100vh);
   align-self: center;
   font-size: calc(20 / 852 * 100vh);
+}
+
+.submitButton:disabled {
+  background: #CDCDCD;
+  cursor: not-allowed;
+}
+
+.orText {
+  margin-top: calc(30 / 852 * 100vh);
+  color: var(--color-text);
+  text-align: center;
+  font-family: var(--font-family-se);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
 }

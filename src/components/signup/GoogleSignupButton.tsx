@@ -4,6 +4,10 @@ import styles from './page.module.css';
 export default function GoogleSignupButton() {
   const { loading, handleGoogleSignUp, toggleSignupMethod } = useSignup();
 
+  const handleToggleClick = () => {
+    toggleSignupMethod();
+  };
+
   return (
     <div className={styles.googleButtonContainer}>
       <button 
@@ -24,7 +28,7 @@ export default function GoogleSignupButton() {
 
       <button 
         type="button" 
-        onClick={toggleSignupMethod}
+        onClick={handleToggleClick}
         className={styles.toggleMethodButton}
         disabled={loading}
       >
