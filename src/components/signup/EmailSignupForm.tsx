@@ -82,7 +82,6 @@ export default function EmailSignupForm() {
           onValidationChange={setIsPasswordValid}
           placeholder="סיסמה"
           disabled={loading}
-          showRequirements={Boolean(passwordFocus || password)}
         />
       </div>
       

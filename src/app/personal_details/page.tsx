@@ -256,7 +256,6 @@ const PersonalDetails = () => {
                       onChange={handlePasswordChange}
                       onValidationChange={setIsPasswordValid}
                       placeholder="סיסמה חדשה"
-                      showRequirements={true}
                     />
                   </div>
                 ) : (
