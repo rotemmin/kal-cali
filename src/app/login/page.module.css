@@ -102,27 +102,29 @@
 
 /* Common footer elements */
 .registerQuestionGoogle {
-  position: absolute;
-  top: calc(640 / 852 * 100vh);
-  left: calc(61 / 393 * 100vw);
+  /* position: absolute; */
+  /* top: calc(640 / 852 * 100vh); */
+  /* left: calc(61 / 393 * 100vw); */
   display: flex;
   gap: 0.5rem;
   align-items: center;
   justify-content: center;
   width: calc(286 / 393 * 100vw);
   white-space: nowrap;
+  margin-top: calc(120 / 852 * 100vh); /* ברירת מחדל למסך הבחירה */
 }
 
 .registerQuestionEmail {
-  position: absolute;
-  top: calc(550 / 852 * 100vh);
-  left: calc(61 / 393 * 100vw);
+  /* position: absolute; */
+  /* top: calc(550 / 852 * 100vh); */
+  /* left: calc(61 / 393 * 100vw); */
   display: flex;
   gap: 0.5rem;
   align-items: center;
   justify-content: center;
   width: calc(286 / 393 * 100vw);
   white-space: nowrap;
+  margin-top: calc(100 / 852 * 100vh);
 }
 
 .registerQuestion a {
@@ -136,16 +138,18 @@
 }
 
 .orText {
-  position: absolute;
-  top: calc(600 / 852 * 100vh);
-  left: calc(180 / 393 * 100vw);
+  /* position: absolute; */
+  /* top: calc(600 / 852 * 100vh); */
+  /* left: calc(180 / 393 * 100vw); */
   color: var(--color-text);
   text-align: center;
-  font-family: var(--font-family-primary);
+  width: 100%;
+  font-family: var(--font-family-secondary);
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  margin-top: calc(30 / 852 * 100vh);
 }
 
 /* Main login container for both states */
@@ -261,9 +265,11 @@
 }
 
 .forgotPassword {
-  position: absolute;
-  top: calc(445 / 852 * 100vh);
-  left: calc(270 / 393 * 100vw);
+  /* position: absolute; */
+  /* top: calc(445 / 852 * 100vh); */
+  /* left: calc(270 / 393 * 100vw); */
+  margin-top: calc(-125 / 852 * 100vh); /* חזרה לערך השלילי */
+  align-self: right;
 }
 
 .forgotPassword a {
@@ -282,9 +288,10 @@
 
 .emailLoginGoogleButton {
   composes: googleButton;
-  position: absolute;
-  top: calc(590 / 852 * 100vh);
-  left: calc(0 / 393 * 100vw);
+  /* position: absolute; */
+  /* top: calc(590 / 852 * 100vh); */
+  /* left: calc(0 / 393 * 100vw); */
+  margin-top: calc(15 / 852 * 100vh);
 }
 
 .emailLoginContainer .registerQuestion {
@@ -292,10 +299,10 @@
 }
 
 .errorMessage {
-  position: absolute;
-  top: calc(490 / 852 * 100vh);
-  left: calc(185 / 393 * 100vw);
-  margin-top: calc(-20 / 852 * 100vh);
+  /* position: absolute; */
+  /* top: calc(490 / 852 * 100vh); */
+  /* left: calc(185 / 393 * 100vw); */
+  /* margin-top: calc(-20 / 852 * 100vh); */
   color: #F00;
   text-align: center;
   font-family: var(--font-family-primary);
@@ -303,4 +310,5 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  margin-top: calc(10 / 852 * 100vh);
 }

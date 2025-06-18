@@ -165,6 +165,48 @@ footer {
   }
 }
 
+@media (max-height: 700px) {
+  .container {
+    padding-top: calc(80 / 852 * 100vh);
+  }
+  
+  .register-question {
+    margin-top: calc(80 / 852 * 100vh) !important;
+  }
+  
+  .register-question.emailForm {
+    margin-top: calc(40 / 852 * 100vh) !important;
+  }
+  
+  .orText {
+    margin-top: calc(30 / 852 * 100vh) !important;
+  }
+  
+  .googleButton {
+    margin-top: calc(40 / 852 * 100vh) !important;
+  }
+  
+  .registerQuestionGoogle {
+    margin-top: calc(80 / 852 * 100vh) !important;
+  }
+  
+  .registerQuestionEmail {
+    margin-top: calc(20 / 852 * 100vh) !important;
+  }
+  
+  .forgotPassword {
+    margin-top: calc(-165 / 852 * 100vh) !important;
+  }
+  
+  .emailLoginGoogleButton {
+    margin-top: calc(10 / 852 * 100vh) !important;
+  }
+  
+  .errorMessage {
+    margin-top: calc(5 / 852 * 100vh) !important;
+  }
+}
+
 @media (max-width: 480px) {
   header {
     padding: 1rem;

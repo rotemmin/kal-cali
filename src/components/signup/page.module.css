@@ -76,15 +76,17 @@
 
 .registerQuestion {
   composes: register-question from global;
-  position: absolute;
-  top: calc(640 / 852 * 100vh);
-  left: calc(61 / 393 * 100vw);
   display: flex;
   gap: 0.5rem;
   align-items: center;
   justify-content: center;
   width: calc(286 / 393 * 100vw);
   white-space: nowrap;
+  margin-top: calc(160 / 852 * 100vh);
+}
+
+.registerQuestion.emailForm {
+  margin-top: calc(120 / 852 * 100vh);
 }
 
 .error {
