@@ -25,6 +25,6 @@
       "@/styles/*": ["./styles/*"],
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/general/Modal.jsx", "src/components/milestoneSticker.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/general/Modal.tsx", "src/components/milestoneSticker.tsx"],
   "exclude": ["node_modules"]
 }
