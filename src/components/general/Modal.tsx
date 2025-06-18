@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import './Modal.css';
 
-const Modal = ({ isOpen, onClose, title, children }) => {
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title?: string;
+  children?: ReactNode;
+}
+
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
   if (!isOpen) return null;
 
-  const handleOverlayClick = (e) => {
+  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
     // רק אם הלחיצה היא על ה-overlay עצמו ולא על תוכן המודל
     if (e.target === e.currentTarget) {
       onClose();
