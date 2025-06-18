@@ -2,7 +2,7 @@
 import React, { useState, useCallback, memo } from "react";
 import { useParams, useRouter } from "next/navigation";
 import NavigationButton from "@/components/general/NavigationButton";
-import Modal from "@/components/general/Modal";
+import Modal from "@/components/general/Modal.jsx";
 import Header from "@/components/general/Header";
 import "./MilestonePage.css";
 import ProgressBar from "../milestones_progress_bar/ProgressBar";

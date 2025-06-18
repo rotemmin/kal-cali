@@ -7,7 +7,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import "./chat.css";
 import pensionData from "@/lib/content/topics/pension.json";
 import ScrollToTopButton from "./ScrollToTopButton";
-import Modal from "@/components/general/Modal";
+import Modal from "@/components/general/Modal.jsx";
 
 interface Message {
   from: string;

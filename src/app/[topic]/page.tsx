@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import NavigationButton from "@/components/general/NavigationButton";
-import Modal from "@/components/general/Modal";
+import Modal from "@/components/general/Modal.jsx";
 import Header from "@/components/general/Header";
 import dictionaryData from "@/lib/content/dictionary.json";
 import { X } from "lucide-react";
