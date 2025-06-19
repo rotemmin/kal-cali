@@ -1,5 +1,7 @@
 import { useSignup } from '@/context/SignupContext';
 import ToggleSwitch from '@/components/general/ToggleSwitch';
+import LoginLink from '@/components/signup/LoginLink';
+import { useAuth } from '@/lib/firebase/auth';
 import styles from './page.module.css';
 
 export default function PersonalDetailsForm() {
@@ -13,6 +15,7 @@ export default function PersonalDetailsForm() {
     loading,
     handleProfileSubmit
   } = useSignup();
+  const { user } = useAuth();
 
   return (
     <form className={styles.personalDetailsForm} onSubmit={handleProfileSubmit}>
@@ -40,6 +43,11 @@ export default function PersonalDetailsForm() {
       </div>
 
       <div className={styles.requiredFieldsText}>*שדות חובה</div>
+      {user?.email && (
+        <div className={styles.connectedEmailText}>
+          מחובר באמצעות {user.email}
+        </div>
+      )}
 
       <div className={styles.personalGenderToggleContainer}>
         <div className={styles.personalGenderToggle}>
@@ -55,6 +63,8 @@ export default function PersonalDetailsForm() {
       <button type="submit" className={styles.personalSubmitButton} disabled={loading}>
         {loading ? 'מבצע רישום...' : 'הרשמה'}
       </button>
+
+      <LoginLink variant="personalDetails" />
     </form>
   );
 } 

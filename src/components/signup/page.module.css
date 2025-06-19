@@ -97,6 +97,14 @@
   margin-top: calc(140 / 852 * 100vh);
 }
 
+.registerQuestion.personalDetails {
+  margin-top: calc(30 / 852 * 100vh);
+  justify-content: flex-start;
+  width: auto;
+  font-size: 16px;
+  color: var(--color-text);
+}
+
 .error {
   position: absolute;
   top: calc(355 / 852 * 100vh);
@@ -398,7 +406,7 @@
 .personalSubmitButton {
   composes: button-base from global;
   width: 104px;
-  margin-top: calc(100 / 852 * 100vh);
+  margin-top: calc(110 / 852 * 100vh);
   margin-right: calc(110 / 393 * 100vw);
   align-self: flex-start;
   font-size: calc(20 / 852 * 100vh);
@@ -407,4 +415,18 @@
 .personalSubmitButton:disabled {
   background: #CDCDCD;
   cursor: not-allowed;
+}
+
+.connectedEmailText {
+  color: var(--color-text);
+  text-align: right;
+  font-family: SimplerPro;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 20px;
+  margin-right: 10px;
+  margin-bottom: 8px;
+  align-self: flex-start;
 }

@@ -3,7 +3,7 @@ import { useSignup } from '@/context/SignupContext';
 import styles from './page.module.css';
 
 interface LoginLinkProps {
-  variant?: 'emailForm' | 'mainScreen';
+  variant?: 'emailForm' | 'mainScreen' | 'personalDetails';
 }
 
 export default function LoginLink({ variant = 'emailForm' }: LoginLinkProps) {
@@ -13,6 +13,9 @@ export default function LoginLink({ variant = 'emailForm' }: LoginLinkProps) {
     const baseClass = `register-question ${styles.registerQuestion}`;
     if (variant === 'mainScreen') {
       return `${baseClass} ${styles.mainScreen}`;
+    }
+    if (variant === 'personalDetails') {
+      return `${baseClass} ${styles.personalDetails}`;
     }
     return `${baseClass} ${showEmailForm ? styles.emailForm : ''}`;
   };
