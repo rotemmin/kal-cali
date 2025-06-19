@@ -1,4 +1,5 @@
 import { useSignup } from '@/context/SignupContext';
+import ToggleSwitch from '@/components/general/ToggleSwitch';
 import styles from './page.module.css';
 
 export default function PersonalDetailsForm() {
@@ -42,15 +43,12 @@ export default function PersonalDetailsForm() {
 
       <div className={styles.personalGenderToggleContainer}>
         <div className={styles.personalGenderToggle}>
-          <label className={styles.personalToggleSwitch}>
-            <input 
-              type="checkbox"
-              checked={isMale}
-              onChange={() => setIsMale(!isMale)}
-              disabled={loading} 
-            />
-            <span className={styles.personalToggleSlider}></span>
-          </label>
+          <ToggleSwitch
+            checked={isMale}
+            onChange={setIsMale}
+            disabled={loading}
+            size="medium"
+          />
         </div>
       </div>
       
