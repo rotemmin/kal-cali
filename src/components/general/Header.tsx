@@ -38,8 +38,8 @@ export default function Header() {
           src="/icons/logo.png"
           alt="Logo Icon"
           className={styles.logoIcon}
-          width={70}
-          height={70}
+          width={59}
+          height={37}
         />
       </button>
     </header>

@@ -18,13 +18,17 @@
 }
 
 .menuIcon {
+  margin-top: calc(45 / 852 * 100vh);
+  margin-left: calc(5 / 393 * 100vh);
   width: 27px;
   height: 27px;
 }
 
 .logoIcon {
-  width: 70px;
-  height: 70px;
+  margin-top: calc(45 / 852 * 100vh);
+  margin-right: calc(5 / 393 * 100vh);
+  width: 59px;
+  height: 37px;
 }
 
 .dropdownButton {

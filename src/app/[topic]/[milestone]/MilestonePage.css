@@ -5,9 +5,10 @@
 }
 
 .content-container {
+  margin-top: calc(25 / 852 * 100vh);
+  margin-right: calc(20 / 852 * 100vh);
   width: 100%;
   max-width: 337px;
-  margin: 0 auto;
   padding: 0;
   flex-direction: column;
   gap: 4px;
@@ -15,6 +16,7 @@
 
 /* Typography */
 .title {
+  margin-top: calc(-10 / 852 * 100vh);
   color: var(--color-text);
   text-align: right;
   font-family: var(--font-family-secondary);
@@ -23,17 +25,17 @@
   font-weight: 900;
   line-height: 130%;
   position: relative;
-  margin: 12px 0;
+  /* margin: 12px 0; */
   display: inline-block;
 }
 
 .title::after {
   content: "";
   position: absolute;
-  bottom: 10px;
+  bottom: 7.5px;
   right: 0;
   width: 100%;
-  height: 2px;
+  height: 4px;
   background-color: #9895f4;
 }
 
@@ -57,6 +59,7 @@
 /* Description Styles */
 .description,
 .description-text {
+  margin-top: calc(10 / 852 * 100vh);
   width: 100%;
   color: var(--color-text);
   text-align: right;
@@ -251,7 +254,7 @@
 }
 
 /* Media Queries */
-@media (max-width: 393px) {
+/* @media (max-width: 393px) {
   .milestone-page {
     padding: 16px 8px;
   }
@@ -267,4 +270,4 @@
   .description {
     margin-bottom: 24px;
   }
-}
+} */
