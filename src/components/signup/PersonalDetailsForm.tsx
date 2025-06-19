@@ -17,6 +17,9 @@ export default function PersonalDetailsForm() {
   } = useSignup();
   const { user } = useAuth();
 
+  // בדיקה אם שדות החובה מלאים
+  const isFormValid = firstName.trim() && familyName.trim();
+
   return (
     <form className={styles.personalDetailsForm} onSubmit={handleProfileSubmit}>
       <div className={styles.personalNameInputsRow}>
@@ -60,8 +63,12 @@ export default function PersonalDetailsForm() {
         </div>
       </div>
       
-      <button type="submit" className={styles.personalSubmitButton} disabled={loading}>
-        {loading ? 'מבצע רישום...' : 'הרשמה'}
+      <button 
+        type="submit" 
+        className={styles.personalSubmitButton} 
+        disabled={loading || !isFormValid}
+      >
+        {loading ? 'המתן...' : 'הרשמה'}
       </button>
 
       <LoginLink variant="personalDetails" />
