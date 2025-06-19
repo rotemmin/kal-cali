@@ -236,3 +236,175 @@
   font-family: var(--font-family-secondary);
   text-decoration: underline;
 }
+
+/* Personal Details Form Specific Styles */
+.personalDetailsForm {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  position: relative;
+}
+
+.personalNameInputsRow {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  margin-top: calc(-10 / 852 * 100vh);
+  position: relative;
+  padding-left: calc(46 / 393 * 100vw);
+  gap: calc(10 / 393 * 100vw); /* המרחק בין השדות: 209 - 46 = 163 */
+}
+
+.personalInputContainer {
+  width: calc(160 / 393 * 100vw);
+  padding: 4px 16px 3px 16px;
+  border: 2px solid var(--color-accent);
+  border-radius: 24px;
+  height: calc(42 / 852 * 100vh);
+  background: var(--color-background);
+  color: var(--color-text);
+  text-align: right;
+  font-family: var(--font-family-primary);
+  font-size: calc(20 / 852 * 100vh);
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  outline: none;
+}
+
+.personalInputContainer:focus {
+  border-color: var(--color-accent);
+  outline: none;
+}
+
+.personalInputContainer::placeholder {
+  color: #CECBFF;
+}
+
+.personalInputContainer:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.requiredFieldsText {
+  color: #CECBFF;
+  text-align: right;
+  font-family: SimplerPro;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: calc(10 / 852 * 100vh);
+  margin-right: calc(10 / 393 * 100vw);
+  align-self: flex-start;
+}
+
+.personalGenderToggleContainer {
+  margin-top: calc(50 / 852 * 100vh);
+  margin-right: calc(10 / 393 * 100vw);
+  align-self: flex-start;
+}
+
+.personalGenderToggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.personalGenderActive {
+  color: #000;
+  text-align: right;
+  font-family: SimplerPro;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 130%;
+}
+
+.personalToggleSwitch {
+  position: relative;
+  display: inline-block;
+  width: 93px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.personalToggleSwitch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.personalToggleSlider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--color-accent);
+  transition: 0.4s;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  color: #000;
+  text-align: center;
+  font-family: SimplerPro;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 130%;
+}
+
+.personalToggleSlider::before {
+  content: '';
+  position: absolute;
+  height: 32px;
+  width: 32px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+  z-index: 2;
+}
+
+.personalToggleSwitch input:checked + .personalToggleSlider {
+  background-color: var(--color-primary);
+}
+
+.personalToggleSwitch input:checked + .personalToggleSlider::before {
+  transform: translateX(53px);
+}
+
+/* הטקסט בתוך המתג */
+.personalToggleSlider::after {
+  content: 'נקבה';
+  position: absolute;
+  right: 12px;
+  z-index: 1;
+  transition: 0.4s;
+}
+
+.personalToggleSwitch input:checked + .personalToggleSlider::after {
+  content: 'זכר';
+  right: auto;
+  left: 12px;
+}
+
+.personalSubmitButton {
+  composes: button-base from global;
+  width: 104px;
+  margin-top: calc(100 / 852 * 100vh);
+  margin-right: calc(110 / 393 * 100vw);
+  align-self: flex-start;
+  font-size: calc(20 / 852 * 100vh);
+}
+
+.personalSubmitButton:disabled {
+  background: #CDCDCD;
+  cursor: not-allowed;
+}
