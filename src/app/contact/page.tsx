@@ -33,7 +33,10 @@ const ContactUs = () => {
         body: JSON.stringify({ message }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
+        console.error("Detailed error:", data.error);
         throw new Error("Failed to send message");
       }
 
@@ -45,7 +48,7 @@ const ContactUs = () => {
       }, 2000);
     } catch (error) {
       console.error("Error in form submission:", error);
-      setError("שגיאה בשליחת ההודעה. אנא נסה שוב.");
+      setError("לא הצלחנו לשלוח את ההודעה כרגע, אנא נסה שוב מאוחר יותר");
     } finally {
       setIsLoading(false);
     }

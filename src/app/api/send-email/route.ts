@@ -3,34 +3,79 @@ import nodemailer from 'nodemailer';
 
 export async function POST(request: Request) {
   try {
+    // בדוק שמשתני הסביבה קיימים
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
+      console.error('Missing email credentials in environment variables');
+      return NextResponse.json(
+        { error: 'Email configuration missing' },
+        { status: 500 }
+      );
+    }
+
     const { message } = await request.json();
 
-    // Create a transporter object using SMTP
+    if (!message || !message.trim()) {
+      return NextResponse.json(
+        { error: 'Message is required' },
+        { status: 400 }
+      );
+    }
+
+    // הגדרת SMTP עם תיקון לשגיאת SSL
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false, // false for port 587
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASSWORD,
       },
+      tls: {
+        rejectUnauthorized: false, // פתרון לשגיאת SSL
+        ciphers: 'SSLv3'
+      },
+      requireTLS: true
     });
 
     // Email options
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: 'kalcalimityaalim@gmail.com',
+      to: 'kalcali@mityaalim.org',
       subject: 'הודעה חדשה מהאתר',
       text: message,
+      html: `
+        <div dir="rtl" style="font-family: Arial, sans-serif; line-height: 1.5;">
+          <h2>הודעה חדשה מהאתר</h2>
+          <p style="background-color: #f5f5f5; padding: 15px; border-radius: 5px;">
+            ${message.replace(/\n/g, '<br>')}
+          </p>
+          <p style="color: #666; font-size: 12px;">
+            נשלח ב-${new Date().toLocaleString('he-IL')}
+          </p>
+        </div>
+      `,
     };
 
     // Send the email
-    await transporter.sendMail(mailOptions);
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully:', info.messageId);
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ 
+      success: true, 
+      messageId: info.messageId 
+    });
+
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error('Detailed error sending email:', error);
+    
+    let errorMessage = 'Failed to send email';
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+
     return NextResponse.json(
-      { error: 'Failed to send email' },
+      { error: errorMessage },
       { status: 500 }
     );
   }
-} 
+}

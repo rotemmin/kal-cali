@@ -584,7 +584,3 @@ fieldset {
   justify-content: center;
   transition: transform 0.2s ease;
 }
-
-.button-base:hover {
-  color: var(--color-background);
-}
