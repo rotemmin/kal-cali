@@ -4,6 +4,7 @@ import { validatePassword, getPasswordStrength, PASSWORD_MIN_LENGTH,
 import styles from './page.module.css';
 import { useState, useEffect } from 'react';
 import PasswordInput from '../PasswordInput';
+import LoginLink from './LoginLink';
 
 export default function EmailSignupForm() {
   const {
@@ -93,12 +94,14 @@ export default function EmailSignupForm() {
         {loading ? 'מבצע רישום...' : 'הרשמה'}
       </button>
 
+      <LoginLink variant="emailForm" />
+
       <p className={styles.orText}>או</p>
       
       <button 
         type="button" 
         onClick={handleToggleClick}
-        className={styles.toggleMethodButton}
+        className={`${styles.toggleMethodButton} ${styles.emailForm}`}
         disabled={loading}
       >
         <div className={styles.googleIcon}>

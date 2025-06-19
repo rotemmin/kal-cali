@@ -170,10 +170,6 @@ footer {
     padding-top: calc(80 / 852 * 100vh);
   }
   
-  .register-question {
-    margin-top: calc(80 / 852 * 100vh) !important;
-  }
-  
   .register-question.emailForm {
     margin-top: calc(40 / 852 * 100vh) !important;
   }
@@ -203,6 +199,19 @@ footer {
   }
   
   .errorMessage {
+    margin-top: calc(5 / 852 * 100vh) !important;
+  }
+
+  .registerQuestion {
+    margin-top: calc(10 / 852 * 100vh) !important;
+  }
+  .registerQuestion.emailForm {
+    margin-top: calc(10 / 852 * 100vh) !important;
+  }
+  .orText {
+    margin-top: calc(10 / 852 * 100vh) !important;
+  }
+  .toggleMethodButton {
     margin-top: calc(5 / 852 * 100vh) !important;
   }
 }

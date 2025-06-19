@@ -74,6 +74,10 @@
   justify-content: center;
 }
 
+.toggleMethodButton.emailForm {
+  margin-top: calc(0 / 852 * 100vh);
+}
+
 .registerQuestion {
   composes: register-question from global;
   display: flex;
@@ -82,11 +86,15 @@
   justify-content: center;
   width: calc(286 / 393 * 100vw);
   white-space: nowrap;
-  margin-top: calc(160 / 852 * 100vh);
+  margin-top: calc(-30 / 852 * 100vh);
 }
 
 .registerQuestion.emailForm {
-  margin-top: calc(120 / 852 * 100vh);
+  /* margin-top: calc(-210 / 852 * 100vh); */
+}
+
+.registerQuestion.mainScreen {
+  margin-top: calc(140 / 852 * 100vh);
 }
 
 .error {
@@ -100,6 +108,13 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+}
+
+.authContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
 }
 
 .googleButtonContainer {
@@ -181,6 +196,11 @@
   color: #CECBFF;
 }
 
+.inputContainer.invalid {
+  border-color: #ff4444;
+  background-color: #fff8f8;
+}
+
 .submitButton {
   composes: button-base from global;
   width: 132px;
@@ -196,12 +216,23 @@
   cursor: not-allowed;
 }
 
+.submitButton.disabledButton {
+  background: #CDCDCD;
+  cursor: not-allowed;
+}
+
 .orText {
-  margin-top: calc(20 / 852 * 100vh);
+  margin-top: calc(10 / 852 * 100vh);
   color: var(--color-text);
   text-align: center;
   font-family: var(--font-family-secondary);
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
+}
+
+.registerLink {
+  color: var(--color-accent);
+  font-family: var(--font-family-secondary);
+  text-decoration: underline;
 }

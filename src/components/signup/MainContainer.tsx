@@ -2,7 +2,6 @@ import { useSignup } from '@/context/SignupContext';
 import PersonalDetailsForm from './PersonalDetailsForm';
 import VerificationMessage from './VerificationMessage';
 import ErrorMessage from './ErrorMessage';
-import LoginLink from './LoginLink';
 import IntroText from './IntroText';
 import AuthContainer from './AuthContainer';
 import styles from './page.module.css';
@@ -18,15 +17,12 @@ export default function MainContainer() {
     <div className={styles.container}>
       <div className={styles.main}>
         <IntroText />
-        
         {!isAuthenticated ? (
           <AuthContainer />
         ) : (
           <PersonalDetailsForm />
         )}
-        
         <ErrorMessage />
-        <LoginLink />
       </div>
     </div>
   );

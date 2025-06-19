@@ -2,11 +2,23 @@ import Link from 'next/link';
 import { useSignup } from '@/context/SignupContext';
 import styles from './page.module.css';
 
-export default function LoginLink() {
+interface LoginLinkProps {
+  variant?: 'emailForm' | 'mainScreen';
+}
+
+export default function LoginLink({ variant = 'emailForm' }: LoginLinkProps) {
   const { showEmailForm } = useSignup();
   
+  const getClassName = () => {
+    const baseClass = `register-question ${styles.registerQuestion}`;
+    if (variant === 'mainScreen') {
+      return `${baseClass} ${styles.mainScreen}`;
+    }
+    return `${baseClass} ${showEmailForm ? styles.emailForm : ''}`;
+  };
+  
   return (
-    <p className={`register-question ${styles.registerQuestion} ${showEmailForm ? styles.emailForm : ''}`}>
+    <p className={getClassName()}>
       כבר יש לך חשבון?{' '}
       <Link href="/login" className={styles.registerLink}>
         התחבר.י כאן!
