@@ -197,3 +197,13 @@
   color: var(--color-disabled);
 }
 
+.milestone-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  position: fixed;
+  bottom: calc(84 / 852 * 100vh);
+}
+
+

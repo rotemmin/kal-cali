@@ -85,6 +85,20 @@ const MilestonePage: React.FC = () => {
     );
   }
 
+  let mainButtonText = "סיימתי";
+  let onMainButtonClick: () => Promise<void> = handleChatFinish;
+
+  if (showChat) {
+    mainButtonText = "סיימתי";
+    onMainButtonClick = handleChatFinish;
+  } else if (currentMilestone?.help?.type === "chat") {
+    mainButtonText = "הבא";
+    onMainButtonClick = async () => { handleShowChat(); };
+  } else if (currentMilestone?.button) {
+    mainButtonText = currentMilestone.button;
+    onMainButtonClick = handleChatFinish;
+  }
+
   return (
     <>
       <Header />
@@ -113,11 +127,11 @@ const MilestonePage: React.FC = () => {
         </div>
 
         <MilestoneActions
-        mainButtonText={currentMilestone?.help?.type === "chat" ? "הבא" : currentMilestone?.button}
-        onMainButtonClick={currentMilestone?.help?.type === "chat" ? handleShowChat : handleChatFinish}
-        showMainButton={!showChat}
-        topic={topic}
-      />
+          mainButtonText={mainButtonText}
+          onMainButtonClick={onMainButtonClick}
+          showMainButton={true}
+          topic={topic}
+        />
 
         <MemoizedModal
           isOpen={!!selectedTerm}

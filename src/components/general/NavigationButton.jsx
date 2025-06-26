@@ -7,6 +7,8 @@ const NavigationButton = ({ icon, link, position, altText }) => {
 
   const buttonStyle = {
     display: "flex",
+    width: "63px",
+    height: "55px",
     alignItems: "center",
     justifyContent: "center",
     padding: "0", 

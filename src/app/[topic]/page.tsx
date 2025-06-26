@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import NavigationButton from "@/components/general/NavigationButton";
+import MilestoneActions from "./[milestone]/MilestoneActions";
 import Modal from "@/components/general/Modal";
 import Header from "@/components/general/Header";
 import dictionaryData from "@/lib/content/dictionary.json";
@@ -262,6 +262,13 @@ const TopicPage = () => {
             })}
           </div>
         </main>
+        
+        <MilestoneActions
+          topic={topic}
+          showMainButton={false}
+          mainButtonText=""
+          onMainButtonClick={() => {}}
+        />
 
         {/* <div className="nav-buttons">
           <NavigationButton

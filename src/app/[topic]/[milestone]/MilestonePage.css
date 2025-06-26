@@ -265,14 +265,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  /* position: fixed; */
   bottom: calc(84 / 852 * 100vh);
-  /* left: 0;
-  right: 0;
-  
-  padding: 0;
-  
-  z-index: 10; */
 }
 
 /* Media Queries */
