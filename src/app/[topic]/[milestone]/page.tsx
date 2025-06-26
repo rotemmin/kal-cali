@@ -10,6 +10,7 @@ import { X } from "lucide-react";
 import MilestoneContent from "./MilestoneContent";
 import { useMilestone } from "@/hooks/useMilestone";
 import { useDictionary } from "@/hooks/useDictionary";
+import MilestoneActions from "./MilestoneActions";
 
 // Memoized components for better performance
 const MemoizedMilestoneContent = memo(MilestoneContent);
@@ -111,6 +112,13 @@ const MilestonePage: React.FC = () => {
           />
         </div>
 
+        <MilestoneActions
+        mainButtonText={currentMilestone?.help?.type === "chat" ? "הבא" : currentMilestone?.button}
+        onMainButtonClick={currentMilestone?.help?.type === "chat" ? handleShowChat : handleChatFinish}
+        showMainButton={!showChat}
+        topic={topic}
+      />
+
         <MemoizedModal
           isOpen={!!selectedTerm}
           onClose={closeTermModal}
@@ -120,7 +128,7 @@ const MilestonePage: React.FC = () => {
         </MemoizedModal>
       </div>
 
-      <div className="nav-buttons">
+      {/* <div className="nav-buttons">
         <NavigationButton
           icon="/icons/dictionary.svg"
           link="/dictionary"
@@ -133,7 +141,7 @@ const MilestonePage: React.FC = () => {
           position="left"
           altText="Notebook"
         />
-      </div>
+      </div> */}
     </>
   );
 };

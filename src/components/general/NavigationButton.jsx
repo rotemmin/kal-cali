@@ -6,14 +6,10 @@ const NavigationButton = ({ icon, link, position, altText }) => {
   const router = useRouter();
 
   const buttonStyle = {
-    position: "fixed",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    bottom: "20px",
-    [position]: "0", // Flush to the edge
-    margin: "0", // Remove margin
-    padding: "0", // Remove padding
+    padding: "0", 
     backgroundColor: "transparent",
     border: "none",
     cursor: "pointer",

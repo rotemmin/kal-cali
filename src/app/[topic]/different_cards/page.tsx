@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Header from "@/components/general/Header";
 import { X } from "lucide-react";
 import styles from "./page.module.css";
+import MilestoneActions from "../[milestone]/MilestoneActions";
 
 interface CardType {
   title: string;
@@ -92,6 +93,13 @@ const CreditCardOptions: React.FC = () => {
               חזרה
             </button>
           </div>
+
+          <MilestoneActions
+          topic={topic}
+          showMainButton={false} 
+          mainButtonText=""
+          onMainButtonClick={() => router.back()}
+          />
         </div>
       </div>
     </>

@@ -2,6 +2,7 @@ import React from 'react';
 import { useRouter } from "next/navigation";
 import ChatInterface from "../chat/page";
 import MilestoneSticker from '@/components/milestoneSticker';
+import MilestoneActions from './MilestoneActions'; 
 
 interface MilestoneDescription {
   text: string;
@@ -109,11 +110,11 @@ const MilestoneContent: React.FC<MilestoneContentProps> = ({
     return (
       <>
         <ChatInterface />
-        <div className="button-container">
-          <button onClick={onChatFinish} className="main-button">
-            סיימתי
-          </button>
-        </div>
+        {/* <MilestoneActions
+          mainButtonText="סיימתי"
+          onMainButtonClick={onChatFinish}
+          topic={topic}
+        /> */}
       </>
     );
   }
@@ -163,17 +164,11 @@ const MilestoneContent: React.FC<MilestoneContentProps> = ({
         />
       )}
 
-      <div className="button-container">
-        {currentMilestone?.help?.type === "chat" ? (
-          <button onClick={onShowChat} className="main-button">
-            הבא
-          </button>
-        ) : (
-          <button onClick={onChatFinish} className="main-button">
-            {currentMilestone?.button}
-          </button>
-        )}
-      </div>
+      {/* <MilestoneActions
+        mainButtonText={currentMilestone?.help?.type === "chat" ? "הבא" : currentMilestone?.button}
+        onMainButtonClick={currentMilestone?.help?.type === "chat" ? onShowChat : onChatFinish}
+        topic={topic}
+      /> */}
     </>
   );
 };

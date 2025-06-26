@@ -209,8 +209,8 @@ const TopicPage = () => {
   return (
     <div className="topic-container">
       <Header />
-      <X className="close-button" onClick={() => router.back()} />
       <div className="topic-page">
+      <X className="close-button" onClick={() => router.back()} />
         <main className="topic-content">
           <h1 className="topic-title">{data.title}</h1>
 
@@ -263,7 +263,7 @@ const TopicPage = () => {
           </div>
         </main>
 
-        <div className="nav-buttons">
+        {/* <div className="nav-buttons">
           <NavigationButton
             icon="/icons/dictionary.svg"
             link="/dictionary"
@@ -276,7 +276,7 @@ const TopicPage = () => {
             position="left"
             altText="Notebook"
           />
-        </div>
+        </div> */}
 
         <Modal
           isOpen={!!selectedTerm}

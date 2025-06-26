@@ -1,14 +1,8 @@
 /* topic.css */
 .topic-page {
-  width: 100%;
-  min-height: 100vh;
+  overflow: auto;
+  margin-top: calc(10 / 852 * 100vh);
   position: relative;
-  margin: 0 auto;
-  padding: 0;
-  background-color: var(--color-background);
-  overflow-x: hidden;
-  overflow-y: auto;
-  max-width: 393px;
 }
 
 .topic-content {
@@ -23,18 +17,35 @@
 }
 
 .topic-title {
+  padding-top: calc(31 / 852 * 100vh);
+  margin-top: calc(-12 / 852 * 100vh);
+  margin-bottom: calc(2 / 852 * 100vh);
+  margin-right: calc(10 / 393 * 100vw);
   color: var(--color-text);
   text-align: right;
   font-family: var(--font-family-secondary);
   font-size: 32px;
   font-style: italic;
   font-weight: 900;
-  line-height: 130%;
-  /* margin: 29px 0; */
+  line-height: 125%;
+  position: relative;
+  display: inline-block;
+  width: fit-content;
+}
+
+.topic-title::after {
+  content: "";
+  position: absolute;
+  bottom: 7px;
+  right: 0;
+  left: 0;
+  height: 3px;
+  background-color: var(--color-accent);
 }
 
 .topic-description {
-  width: 100%;
+  padding-top: calc(5 / 852 * 100vh);
+  width: 80%;
   color: #000;
   text-align: right;
   font-family: SimplerPro;
@@ -47,9 +58,11 @@
 }
 
 .milestones-container {
+  padding-top: calc(15 / 852 * 100vh);
+  gap: calc(20 / 852 * 100vh) !important;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: calc(40 / 852 * 100vh);
   width: 100%;
 }
 
@@ -75,21 +88,23 @@
 }
 
 .milestone-button.completed {
+  color: #ffffff;
   background-color: var(--color-accent);
 }
 
 .milestone-button.incomplete {
   background-color: var(--color-disabled);
+  color: var(--color-text-disabled);
 }
 
 .milestone-text {
-  color: #ffffff;
+  padding-right: calc(20 / 393 * 100vw);
+  text-align: right;
   font-size: 22px;
-  font-weight: 400;
-  text-align: center;
-  width: 100%;
+  font-style: italic;
+  /* width: 100%; */
   font-family: var(--font-family-secondary);
-  font-weight: 400;
+  font-weight: 300;
   line-height: 130%;
   letter-spacing: 0.22px;
 }
@@ -113,11 +128,11 @@
 }
 
 .dictionary-term {
-  color: #9895f4;
+  color: var(--color-accent);
   font-family: Sunday;
   font-size: 22px;
   font-style: italic;
-  font-weight: 400;
+  font-weight: 300;
   line-height: 130%;
   letter-spacing: 0.22px;
   text-decoration-line: underline;
@@ -171,275 +186,14 @@
   }
 }
 
-.closeButtonTopic {
+.close-button {
   position: absolute;
-  top: 1rem;
+  height: 30px; 
+  width: 30px;
+  margin-top: calc(0 / 852 * 100vh);
   left: 1rem;
   cursor: pointer;
+
   color: var(--color-disabled);
 }
 
-/* topic.css לא רספונסיבי */
-/* .topic-page {
-    width: 393px;
-    height: 852px;
-    position: relative;
-    margin: 0 auto;
-    padding: 16px;
-    background-color: var(--color-background);
-    overflow-x: hidden;
-}
-
-.topic-content {
-    width: 100%;
-    max-width: 337px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    padding-bottom: 80px; 
-}
-
-.topic-title {
-    color: var(--color-text);
-    text-align: right;
-    font-family: var(--font-family-secondary);
-    font-size: 48px;
-    font-style: italic;
-    font-weight: 900;
-    line-height: 130%;
-    margin: 16px 0;
-}
-
-.topic-description {
-    width: 100%;
-    color: #000;
-    text-align: right;
-    font-family: SimplerPro;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 130%;
-    letter-spacing: 0.2px;
-    margin-bottom: 20px;
-}
-
-.milestones-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: 100%;
-}
-
-.milestone-button {
-    width: 100%;
-    height: 55px;
-    background-color: var(--color-accent);
-    border: none;
-    border-radius: 27.5px;
-    padding: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    font-family: var(--font-family-primary);
-    transition: transform 0.2s ease;
-    color: #FFFFFF;
-}
-
-.milestone-button:hover,
-.milestone-button:focus {
-    transform: scale(1.02);
-}
-
-.nav-buttons {
-    position: fixed;
-    bottom: 16px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 337px;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 16px;
-    background-color: var(--color-background);
-    z-index: 10;
-}
-
-.dictionary-term {
-    color: #9895F4;
-    font-family: Sunday;
-    font-size: 22px;
-    font-style: italic;
-    font-weight: 400;
-    line-height: 130%;
-    letter-spacing: 0.22px;
-    cursor: pointer;
-    text-decoration-line: underline;
-    text-decoration-style: solid;
-    text-decoration-skip-ink: none;
-    text-underline-offset: auto;
-    text-underline-position: from-font;
-}
-
-.milestone-link {
-    text-decoration: none;
-    width: 100%;
-    display: block;
-}
-
-.milestone-text {
-    color: #FFFFFF;
-    font-size: 20px;
-    font-weight: 400;
-    text-align: center;
-    width: 100%;
-    font-family: var(--font-family-primary);
-}
-
-.dictionary-term:hover {
-    opacity: 0.8;
-}
-
-@media (max-width: 393px) {
-    .topic-page {
-        padding: 16px 8px;
-    }
-    
-    .topic-content {
-        gap: 16px;
-    }
-
-    .topic-title {
-        margin: 20px 0;
-    }
-
-    .topic-description {
-        margin-bottom: 24px;
-    }
-
-    .milestones-container {
-        gap: 16px;
-    }
-} */
-
-/* רספונסיבי */
-/* .topic-page {
-    width: 100%;
-    min-height: 100vh;
-    position: relative;
-    margin: 0 auto;
-    padding: 16px;
-    background-color: var(--color-background);
-    overflow-x: hidden;
-    max-width: 393px;
-}
-
-.topic-content {
-    width: 100%;
-    max-width: 337px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    padding-bottom: 80px; 
-}
-
-.topic-title {
-    color: var(--color-text);
-    text-align: right;
-    font-family: var(--font-family-secondary);
-    font-size: 48px;
-    font-style: italic;
-    font-weight: 900;
-    line-height: 130%;
-    margin: 29px 0;
-}
-
-.topic-description {
-    width: 100%;
-    color: var(--color-text);
-    text-align: right;
-    font-family: var(--font-family-primary);
-    font-size: 20px;
-    font-weight: 400;
-    line-height: 130%;
-    letter-spacing: 0.2px;
-    margin-bottom: 32px;
-}
-
-.milestones-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: 100%;
-}
-
-.milestone-button {
-    width: 100%;
-    height: 55px;
-    background-color: var(--color-accent);
-    
-    border: none;
-    border-radius: 27.5px;
-    padding: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    font-family: var(--font-family-primary);
-    transition: transform 0.2s ease;
-}
-
-.milestone-button:hover,
-.milestone-button:focus {
-    transform: scale(1.02);
-}
-
-.nav-buttons {
-    position: fixed;
-    bottom: 16px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 337px;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 16px;
-    background-color: var(--color-background);
-    z-index: 10;
-}
-
-.dictionary-term {
-    color: var(--color-accent);
-    cursor: pointer;
-    text-decoration: none;
-    transition: opacity 0.2s ease;
-}
-
-.dictionary-term:hover {
-    opacity: 0.8;
-}
-
-@media (max-width: 393px) {
-    .topic-page {
-        padding: 16px 8px;
-    }
-    
-    .topic-content {
-        gap: 16px;
-    }
-
-    .topic-title {
-        margin: 20px 0;
-    }
-
-    .topic-description {
-        margin-bottom: 24px;
-    }
-
-    .milestones-container {
-        gap: 16px;
-    }
-}
- */

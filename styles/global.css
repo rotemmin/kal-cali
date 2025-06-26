@@ -10,7 +10,8 @@
 
   --color-background: #fcfffa;
   --color-text: #000000;
-  --color-disabled: #cdcdcd;
+  --color-disabled: #e7e7e7;
+  --color-text-disabled: #adadad;
 
   --color-hover: #fcfffa;
   /*לבדוק אם נחוץ*/
