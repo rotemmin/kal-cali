@@ -27,18 +27,23 @@ const englishToHebrewTopics: { [key: string]: string } = {
 
 const topicFields = {
   pension: [
-    { label: "שם החברה ושם היועץ", field: "company_advisor_name" },
-    { label: "דמי הניהול מצבירה", field: "management_saving_pages" },
-    { label: "תשלומים חודשיים", field: "monthly_payments" },
-    { label: "פרטי קשר נוספים", field: "additional_contact_details" },
-    { label: "תיאור כללי", field: "general_description" },
+    { label: "חברת הפנסיה שלי", field: "company_advisor_name" },
+    { label: "המסלול אליו אני משויכת", field: "management_saving_pages" },
+    { label: "דמי הניהול המוצעים לי מהפקדה", field: "monthly_payments1" },
+    { label: "דמי הניהול המוצעים לי מהצבירה", field: "monthly_payments2" },
+    { label: "מה כלול בפנסיה שלי?", field: "additional_contact_details" },
+    { label: "כמה הופרש עד כה לפנסיה שלי?", field: "general_description" },
+    { label: "הסוכן שלי - שם, מייל/טלפון", field: "additional_contact_details" },
   ],
   national_insurance: [
-    { label: "דמי הניהול מהפקדה", field: "management_deposit_pages" },
-    { label: "מסלול הפנסיה שנראה לי מתאים", field: "pension_fit" },
-    { label: "סטטוס תשלומים", field: "payment_status" },
-    { label: "מידע רלוונטי לניהול עתידי", field: "future_management_info" },
-    { label: "סיכום השיחה", field: "call_summary" },
+    { label: "מה הסטטוס שלי?", field: "management_deposit_pages" },
+    { label: "יש לי חוב? אם כן, כמה?", field: "debt_amount" },
+    { label: "אחוז דמי הביטוח הלאומי", field: "national_insurance_percentage" },
+    { label: "אחוז דמי הביטוח הבריאות", field: "health_insurance_percentage" },
+    { label: "כמה כסף צברתי עד היום?", field: "total_savings" },
+    { label: "לעצמאית - מה מועדי התשלום החייבים עליי?", field: "payment_status" },
+    { label: "לשכירה - האם המעסיק משלם עליי?", field: "future_management_info" },
+    { label: "הזכאות שלי מביטוח לאומי", field: "national_insurance_benefits" },
   ],
   bank_account: [
     { label: "עוד נקודות חשובות שעלו במהלך השיחה", field: "additional_points" },

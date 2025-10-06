@@ -15,8 +15,8 @@ export default function ToggleSwitch({
   checked,
   onChange,
   disabled = false,
-  leftLabel = 'נקבה',
-  rightLabel = 'זכר',
+  leftLabel = 'זכר',
+  rightLabel = 'נקבה',
   className = '',
   size = 'medium'
 }: ToggleSwitchProps) {
