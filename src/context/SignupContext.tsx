@@ -6,13 +6,19 @@ import { setDoc } from 'firebase/firestore';
 import { doc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import pensionData from '@/lib/content/topics/pension.json';
+import salaryData from '@/lib/content/topics/salary.json';
+import taxData from '@/lib/content/topics/tax.json';
+import insuranceData from '@/lib/content/topics/insurance.json';
 import nationalInsuranceData from '@/lib/content/topics/national_insurance.json';
 import creditCardData from '@/lib/content/topics/credit_card.json';
 
 const topicDataMap = {
   pension: pensionData,
   national_insurance: nationalInsuranceData,
-  credit_card: creditCardData
+  credit_card: creditCardData,
+  salary: salaryData,
+  tax: taxData,
+  insurance: insuranceData
 };
 
 interface SignupContextType {
