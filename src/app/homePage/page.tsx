@@ -24,7 +24,7 @@ const topics = [
     title: "מס הכנסה",
     icon: "/stickers/finalStickersTitle/title_tax.svg",
     completedIcon: "/stickers/finalStickers/final_tax.svg",
-    link: "/homePage",
+    link: "/tax",
     dbKey: "tax",
   },
   {
@@ -38,14 +38,14 @@ const topics = [
     title: "ביטוחים",
     icon: "/stickers/finalStickersTitle/title_insurance.svg",
     completedIcon: "/stickers/finalStickers/final_insurance.svg",
-    link: "/homePage",
+    link: "/insurance",
     dbKey: "insurance",
   },
   {
     title: "תלושי שכר",
     icon: "/stickers/finalStickersTitle/title_salary.svg",
     completedIcon: "/stickers/finalStickers/final_salary.svg",
-    link: "/homePage",
+    link: "/salary",
     dbKey: "salary",
   },
   {

@@ -45,13 +45,31 @@ const topicFields = {
     { label: "לשכירה - האם המעסיק משלם עליי?", field: "future_management_info" },
     { label: "הזכאות שלי מביטוח לאומי", field: "national_insurance_benefits" },
   ],
-  bank_account: [
-    { label: "עוד נקודות חשובות שעלו במהלך השיחה", field: "additional_points" },
-    { label: "סוג חשבון", field: "account_type" },
-    { label: "דמי ניהול", field: "management_fee" },
-    { label: "פעולות אחרונות", field: "recent_transactions" },
-    { label: "שינויים צפויים", field: "expected_changes" },
+  credit_card: [
+    { label: " ואילו כמה כרטיסי אשראי יש לי?", field: "credit_cards_amount" },
+    { label: "מה המסגרת בכל כרטיס?", field: "card_limit" },
+    { label: "מה עמלת ההמרה שלי?", field: "exchange_price" },
+    { label: "האם ישנם דמי אחזקה לכרטיס?", field: "card_price" },
   ],
+  tax: [
+    { label: "המשכורת הממוצעת שלי", field: "avrage salary" },
+    { label: "נקודות זיכוי מס המגיעות לי", field: "tax_discount" },
+  ],
+  insurance: [
+    { label: "איפה ביטוח החיים שלי", field: "life_insuranfe" },
+    { label: "איפה ביטוח הרכב שלי?", field: "car_insurance" },
+    { label: "איזה סוג ביטוח רכב יש לי?", field: "car_insurance_type" },
+    { label: "באיזו קופת חולים אני?", field: "clinic" },
+    { label: "באיזה ביטוח בריאות פרטי אני?", field: "private_healthcare" },
+    { label: "איפה ביטוח הדירה של?י?", field: "apartment_insurance" },
+  ],
+  salary: [
+    { label: "השכר החודשי / השעתי שלי", field: "payment" },
+    { label: "כמה שעות עבדתי החודש?", field: "hours" },
+    { label: "המשכורת הממוצעת שלי", field: "avrage salary" },
+    { label: "נקודות זיכוי מס המגיעות לי", field: "tax_discount" },
+    { label: "מספר הטלפון של מחלקת שכר בעבודה", field: "phone_number" }
+  ]
 };
 
 interface Topic {
