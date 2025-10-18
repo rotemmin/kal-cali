@@ -87,7 +87,7 @@ const MilestoneContent: React.FC<MilestoneContentProps> = ({
 
     return (
       <div
-        className="description"
+        className="description-text description-container"
         onClick={handleTermClick}
         dangerouslySetInnerHTML={{
           __html: processTextWithTerms(description),
