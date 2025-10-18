@@ -2,9 +2,9 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import MilestoneActions from "./[milestone]/MilestoneActions";
 import Modal from "@/components/general/Modal";
 import Header from "@/components/general/Header";
+import NavigationButton from "@/components/general/NavigationButton";
 import dictionaryData from "@/lib/content/dictionary.json";
 import { X } from "lucide-react";
 import { doc, getDoc } from "firebase/firestore";
@@ -262,15 +262,8 @@ const TopicPage = () => {
             })}
           </div>
         </main>
-        
-        <MilestoneActions
-          topic={topic}
-          showMainButton={false}
-          mainButtonText=""
-          onMainButtonClick={() => {}}
-        />
 
-        {/* <div className="nav-buttons">
+        <div className="side-nav-buttons">
           <NavigationButton
             icon="/icons/dictionary.svg"
             link="/dictionary"
@@ -283,7 +276,7 @@ const TopicPage = () => {
             position="left"
             altText="Notebook"
           />
-        </div> */}
+        </div>
 
         <Modal
           isOpen={!!selectedTerm}

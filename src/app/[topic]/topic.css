@@ -1,6 +1,12 @@
 /* topic.css */
+.topic-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100vh;
+}
+
 .topic-page {
-  overflow: auto;
+  overflow-y: auto;
   margin-top: calc(10 / 852 * 100vh);
   position: relative;
 }
@@ -14,6 +20,7 @@
   flex-direction: column;
   gap: 8px;
   padding-bottom: 8px;
+  overflow-x: hidden;
 }
 
 .topic-title {
@@ -64,6 +71,7 @@
   flex-direction: column;
   gap: calc(40 / 852 * 100vh);
   width: 100%;
+  overflow-x: hidden;
 }
 
 .milestone-link {
@@ -114,18 +122,22 @@
   transform: scale(1.02);
 }
 
-.nav-buttons {
+.side-nav-buttons {
   position: fixed;
-  bottom: clamp(16px, 4vh, 24px);
+  bottom: calc(58 / 852 * 100vh);
   left: 0;
   right: 0;
-  width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 0 clamp(16px, 4vw, 24px);
-  background-color: transparent;
-  z-index: 10;
+  padding: 0;
+  pointer-events: none;
+  z-index: 1000;
 }
+
+.side-nav-buttons > * {
+  pointer-events: auto;
+}
+
 
 .dictionary-term {
   color: var(--color-accent);
@@ -187,23 +199,13 @@
 }
 
 .close-button {
-  position: absolute;
+  position: fixed;
   height: 30px; 
   width: 30px;
-  margin-top: calc(0 / 852 * 100vh);
+  top: calc(110 / 852 * 100vh);
   left: 1rem;
   cursor: pointer;
-
+  z-index: 1001;
   color: var(--color-disabled);
 }
-
-.milestone-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  position: fixed;
-  bottom: calc(84 / 852 * 100vh);
-}
-
 
