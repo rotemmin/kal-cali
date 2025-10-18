@@ -18,7 +18,6 @@ interface UserData {
 
 interface Milestone {
   title: string;
-  title2?: string;
   description: {
     male: any;
     female: any;

@@ -11,7 +11,6 @@ interface MilestoneDescription {
 
 interface Milestone {
   title: string;
-  title2?: string;
   description: {
     male: MilestoneDescription[] | string;
     female: MilestoneDescription[] | string;
@@ -124,9 +123,6 @@ const MilestoneContent: React.FC<MilestoneContentProps> = ({
   return (
     <>
       <h1 className="title">{currentMilestone?.title}</h1>
-      {currentMilestone?.title2 && (
-        <h2 className="subtitle">{currentMilestone.title2}</h2>
-      )}
 
       {description && renderDescription(description)}
 

@@ -10,9 +10,10 @@
 }
 
 .milestone-sticker {
-  margin-top: calc(100 / 852 * 100vh);
-  width: 80px;
-  height: 80px;
+  margin: calc(10 / 852 * 100vh) auto calc(10 / 852 * 100vh);
+  width: 160px;
+  height: 160px;
+  display: block;
   
 }
 
