@@ -8,6 +8,7 @@
 .topic-page {
   overflow-y: auto;
   margin-top: calc(10 / 852 * 100vh);
+  margin-bottom: calc(58 / 852 * 100vh);
   position: relative;
 }
 
