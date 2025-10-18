@@ -64,11 +64,12 @@ const topicFields = {
     { label: "איפה ביטוח הדירה של?י?", field: "apartment_insurance" },
   ],
   salary: [
-    { label: "השכר החודשי / השעתי שלי", field: "payment" },
+    { label: "ממוצע השכר החודשי שלי", field: "payment" },
+    { label: "נקודות הזיכוי ממס הכנסה", field: "tax_discount" },
+    { label: "מספר הטלפון של מחלקת שכר בעבודה", field: "phone_number" },
+    { label: "השכר השעתי שלי", field: "hourly_salary" },
     { label: "כמה שעות עבדתי החודש?", field: "hours" },
-    { label: "המשכורת הממוצעת שלי", field: "avrage salary" },
-    { label: "נקודות זיכוי מס המגיעות לי", field: "tax_discount" },
-    { label: "מספר הטלפון של מחלקת שכר בעבודה", field: "phone_number" }
+    { label: "מה התוספת שאקבל על שעות נוספות?", field: "extra_hours" },
   ]
 };
 
