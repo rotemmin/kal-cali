@@ -585,3 +585,156 @@ fieldset {
   justify-content: center;
   transition: transform 0.2s ease;
 }
+
+/* ========================================
+   REUSABLE TITLE COMPONENTS
+   Use these consistently across the app
+   ======================================== */
+
+/* Main page heading - H1 level
+   Used in: Milestones, Topics, Contact, Different Cards, etc.
+   32px, bold italic, with purple underline accent */
+.heading-primary {
+  color: var(--color-text);
+  text-align: right;
+  font-family: var(--font-family-secondary);
+  font-size: 32px;
+  font-style: italic;
+  font-weight: 900;
+  line-height: 125%;
+  position: relative;
+  margin: 12px 0;
+  display: inline-block;
+}
+
+.heading-primary::after {
+  content: "";
+  position: absolute;
+  bottom: 6px;
+  right: 0;
+  width: 100%;
+  height: 4px;
+  background-color: var(--color-accent);
+}
+
+/* Legacy alias - for backward compatibility
+   TODO: Gradually replace .page-title with .heading-primary */
+.page-title {
+  color: var(--color-text);
+  text-align: right;
+  font-family: var(--font-family-secondary);
+  font-size: 32px;
+  font-style: italic;
+  font-weight: 900;
+  line-height: 125%;
+  position: relative;
+  margin: 12px 0;
+  display: inline-block;
+}
+
+.page-title::after {
+  content: "";
+  position: absolute;
+  bottom: 6px;
+  right: 0;
+  width: 100%;
+  height: 4px;
+  background-color: var(--color-accent);
+}
+
+/* Section description text
+   Used below main headings for explanatory text */
+.text-description {
+  color: var(--color-text);
+  text-align: right;
+  font-family: var(--font-family-primary);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 130%;
+  letter-spacing: 0.2px;
+  margin-top: 15px;
+  margin-bottom: 20px;
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+
+/* Primary action button
+   Used for: Submit, Login, Send, Main CTAs
+   Purple background, italic text */
+.button-primary {
+  padding: 4px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 24px;
+  border: none;
+  background-color: var(--color-primary);
+  color: var(--color-text);
+  font-family: var(--font-family-secondary);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 31px;
+  transition: transform 0.2s ease;
+}
+
+.button-primary:hover {
+  transform: scale(1.02);
+}
+
+.button-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Secondary heading - H2 level
+   Used for: Subsections within pages */
+.heading-secondary {
+  color: var(--color-text);
+  text-align: right;
+  font-family: var(--font-family-secondary);
+  font-size: 24px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 130%;
+  margin: 16px 0;
+}
+
+/* Accent heading - H3 level
+   Used for: Card titles, highlighted sections
+   Purple colored, italic */
+.heading-accent {
+  color: var(--color-accent);
+  font-family: var(--font-family-secondary);
+  font-size: 22px;
+  font-style: italic;
+  font-weight: 400;
+  text-align: right;
+  margin: 0 0 12px 0;
+}
+
+/* ========================================
+   BACKGROUNDS & LAYOUTS
+   ======================================== */
+
+/* Pattern background
+   Used in: Home page, Contact page, Login page */
+.background-pattern {
+  background-image: url("/pattern.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Standard content container
+   Max-width 337px, centered, with padding */
+.container-content {
+  width: 100%;
+  max-width: 337px;
+  margin: 0 auto;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

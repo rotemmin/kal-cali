@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Header from "@/components/general/Header";
 import styles from "./page.module.css";
 import { X } from "lucide-react";
+import { useUserGender } from "@/components/UserGenderContext";
 
 const ContactUs = () => {
   const router = useRouter();
@@ -12,6 +13,7 @@ const ContactUs = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const { gender } = useUserGender();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,7 +47,7 @@ const ContactUs = () => {
       
       setTimeout(() => {
         router.push("/homePage");
-      }, 2000);
+      }, 2600);
     } catch (error) {
       console.error("Error in form submission:", error);
       setError("לא הצלחנו לשלוח את ההודעה כרגע, אנא נסה שוב מאוחר יותר");
@@ -54,12 +56,26 @@ const ContactUs = () => {
     }
   };
 
+  // Default to female if gender is null
+  const userGender = gender || "female";
+  
+  const contactText = userGender === "male" ? "צור קשר" : "צרי קשר";
+
+  const descriptionText = userGender === "male" 
+    ? "יש לך שאלה? רוצה להגיד לנו משהו? אנחנו כאן בשבילך, דבר איתנו!"
+    : "יש לך שאלה? רוצה להגיד לנו משהו? אנחנו כאן בשבילך, דברי איתנו!";
+
+  const placeholderText = userGender === "male" 
+    ? "כתוב כאן את ההודעה שלך..."
+    : "כתבי כאן את ההודעה שלך...";
+
   return (
     <div className={styles.container}>
       <Header />
       <X className={styles.closeButtonContact} onClick={() => router.back()} />
       <div className={styles.content}>
-        <h1 className={styles.title}>צור קשר</h1>
+        <h1 className={styles.contactTitle}>{contactText}</h1>
+        <p className={styles.descriptionText}>{descriptionText}</p>
 
         {isSubmitted ? (
           <div className={styles.successMessage}>
@@ -71,7 +87,7 @@ const ContactUs = () => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               className={styles.textarea}
-              placeholder="כתוב כאן את ההודעה שלך..."
+              placeholder={placeholderText}
             ></textarea>
 
             {error && <div className={styles.errorMessage}>{error}</div>}
@@ -79,7 +95,7 @@ const ContactUs = () => {
             <div className={styles.buttonContainer}>
               <button 
                 type="submit" 
-                className={styles.sendButton}
+                className={styles["button-primary"]}
                 disabled={isLoading}
               >
                 {isLoading ? "שולח..." : "שליחה"}

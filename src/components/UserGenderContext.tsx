@@ -31,7 +31,7 @@ export const UserGenderProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         const userDoc = await getDoc(userDocRef);
         if (userDoc.exists()) {
           const userData = userDoc.data();
-          setGender(userData.segenderx);
+          setGender(userData.gender);
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
