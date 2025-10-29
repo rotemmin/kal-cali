@@ -173,42 +173,7 @@ const PersonalDetails = () => {
             {successMessage}
           </div>
         )}
-        <div className={styles.titleContainer}>
-          <h1 className={styles.title}>פרטים אישיים</h1>
-          <div className={styles.buttonContainer}>
-            {isEditing ? (
-              <>
-                <button
-                  className={`${styles.editButton} ${styles.cancelButton}`}
-                  onClick={handleCancel}
-                  disabled={isSaving}
-                >
-                  ביטול
-                </button>
-                <button
-                  className={styles.editButton}
-                  onClick={() => {
-                    if (isEditing) {
-                      handleSave();
-                    } else {
-                      setIsEditing(true);
-                    }
-                  }}
-                  disabled={isSaving}
-                >
-                  {isEditing ? (isSaving ? "שומר..." : "שמור") : "עריכה"}
-                </button>
-              </>
-            ) : (
-              <button
-                className={styles.editButton}
-                onClick={() => setIsEditing(true)}
-              >
-                עריכה
-              </button>
-            )}
-          </div>
-        </div>
+        <h1 className={styles.title}>פרטים אישיים</h1>
         {user && (
           <div className={styles.details}>
             <div className={styles.detailItem}>
@@ -299,6 +264,39 @@ const PersonalDetails = () => {
             </div>
           </div>
         )}
+        <div className={styles.buttonContainer}>
+          {isEditing ? (
+            <>
+              <button
+                className={`${styles.editButton} ${styles.cancelButton}`}
+                onClick={handleCancel}
+                disabled={isSaving}
+              >
+                ביטול
+              </button>
+              <button
+                className={styles.editButton}
+                onClick={() => {
+                  if (isEditing) {
+                    handleSave();
+                  } else {
+                    setIsEditing(true);
+                  }
+                }}
+                disabled={isSaving}
+              >
+                {isEditing ? (isSaving ? "שומר..." : "שמור") : "עריכה"}
+              </button>
+            </>
+          ) : (
+            <button
+              className={styles.editButton}
+              onClick={() => setIsEditing(true)}
+            >
+              עריכה
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
