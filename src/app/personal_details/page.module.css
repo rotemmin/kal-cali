@@ -143,40 +143,49 @@
 }
 
 .input {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 20px;
+  width: fit-content;
+  max-width: 100%;
+  display: inline-block;
+  height: 48px;
+  padding: 12px 16px;
+  border: 2px solid #CECBFF;
+  border-radius: 24px;
+  font-size: 18px;
   font-family: var(--font-family-primary);
+  background-color: rgba(255, 255, 255, 0.5);
   direction: rtl;
   text-align: right;
-  color: var(--color-text);
+  color: var(--color-accent);
+  line-height: 130%;
+}
+
+.input::placeholder {
+  color: #CECBFF;
 }
 
 .input:focus {
+  border: 2px solid #CECBFF;
   outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
 }
 
 .select {
   width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 20px;
+  height: 48px;
+  padding: 12px 16px;
+  border: 2px solid #CECBFF;
+  border-radius: 24px;
+  font-size: 18px;
   font-family: var(--font-family-primary);
-  background-color: var(--color-background);
+  background-color: rgba(255, 255, 255, 0.9);
   direction: rtl;
   text-align: right;
   color: var(--color-text);
+  line-height: 130%;
 }
 
 .select:focus {
+  border: 2px solid #CECBFF;
   outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
 }
 
 .passwordContainer {
@@ -210,7 +219,7 @@
 }
 
 .strengthIndicator.strong {
-  background-color: #00C851;
+  background-color: var(--color-primary);
 }
 
 .strengthLabel {

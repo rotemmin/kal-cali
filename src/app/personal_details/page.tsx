@@ -9,6 +9,7 @@ import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 import { X } from "lucide-react";
 import PasswordInput from "@/components/PasswordInput";
+import ToggleSwitch from "@/components/general/ToggleSwitch";
  
 interface UserData {
   name: string;
@@ -185,6 +186,7 @@ const PersonalDetails = () => {
                   onChange={(e) => setEditForm(prev => ({ ...prev, first_name: e.target.value }))}
                   className={styles.input}
                   placeholder="שם פרטי"
+                  size={Math.max((editForm.first_name || '').length, 4)}
                 />
               ) : (
                 <div className={styles.value}>{user.first_name || "לא ידוע"}</div>
@@ -200,6 +202,7 @@ const PersonalDetails = () => {
                   onChange={(e) => setEditForm(prev => ({ ...prev, second_name: e.target.value }))}
                   className={styles.input}
                   placeholder="שם משפחה"
+                  size={Math.max((editForm.second_name || '').length, 4)}
                 />
               ) : (
                 <div className={styles.value}>{user.second_name || "לא ידוע"}</div>
@@ -248,14 +251,14 @@ const PersonalDetails = () => {
             <div className={styles.detailItem}>
               <div className={styles.subHeading}>לשון פנייה</div>
               {isEditing ? (
-                <select
-                  value={editForm.gender}
-                  onChange={(e) => setEditForm(prev => ({ ...prev, gender: e.target.value }))}
-                  className={styles.select}
-                >
-                  <option value="male">זכר</option>
-                  <option value="female">נקבה</option>
-                </select>
+                <div className={styles.value}>
+                  <ToggleSwitch
+                    checked={(editForm.gender || user.gender) === 'female'}
+                    onChange={(checked) =>
+                      setEditForm(prev => ({ ...prev, gender: checked ? 'female' : 'male' }))
+                    }
+                  />
+                </div>
               ) : (
                 <div className={styles.value}>
                   {user.gender === "male" ? "זכר" : "נקבה"}
@@ -268,13 +271,6 @@ const PersonalDetails = () => {
           {isEditing ? (
             <>
               <button
-                className={`${styles.editButton} ${styles.cancelButton}`}
-                onClick={handleCancel}
-                disabled={isSaving}
-              >
-                ביטול
-              </button>
-              <button
                 className={styles.editButton}
                 onClick={() => {
                   if (isEditing) {
@@ -286,6 +282,13 @@ const PersonalDetails = () => {
                 disabled={isSaving}
               >
                 {isEditing ? (isSaving ? "שומר..." : "שמור") : "עריכה"}
+              </button>
+              <button
+                className={`${styles.editButton} ${styles.cancelButton}`}
+                onClick={handleCancel}
+                disabled={isSaving}
+              >
+                ביטול
               </button>
             </>
           ) : (
