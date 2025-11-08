@@ -80,7 +80,7 @@ interface Topic {
 }
 
 interface Sticker {
-  type: 'littleStickersTitle' | 'littleStickersDrawing' | 'finalStickers' | "finalStickersTitle";
+  type: 'littleStickersTitle' | 'littleStickersDrawing' | 'finalStickers' | 'finalStickersTitle' | 'finalStickersEmpty';
   path: string;
 }
 
@@ -291,7 +291,7 @@ function PersonalNotebookContent() {
       if (isAllMilestonesDone) {
         return `/stickers/finalStickers/final_${topic}.svg`;
       }
-      return `/stickers/finalStickersTitle/title_${topic}.svg`;
+      return `/stickers/finalStickersEmpty/empty_${topic}.svg`;
     }
 
     return '';
