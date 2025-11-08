@@ -27,6 +27,29 @@
   align-self: flex-start;
 }
 
+.verificationContent {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 48px;
+  margin-left: calc(49 / 393 * 100vw);
+  width: calc(316 / 393 * 100vw);
+  align-self: flex-start;
+}
+
+.verificationText {
+  color: var(--color-text);
+  text-align: right;
+  font-family: var(--font-family-primary);
+  font-size: 20px;
+  line-height: 120%;
+  margin: 0;
+}
+
+.verificationText strong {
+  font-weight: 600;
+}
+
 .subtitleMain {
   composes: subtitle-main from global;
   margin-top: calc(60 / 852 * 100vh);

@@ -10,6 +10,7 @@
   background-position: center;
   padding-top: calc(130 / 852 * 100vh);
   position: relative;
+  overflow-x: hidden;
 }
 
 .main {
@@ -19,6 +20,8 @@
   flex-direction: column;
   align-items: center;
   gap: calc(20 / 852 * 100vh);
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 /* Common elements for both states */

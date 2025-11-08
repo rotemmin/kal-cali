@@ -91,7 +91,7 @@ export default function EmailSignupForm() {
         disabled={loading || !isPasswordValid}
         className={`${styles.submitButton} ${!isPasswordValid ? styles.disabledButton : ''}`}
       >
-        {loading ? 'מבצע רישום...' : 'הרשמה'}
+        {'הרשמה'}
       </button>
 
       <LoginLink variant="emailForm" />
