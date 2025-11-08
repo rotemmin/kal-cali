@@ -7,9 +7,10 @@ import { useUserGender } from "./UserGenderContext";
 interface HeaderMenuProps {
   isOpen: boolean;
   onClose: () => void;
+  anchorRef?: React.RefObject<HTMLElement>;
 }
 
-const HeaderMenu: React.FC<HeaderMenuProps> = ({ isOpen, onClose }) => {
+const HeaderMenu: React.FC<HeaderMenuProps> = ({ isOpen, onClose, anchorRef }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { gender } = useUserGender();
@@ -20,13 +21,16 @@ const HeaderMenu: React.FC<HeaderMenuProps> = ({ isOpen, onClose }) => {
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
+        if (anchorRef?.current?.contains(event.target as Node)) {
+          return;
+        }
         onClose();
       }
     };
     
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [onClose]);
+  }, [onClose, anchorRef]);
 
   if (!isOpen) return null;
   
@@ -45,18 +49,25 @@ const HeaderMenu: React.FC<HeaderMenuProps> = ({ isOpen, onClose }) => {
     onClose();
   };
 
+  const handleAbout = () => {
+    router.push("/about");
+    onClose();
+  };
+
   const contactText = gender === "male" ? "צור קשר" : "צרי קשר";
   const logoutText = gender === "male" ? "התנתק" : "התנתקי";
 
   return (
     <div ref={dropdownRef} className={styles.menuContainer}>
-      <div className={styles.topBlock}></div>
       <div className={styles.menuContent}>
         <MenuButton onClick={() => handleNavigation("/contact")}>
           {contactText}
         </MenuButton>
         <MenuButton onClick={handlePersonalDetails}>
           פרטים אישיים
+        </MenuButton>
+        <MenuButton onClick={handleAbout}>
+          אודות
         </MenuButton>
         <MenuButton onClick={handleLogout}>
           {logoutText}

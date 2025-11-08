@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import styles from "@/styles/Header.module.css";
 import HeaderMenu from "./HeaderMenu";
@@ -9,6 +9,7 @@ import Image from "next/image";
 export default function Header() {
   const router = useRouter();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   const handleLogoClick = () => {
     router.push("/homePage");
@@ -21,7 +22,11 @@ export default function Header() {
   return (
     <header className={styles.header}>
       <div style={{ position: "relative" }}>
-        <button className={styles.menuButton} onClick={handleMenuClick}>
+        <button
+          ref={menuButtonRef}
+          className={styles.menuButton}
+          onClick={handleMenuClick}
+        >
           <img
             src="/icons/menu.svg"
             alt="Menu Icon"
@@ -30,6 +35,7 @@ export default function Header() {
         </button>
         <HeaderMenu
           isOpen={isDropdownOpen}
+          anchorRef={menuButtonRef}
           onClose={() => setIsDropdownOpen(false)}
         />
       </div>

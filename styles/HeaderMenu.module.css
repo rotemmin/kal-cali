@@ -1,42 +1,30 @@
 .menuContainer {
   position: absolute;
-  top: 63px;
+  top: calc(100% + 8px);
   left: 0;
-  width: 120px; 
+  width: clamp(110px, 28vw, 140px);
   z-index: 1000;
-}
-
-.topBlock {
-  height: 15px; 
-  background-color: var(--color-primary); 
-  margin-bottom: 1px;
-  gap: 3px; 
 }
 
 .menuContent {
   display: flex;
   flex-direction: column;
-  gap: 2px; 
-  background-color: var(--color-background);
-  padding: 0;
+  gap: 2px;
 }
 
 .menuButton {
   width: 100%;
-  padding: 3px 10px; 
+  padding: 6px 12px;
   text-align: right;
-  background-color: var(--color-primary); 
+  background-color: var(--color-primary);
   border: none;
   color: var(--color-text);
-  font-size: 14px; 
-  transition: background-color 0.2s ease;
+  font-size: 14px;
+  font-family: var(--font-family-primary);
+  font-weight: 400;
+  transition: background-color 0.2s ease, transform 0.2s ease;
   cursor: pointer;
-  border-radius: 0; 
-}
-
-.menuButton:last-child {
-  position: relative;
-  border-bottom-right-radius: 15px; 
+  border-radius: 10px;
 }
 
 .menuButton:hover {
