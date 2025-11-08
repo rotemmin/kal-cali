@@ -3,13 +3,14 @@
 import { useEffect, useState } from "react";
 import { auth, db, validatePassword, getPasswordStrength } from "@/lib/firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { updatePassword } from "firebase/auth";
+import { updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
 import Header from "@/components/general/Header";
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 import { X } from "lucide-react";
 import PasswordInput from "@/components/PasswordInput";
 import ToggleSwitch from "@/components/general/ToggleSwitch";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
  
 interface UserData {
   name: string;
@@ -33,6 +34,8 @@ const PersonalDetails = () => {
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const router = useRouter();
  
   useEffect(() => {
@@ -80,13 +83,26 @@ const PersonalDetails = () => {
     fetchUserDetails();
   }, []);
 
+  const passwordError = error && error.includes("סיס") ? error : null;
+  const generalError = error && !error.includes("סיס") ? error : null;
+
   const handleSave = async () => {
     if (!auth.currentUser) {
       setError("לא נמצא משתמש מחובר");
       return;
     }
     
-    if (editForm.password && !isPasswordValid) {
+    if (isChangingPassword) {
+      if (!currentPassword.trim()) {
+        setError("אנא הזן את הסיסמה הנוכחית");
+        return;
+      }
+
+      if (!isPasswordValid) {
+        setError("הסיסמה אינה עומדת בדרישות האבטחה");
+        return;
+      }
+    } else if (editForm.password && !isPasswordValid) {
       setError("הסיסמה אינה עומדת בדרישות האבטחה");
       return;
     }
@@ -103,13 +119,30 @@ const PersonalDetails = () => {
         gender: editForm.gender
       };
 
-      if (editForm.password && isPasswordValid) {
+      if (isChangingPassword && editForm.password && isPasswordValid) {
         try {
+          const email = auth.currentUser.email;
+          if (!email) {
+            setError("לא הצלחנו לאמת את הסיסמה הנוכחית. אנא התחבר מחדש ונסה שוב.");
+            return;
+          }
+
+          const credential = EmailAuthProvider.credential(email, currentPassword);
+          await reauthenticateWithCredential(auth.currentUser, credential);
           await updatePassword(auth.currentUser, editForm.password);
           setSuccessMessage("הסיסמה עודכנה בהצלחה");
         } catch (passwordError: any) {
-          if (passwordError.code === 'auth/requires-recent-login') {
+          if (passwordError.code === 'auth/wrong-password') {
+            setError('הסיסמה הנוכחית שגויה');
+            return;
+          } else if (passwordError.code === 'auth/requires-recent-login') {
             setError('נדרשת התחברות מחדש כדי לשנות סיסמה');
+            return;
+          } else if (passwordError.code === 'auth/weak-password') {
+            setError('הסיסמה אינה עומדת בדרישות האבטחה');
+            return;
+          } else if (passwordError.code === 'auth/invalid-credential') {
+            setError('הסיסמה הנוכחית אינה תקינה');
             return;
           } else {
             setError('שגיאה בעדכון הסיסמה');
@@ -130,6 +163,11 @@ const PersonalDetails = () => {
       
       setIsEditing(false);
       setIsChangingPassword(false);
+      setCurrentPassword("");
+      setEditForm(prev => {
+        const { password, ...rest } = prev;
+        return rest;
+      });
       setSuccessMessage(prev => prev || "הפרטים נשמרו בהצלחה");
       
       setTimeout(() => {
@@ -150,10 +188,24 @@ const PersonalDetails = () => {
     setIsChangingPassword(false);
     setPasswordValidation({ isValid: false, errors: [] });
     setPasswordStrength({ strength: 0, label: '' });
+    setCurrentPassword("");
+    setIsPasswordValid(false);
+    setError(null);
+    setShowCurrentPassword(false);
   };
 
   const handlePasswordChange = (newPassword: string) => {
     setEditForm(prev => ({ ...prev, password: newPassword }));
+  };
+
+  const handleStartPasswordChange = () => {
+    setCurrentPassword("");
+    setEditForm(prev => ({ ...prev, password: "" }));
+    setIsPasswordValid(false);
+    setIsChangingPassword(true);
+    setPasswordValidation({ isValid: false, errors: [] });
+    setError(null);
+    setShowCurrentPassword(false);
   };
  
   return (
@@ -164,9 +216,9 @@ const PersonalDetails = () => {
         onClick={() => router.back()}
       />
       <div className={styles.content}>
-        {error && (
+        {generalError && (
           <div className={styles.errorMessage}>
-            {error}
+            {generalError}
           </div>
         )}
         {successMessage && (
@@ -219,12 +271,43 @@ const PersonalDetails = () => {
               {!user?.isGoogleUser && (
                 isEditing && isChangingPassword ? (
                   <div className={styles.passwordContainer}>
-                    <PasswordInput
-                      value={editForm.password || ''}
-                      onChange={handlePasswordChange}
-                      onValidationChange={setIsPasswordValid}
-                      placeholder="סיסמה חדשה"
-                    />
+                    <div className={styles.passwordFieldGroup}>
+                      <label className={styles.passwordLabel} htmlFor="currentPassword">
+                        סיסמה נוכחית
+                      </label>
+                      <div className={styles.passwordInputWrapper}>
+                        <input
+                          id="currentPassword"
+                          type={showCurrentPassword ? 'text' : 'password'}
+                          value={currentPassword}
+                          onChange={(e) => setCurrentPassword(e.target.value)}
+                          className={styles.passwordInput}
+                          placeholder="הקלד את הסיסמה הנוכחית"
+                          autoComplete="current-password"
+                          disabled={isSaving}
+                        />
+                        <button
+                          type="button"
+                          className={styles.togglePasswordButtonInline}
+                          onClick={() => setShowCurrentPassword((prev) => !prev)}
+                          aria-label={showCurrentPassword ? "הסתר סיסמה" : "הצג סיסמה"}
+                          disabled={isSaving}
+                        >
+                          {showCurrentPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+                        </button>
+                      </div>
+                    </div>
+                    <div className={styles.passwordFieldGroup}>
+                      <div className={styles.passwordLabel}>סיסמה חדשה</div>
+                      <PasswordInput
+                        value={editForm.password || ''}
+                        onChange={handlePasswordChange}
+                        onValidationChange={setIsPasswordValid}
+                        placeholder="בחר סיסמה חדשה"
+                        disabled={isSaving}
+                      />
+                    </div>
+
                   </div>
                 ) : (
                   <div className={styles.passwordDisplay}>
@@ -233,9 +316,9 @@ const PersonalDetails = () => {
                       <button
                         type="button"
                         className={styles.changePasswordButton}
-                        onClick={() => setIsChangingPassword(true)}
+                        onClick={handleStartPasswordChange}
                       >
-                        לחץ להחלפת סיסמא
+                        החלפת סיסמא
                       </button>
                     )}
                   </div>
@@ -244,6 +327,11 @@ const PersonalDetails = () => {
               {user?.isGoogleUser && (
                 <div className={styles.googleAuthMessage}>
                   משתמש מחובר באמצעות חשבון Google
+                </div>
+              )}
+              {passwordError && (
+                <div className={styles.passwordInlineError}>
+                  {passwordError}
                 </div>
               )}
             </div>
@@ -281,7 +369,7 @@ const PersonalDetails = () => {
                 }}
                 disabled={isSaving}
               >
-                {isEditing ? (isSaving ? "שומר..." : "שמור") : "עריכה"}
+                {isEditing ? (isSaving ? "שומרים..." : "שמירה") : "עריכה"}
               </button>
               <button
                 className={`${styles.editButton} ${styles.cancelButton}`}

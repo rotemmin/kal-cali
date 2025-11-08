@@ -31,36 +31,28 @@ function LoginContent() {
       return;
     }
     
-    // אם המשתמש מגיע מקישור אימות מייל, אנחנו יודעים שהמייל כבר אומת
     const fromVerification = searchParams.get('mode') === 'verifyEmail';
 
     try {
-      // התחברות באמצעות מייל וסיסמה
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // בדיקה אם המשתמש קיים וסיים את תהליך יצירת הפרופיל
       const userMetadataRef = doc(db, "user_metadata", user.uid);
       const userMetadataDoc = await getDoc(userMetadataRef);
 
       if (userMetadataDoc.exists() && userMetadataDoc.data().profileComplete) {
-        // אם המשתמש מגיע מקישור אימות, נתייחס אליו כמאומת ללא תלות בסטטוס ב-Firebase
         if (fromVerification) {
           console.log('משתמש מגיע מקישור אימות תקין - מתחבר ישירות');
           router.push('/homePage');
           return;
         }
         
-        // אם לא מגיע מקישור אימות - רענן את המשתמש לקבלת סטטוס עדכני מהשרת
         try {
-          // ננסה לרענן את המשתמש כדי לקבל סטטוס מעודכן מהשרת
           await user.reload();
-          
-          // בדיקה מחדש האם המייל מאומת
+
           if (user.emailVerified) {
             router.push('/homePage');
           } else {
-            // אם עדיין לא מאומת, שלח הודעת שגיאה עם אפשרות לשלוח מייל אימות מחדש
             setError('יש לאמת את כתובת המייל לפני הכניסה למערכת');
           }
         } catch (reloadError) {
@@ -68,7 +60,6 @@ function LoginContent() {
           setError('אירעה שגיאה בבדיקת סטטוס אימות המייל. אנא נסה שוב מאוחר יותר.');
         }
       } else {
-        // אם המשתמש לא השלים את פרטי הפרופיל, נווט אותו להשלמת הפרופיל
         router.push('/signup');
       }
     } catch (error) {
@@ -92,25 +83,26 @@ function LoginContent() {
     }
   };
 
-  // בדיקה אם המשתמש מגיע מקישור אימות מייל
   useEffect(() => {
-    // בודק אם יש פרמטר 'mode=verifyEmail' בכתובת ה-URL
     const mode = searchParams.get('mode');
     const fromVerification = mode === 'verifyEmail';
+    const fromResetPassword = mode === 'resetPassword';
     
-    // אם המשתמש מגיע מאימות מייל, הצג ישירות את טופס ההתחברות עם מייל
+    if (fromResetPassword) {
+      const queryString = searchParams.toString();
+      router.replace(`/reset-password${queryString ? `?${queryString}` : ''}`);
+      return;
+    }
+
     if (fromVerification) {
       setLoginMethod('email');
-      setShowToggle(false); // לא מציגים את כפתור המעבר לגוגל
-      
-      // נסה לקבל את המייל מה-URL (אם קיים)
+      setShowToggle(false); 
       const verifiedEmail = searchParams.get('email');
       if (verifiedEmail) {
         setEmail(decodeURIComponent(verifiedEmail));
       }
       
-      // אם המשתמש כבר מחובר, ננסה לרענן את הטוקן שלו
-      // זה עוזר לפיירבייס לעדכן את סטטוס האימות
+      // זה עוזר לפיירבייס לעדכן את סטטוס אימות
       const currentUser = auth.currentUser;
       if (currentUser) {
         currentUser.getIdToken(true)
@@ -122,53 +114,36 @@ function LoginContent() {
           });
       }
     }
-  }, [searchParams]);
+  }, [searchParams, router]);
   
   const handleGoogleLogin = async () => {
     setError("");
     setLoading(true);
     
     try {
-      // לבדוק אם כבר קיים משתמש עם המייל הזה בטבלת המשתמשים בפיירסטור
-      // לפני שמנסים להתחבר עם גוגל ויוצרים משתמש חדש
-      
-      // במקום להשתמש בפונקציית signInWithGoogle, נשתמש באפשרות להציג רק 
-      // את חלון הבחירה של גוגל כדי לקבל את המייל, ורק אז לבדוק אם הוא קיים במערכת
-      
-      // ראשית, נציג את חלון הבחירה של גוגל ונקבל את המידע על המשתמש
       const googleProvider = new (await import('firebase/auth')).GoogleAuthProvider();
       const result = await (await import('firebase/auth')).signInWithPopup(auth, googleProvider);
       
-      // אם הגענו לכאן, המשתמש כבר קיים בטבלת האותנטיקציה (או נוצר כרגע)
-      // אבל אנחנו רוצים לבדוק אם הוא קיים בטבלת המשתמשים בפיירסטור
-      
+
       if (result.user) {
-        // בדיקה אם המשתמש קיים בטבלת משתמשים בפיירסטור
         const userMetadataRef = doc(db, "user_metadata", result.user.uid);
         const userMetadataDoc = await getDoc(userMetadataRef);
         
         if (userMetadataDoc.exists()) {
-          // אם המשתמש קיים בפיירסטור, בדוק אם הוא השלים את הפרופיל
           if (userMetadataDoc.data().profileComplete) {
-            // אם כן, נווט לדף הבית
             router.push('/homePage');
           } else {
-            // אם לא, נווט להשלמת הפרופיל
             router.push('/signup');
           }
         } else {
-          // אם המשתמש לא קיים בפיירסטור, מציגים הודעה ומתנתקים
           setError('חשבון זה אינו רשום במערכת. אנא הירשם תחילה דרך דף ההרשמה.');
-          // התנתקות מהמשתמש שנוצר בטבלת האותנטיקציה
           await auth.signOut();
         }
       }
     } catch (error: any) {
       console.error('Google login error:', error);
       
-      // אם המשתמש ביטל את החלון של גוגל, לא נציג הודעת שגיאה
       if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
-        // לא עושים כלום, המשתמש פשוט סגר את החלון
       } else {
         setError('שגיאה בהתחברות עם גוגל');
       }
