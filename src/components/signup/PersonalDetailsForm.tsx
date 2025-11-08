@@ -68,7 +68,7 @@ export default function PersonalDetailsForm() {
         className={styles.personalSubmitButton} 
         disabled={loading || !isFormValid}
       >
-        {loading ? 'המתן...' : 'הרשמה'}
+        {loading ? 'המתינו...' : 'הרשמה'}
       </button>
 
       <LoginLink variant="personalDetails" />
