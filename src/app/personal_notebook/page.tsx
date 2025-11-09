@@ -84,6 +84,20 @@ interface Sticker {
   path: string;
 }
 
+type StickerStage =
+  | {
+      id: string;
+      type: "milestone";
+      completedPath: string;
+      pendingPath: string;
+    }
+  | {
+      id: "__final__";
+      type: "final";
+      completedPath: string;
+      pendingPath: string;
+    };
+
 const topicDataMap = {
   pension: pensionData,
   national_insurance: nationalInsuranceData,
@@ -93,10 +107,60 @@ const topicDataMap = {
   tax: taxData,
 };
 
+type TopicKey = keyof typeof topicDataMap;
+
+const isTopicKey = (value: string): value is TopicKey =>
+  Object.prototype.hasOwnProperty.call(topicDataMap, value);
+
 const milestoneOrders: { [topic: string]: string[] } = {};
 Object.entries(topicDataMap).forEach(([topic, data]) => {
-  milestoneOrders[topic] = data.milestones.map((m: any) => m.title.replace(/\s+/g, '_'));
+  milestoneOrders[topic] = data.milestones.map((m: any) => m.title.replace(/\s+/g, "_"));
 });
+
+const normalizeMilestoneKey = (title: string) => title.replace(/\s+/g, "_");
+
+const resolveCompletedStickerPath = (sticker: string | { male: string; female: string }, gender: string): string => {
+  if (!sticker) return "";
+  if (typeof sticker === "string") {
+    return sticker;
+  }
+  if (gender === "male" && sticker.male) return sticker.male;
+  if (gender === "female" && sticker.female) return sticker.female;
+  return sticker.male || sticker.female || "";
+};
+
+const derivePendingStickerPath = (completedPath: string): string => {
+  if (!completedPath) return "";
+
+  if (completedPath.includes("/littleStickersTitle/")) {
+    const filename = completedPath.split("/").pop() || "";
+    const match = filename.match(/title_(.+)\.svg/i);
+    const base = match?.[1];
+    if (base) {
+      return `/stickers/littleStickersTitle/pre_title_${base}.svg`;
+    }
+  }
+
+  if (completedPath.includes("/littleStickersDrawing/")) {
+    const filename = completedPath.split("/").pop() || "";
+    const match = filename.match(/drawing_(.+)\.svg/i);
+    const base = match?.[1];
+    if (base) {
+      return `/stickers/littleStickersDrawing/pre_drawing_${base}.svg`;
+    }
+  }
+
+  if (completedPath.includes("/finalStickers/")) {
+    const filename = completedPath.split("/").pop() || "";
+    const match = filename.match(/final_(.+)\.svg/i);
+    const base = match?.[1];
+    if (base) {
+      return `/stickers/finalStickersEmpty/empty_${base}.svg`;
+    }
+  }
+
+  return completedPath;
+};
 
 function PersonalNotebookContent() {
   const searchParams = useSearchParams();
@@ -266,36 +330,41 @@ function PersonalNotebookContent() {
     return () => unsubscribe();
   }, [user]);
 
-  const getStickerImage = (topic: string, index: number) => {
-    const topicMilestones = milestones[topic]?.milestones || {};
-    const milestoneOrder = milestoneOrders[topic] || [];
-    const isFirstMilestoneDone = topicMilestones[milestoneOrder[0]] === 1;
-    const isSecondMilestoneDone = topicMilestones[milestoneOrder[1]] === 1;
-    const isAllMilestonesDone = milestoneOrder.length > 0 && milestoneOrder.every(key => topicMilestones[key] === 1);
+  const stickerStages = useMemo((): StickerStage[] => {
+    if (!currentTopic || !isTopicKey(currentTopic)) return [];
 
-    if (index === 0) {
-      if (isFirstMilestoneDone && gender) {
-        return `/stickers/littleStickersTitle/${gender}/title_${topic}.svg`;
-      }
-      return `/stickers/littleStickersTitle/pre_title_${topic}.svg`;
-    }
+    const topicKey: TopicKey = currentTopic;
+    const topicData = topicDataMap[topicKey];
+    if (!topicData?.milestones) return [];
 
-    if (index === 1) {
-      if (isSecondMilestoneDone) {
-        return `/stickers/littleStickersDrawing/drawing_${topic}.svg`;
-      }
-      return `/stickers/littleStickersDrawing/pre_drawing_${topic}.svg`;
-    }
+    const effectiveGender = gender === "male" ? "male" : "female";
 
-    if (index === 2) {
-      if (isAllMilestonesDone) {
-        return `/stickers/finalStickers/final_${topic}.svg`;
-      }
-      return `/stickers/finalStickersEmpty/empty_${topic}.svg`;
-    }
+    const milestoneStages = (topicData.milestones as any[])
+      .map((milestone: any): StickerStage | null => {
+        if (!milestone?.sticker) return null;
 
-    return '';
-  };
+        const milestoneKey = normalizeMilestoneKey(milestone.title);
+        const completedPath = resolveCompletedStickerPath(milestone.sticker, effectiveGender);
+        if (!completedPath) return null;
+
+        return {
+          id: milestoneKey,
+          type: "milestone" as const,
+          completedPath,
+          pendingPath: derivePendingStickerPath(completedPath),
+        };
+      })
+      .filter((stage): stage is StickerStage => Boolean(stage));
+
+    const finalStage: StickerStage = {
+      id: "__final__",
+      type: "final" as const,
+      completedPath: `/stickers/finalStickers/final_${topicKey}.svg`,
+      pendingPath: `/stickers/finalStickersEmpty/empty_${topicKey}.svg`,
+    };
+
+    return [...milestoneStages, finalStage];
+  }, [currentTopic, gender]);
 
   const debouncedUpdateNote = useMemo(
     () =>
@@ -381,6 +450,18 @@ function PersonalNotebookContent() {
       ? "רשום כאן את ההערות שלך..."
       : "רשמי כאן את ההערות שלך...";
 
+  const topicMilestonesStatus = useMemo(() => {
+    if (!currentTopic || !isTopicKey(currentTopic)) return {} as Record<string, number>;
+    return milestones[currentTopic]?.milestones || {};
+  }, [currentTopic, milestones]);
+
+  const isAllMilestonesDone = useMemo(() => {
+    if (!currentTopic || !isTopicKey(currentTopic)) return false;
+    const milestoneOrder = milestoneOrders[currentTopic] || [];
+    if (milestoneOrder.length === 0) return false;
+    return milestoneOrder.every((key) => topicMilestonesStatus[key] === 1);
+  }, [currentTopic, topicMilestonesStatus]);
+
   return (
     <>
       <Header />
@@ -465,14 +546,26 @@ function PersonalNotebookContent() {
                 </div>
                 <div className={styles.separator} />
                 <div className={styles.stickersArea}>
-                  {[0, 1, 2].map((index) => (
-                    <img
-                      key={index}
-                      src={getStickerImage(currentTopic, index)}
-                      alt={`Sticker ${index + 1}`}
-                      className={styles.sticker}
-                    />
-                  ))}
+                  {stickerStages.map((stage, index) => {
+                    const isStageCompleted =
+                      stage.type === "final"
+                        ? isAllMilestonesDone
+                        : topicMilestonesStatus[stage.id] === 1;
+                    const imageSrc = isStageCompleted ? stage.completedPath : stage.pendingPath;
+
+                    if (!imageSrc) {
+                      return null;
+                    }
+
+                    return (
+                      <img
+                        key={`${stage.id}-${index}`}
+                        src={imageSrc}
+                        alt={`Sticker ${index + 1}`}
+                        className={styles.sticker}
+                      />
+                    );
+                  })}
                 </div>
               </div>
             )}
