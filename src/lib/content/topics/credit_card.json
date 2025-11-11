@@ -139,7 +139,9 @@
         "female": "<span class='note-highlight'>בתכלס</span><br>כלל אצבע לניהול ההוצאות:50% מהמשכורת להוצאות שוטפות (בית, אוכל, קניות בסיס). 30% לחסכון 20% לבילויים וכיף :)"
       },
       "button": "סיימתי!",
-      "link": "/[topic]"    },
+      "link": "/[topic]",
+      "sticker": "/stickers/littleStickersDrawing/drawing_credit_card.svg"
+      },
     {
       "title": "חשוב חשוב חשוב",
       "description": {

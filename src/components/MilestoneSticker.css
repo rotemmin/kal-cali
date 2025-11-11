@@ -14,7 +14,23 @@
   width: 160px;
   height: 160px;
   display: block;
-  
+  position: relative;
+  overflow: visible;
+}
+
+.sticker-animation-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%) scale(1.2);
+  transform-origin: center;
+  pointer-events: none;
+  z-index: 2;
 }
 
 .sticker-wrapper {
@@ -28,10 +44,21 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+  opacity: 1;
+  transition: opacity 0.4s ease-in-out;
+  z-index: 1;
 }
 
 .animate-to-notebook {
   animation: floatToNotebook 2s ease-in-out forwards;
+}
+
+.milestone-sticker.revealing .sticker-image {
+  opacity: 1;
+}
+
+.sticker-image-final {
+  z-index: 3;
 }
 
 @keyframes floatToNotebook {

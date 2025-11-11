@@ -3,6 +3,7 @@ import { db } from "@/lib/firebase/client";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
+import { STICKER_ANIMATION_DURATION_MS } from "@/utils/stickerAssets";
 
 interface UserData {
   topics_and_milestones?: {
@@ -78,6 +79,18 @@ export const useMilestone = (topic: string, milestone: string, normalizedTopic: 
       userGender: userData.gender || "female" as const
     };
   }, [userData, normalizedTopic]);
+
+  const isCurrentMilestoneCompletedFromData = useMemo(() => {
+    if (!userData?.topics_and_milestones?.[normalizedTopic]?.milestones || !currentMilestone) {
+      return false;
+    }
+
+    const milestoneKey = currentMilestone.title.replace(/\s/g, "_");
+    const topicMilestones = userData.topics_and_milestones[normalizedTopic].milestones;
+    return topicMilestones[milestoneKey] === 1;
+  }, [userData, normalizedTopic, currentMilestone]);
+
+  const isCurrentMilestoneCompleted = isCurrentMilestoneCompletedFromData || milestoneCompleted;
 
   // Single function to load all user data
   const loadUserData = useCallback(async (user: any) => {
@@ -179,7 +192,7 @@ export const useMilestone = (topic: string, milestone: string, normalizedTopic: 
       if (allComplete) {
         router.push(`/${topic}/finalPage`);
       } else {
-        const delay = currentMilestone.sticker ? 1500 : 0;
+        const delay = currentMilestone.sticker ? STICKER_ANIMATION_DURATION_MS : 0;
         setTimeout(() => router.back(), delay);
       }
 
@@ -203,6 +216,7 @@ export const useMilestone = (topic: string, milestone: string, normalizedTopic: 
     userGender,
     completeMilestone,
     normalizedTopic,
-    loading
+    loading,
+    isCurrentMilestoneCompleted,
   };
 };

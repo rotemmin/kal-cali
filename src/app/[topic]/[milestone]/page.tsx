@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useCallback, memo } from "react";
+import React, { useState, useCallback, memo, useMemo, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import NavigationButton from "@/components/general/NavigationButton";
 import Modal from "@/components/general/Modal";
@@ -11,6 +11,7 @@ import MilestoneContent from "./MilestoneContent";
 import { useMilestone } from "@/hooks/useMilestone";
 import { useDictionary } from "@/hooks/useDictionary";
 import MilestoneActions from "./MilestoneActions";
+import { hasStickerAnimation, resolveStickerAssetInfo } from "@/utils/stickerAssets";
 
 // Memoized components for better performance
 const MemoizedMilestoneContent = memo(MilestoneContent);
@@ -31,7 +32,8 @@ const MilestonePage: React.FC = () => {
     completedMilestones,
     userGender,
     completeMilestone,
-    loading
+    loading,
+    isCurrentMilestoneCompleted,
   } = useMilestone(topic, milestone, normalizedTopic);
 
   const {
@@ -43,11 +45,58 @@ const MilestonePage: React.FC = () => {
 
   // Local state
   const [showChat, setShowChat] = useState(false);
+  const [isStickerRevealing, setIsStickerRevealing] = useState(false);
+  const [mainButtonDisabled, setMainButtonDisabled] = useState(false);
 
   // Memoized handlers
+  const stickerForDisplay = useMemo(() => {
+    if (!currentMilestone?.sticker) {
+      return undefined;
+    }
+
+    if (completedMilestones === totalMilestones - 1) {
+      return `/stickers/finalStickers/final_${normalizedTopic}.svg`;
+    }
+
+    return currentMilestone.sticker;
+  }, [currentMilestone?.sticker, completedMilestones, totalMilestones, normalizedTopic]);
+
+  const stickerAssetInfo = useMemo(
+    () => resolveStickerAssetInfo(stickerForDisplay, userGender),
+    [stickerForDisplay, userGender]
+  );
+
+  const stickerSupportsAnimation = hasStickerAnimation(stickerAssetInfo);
+  const shouldAnimateSticker = stickerSupportsAnimation && !isCurrentMilestoneCompleted;
+
+  useEffect(() => {
+    setIsStickerRevealing(false);
+    setMainButtonDisabled(false);
+  }, [currentMilestone]);
+
+  const runCompletionFlow = useCallback(async () => {
+    if (mainButtonDisabled) {
+      return;
+    }
+
+    setMainButtonDisabled(true);
+
+    if (shouldAnimateSticker) {
+      setIsStickerRevealing(true);
+    }
+
+    try {
+      await completeMilestone();
+    } finally {
+      if (!shouldAnimateSticker) {
+        setMainButtonDisabled(false);
+      }
+    }
+  }, [mainButtonDisabled, shouldAnimateSticker, completeMilestone]);
+
   const handleChatFinish = useCallback(async () => {
-    await completeMilestone();
-  }, [completeMilestone]);
+    await runCompletionFlow();
+  }, [runCompletionFlow]);
 
   const handleShowChat = useCallback(() => {
     setShowChat(true);
@@ -117,18 +166,19 @@ const MilestonePage: React.FC = () => {
             showChat={showChat}
             topic={topic}
             normalizedTopic={normalizedTopic}
-            completedMilestones={completedMilestones}
-            totalMilestones={totalMilestones}
             processTextWithTerms={processTextWithTerms}
             handleTermClick={handleTermClick}
             onChatFinish={handleChatFinish}
             onShowChat={handleShowChat}
+            isStickerRevealing={isStickerRevealing}
+            isMilestoneCompleted={isCurrentMilestoneCompleted}
           />
         </div>
 
         <MilestoneActions
           mainButtonText={mainButtonText}
           onMainButtonClick={onMainButtonClick}
+          mainButtonDisabled={mainButtonDisabled}
           showMainButton={true}
           topic={topic}
         />

@@ -38,12 +38,12 @@ interface MilestoneContentProps {
   showChat: boolean;
   topic: string;
   normalizedTopic: string;
-  completedMilestones: number;
-  totalMilestones: number;
   processTextWithTerms: (text: string) => string;
   handleTermClick: (event: React.MouseEvent) => void;
   onChatFinish: () => void;
   onShowChat: () => void;
+  isStickerRevealing: boolean;
+  isMilestoneCompleted: boolean;
 }
 
 const MilestoneContent: React.FC<MilestoneContentProps> = ({
@@ -52,12 +52,12 @@ const MilestoneContent: React.FC<MilestoneContentProps> = ({
   showChat,
   topic,
   normalizedTopic,
-  completedMilestones,
-  totalMilestones,
   processTextWithTerms,
   handleTermClick,
   onChatFinish,
-  onShowChat
+  onShowChat,
+  isStickerRevealing,
+  isMilestoneCompleted,
 }) => {
   const router = useRouter();
 
@@ -153,10 +153,10 @@ const MilestoneContent: React.FC<MilestoneContentProps> = ({
 
       {currentMilestone?.sticker && (
         <MilestoneSticker 
-          sticker={completedMilestones === totalMilestones - 1 ? 
-            `/stickers/finalStickers/final_${normalizedTopic}.svg` : 
-            currentMilestone.sticker}
+          sticker={currentMilestone.sticker}
           userGender={userGender}
+          shouldReveal={isStickerRevealing}
+          forceShowSource={isMilestoneCompleted && !isStickerRevealing}
         />
       )}
 

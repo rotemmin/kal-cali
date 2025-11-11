@@ -28,8 +28,8 @@
         "button": "סיימתי!",
         "link": "/[topic]",
         "sticker": {
-          "male": "/stickers/littleStickersTitle/male/title_credit_card.svg",
-          "female": "/stickers/littleStickersTitle/female/title_credit_card.svg"
+          "male": "/stickers/littleStickersTitle/male/title_tax.svg",
+          "female": "/stickers/littleStickersTitle/female/title_tax.svg"
         }
       },
       {
@@ -52,9 +52,7 @@
           "female": "<span class='note-highlight'>תיאום מס</span> עושים כאשר עובדים ביותר מעבודה אחת, כל מעסיק מחייב אותך במס כאילו הוא היחיד המשלם לך משכורת. מה זה אומר? שאת עלולה במצטבר לשלם יותר מדי! <br><br> כדי להימנע מתשלום עודף את צריכה לעשות תיאום מס - להגיש מסמכים למס הכנסה שמוודאים שלא ינכו לך יותר ממה שצריך. אם כבר ניכו לך יותר מדי אפשר להגיש בקשה להחזר מס ולקבל את הכסף חזרה (עד 6 שנים אחורה)."
         },
         "button": "סיימתי!",
-        "link": "/[topic]",
-        "additionalbutton": "מידע נוסף על מסלולים שונים",
-        "additionalLink": "/[topic]/financial_plans"
+        "link": "/[topic]"
       },
       {
         "title": "שיחה עם נציג",
@@ -80,7 +78,7 @@
         },
         "button": "סיימתי!",
         "link": "/[topic]",
-        "sticker":  "/stickers/littleStickersDrawing/drawing_credit_card.svg"
+        "sticker":  "/stickers/littleStickersDrawing/drawing_tax.svg"
       },
       {
         "title": "חשוב חשוב חשוב!",
