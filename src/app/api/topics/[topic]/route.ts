@@ -9,7 +9,7 @@ export async function GET(
   const normalizedTopic = params.topic.replace(/-/g, "_");
   
   try {
-    const filePath = path.join(process.cwd(), 'lib', 'content', 'topics', `${normalizedTopic}.json`);
+    const filePath = path.join(process.cwd(), 'src', 'lib', 'content', 'topics', `${normalizedTopic}.json`);
     
     // בדיקה אם הקובץ קיים
     if (!fs.existsSync(filePath)) {

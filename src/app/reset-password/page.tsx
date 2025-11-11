@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   confirmPasswordReset,
@@ -11,7 +11,7 @@ import styles from "./page.module.css";
 import { auth } from "@/lib/firebase";
 import { X } from "lucide-react";
 
-const ResetPasswordPage = () => {
+const ResetPasswordContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const oobCode = searchParams.get("oobCode");
@@ -162,6 +162,23 @@ const ResetPasswordPage = () => {
         )}
       </div>
     </div>
+  );
+};
+
+const ResetPasswordPage = () => {
+  return (
+    <Suspense
+      fallback={
+        <div className={styles.container}>
+          <Header />
+          <div className={styles.content}>
+            <div className={styles.statusMessage}>טוען קישור...</div>
+          </div>
+        </div>
+      }
+    >
+      <ResetPasswordContent />
+    </Suspense>
   );
 };
 
