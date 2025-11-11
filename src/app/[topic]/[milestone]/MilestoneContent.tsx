@@ -1,8 +1,7 @@
 import React from 'react';
 import { useRouter } from "next/navigation";
-import ChatInterface from "../chat/page";
 import MilestoneSticker from '@/components/milestoneSticker';
-import MilestoneActions from './MilestoneActions'; 
+import ChatMessages from "@/components/chat/ChatMessages";
 
 interface MilestoneDescription {
   text: string;
@@ -35,13 +34,10 @@ interface Milestone {
 interface MilestoneContentProps {
   currentMilestone: Milestone;
   userGender: "male" | "female";
-  showChat: boolean;
   topic: string;
   normalizedTopic: string;
   processTextWithTerms: (text: string) => string;
   handleTermClick: (event: React.MouseEvent) => void;
-  onChatFinish: () => void;
-  onShowChat: () => void;
   isStickerRevealing: boolean;
   isMilestoneCompleted: boolean;
 }
@@ -49,13 +45,10 @@ interface MilestoneContentProps {
 const MilestoneContent: React.FC<MilestoneContentProps> = ({
   currentMilestone,
   userGender,
-  showChat,
   topic,
   normalizedTopic,
   processTextWithTerms,
   handleTermClick,
-  onChatFinish,
-  onShowChat,
   isStickerRevealing,
   isMilestoneCompleted,
 }) => {
@@ -105,19 +98,6 @@ const MilestoneContent: React.FC<MilestoneContentProps> = ({
     }
   };
 
-  if (showChat) {
-    return (
-      <>
-        <ChatInterface />
-        {/* <MilestoneActions
-          mainButtonText="סיימתי"
-          onMainButtonClick={onChatFinish}
-          topic={topic}
-        /> */}
-      </>
-    );
-  }
-
   const description = currentMilestone?.description?.[userGender];
 
   return (
@@ -125,6 +105,15 @@ const MilestoneContent: React.FC<MilestoneContentProps> = ({
       <h1 className="title">{currentMilestone?.title}</h1>
 
       {description && renderDescription(description)}
+
+      {currentMilestone?.help?.type === "chat" && Array.isArray(currentMilestone.help.content) && (
+        <div className="help-section">
+          <ChatMessages
+            content={currentMilestone.help.content}
+            showScrollToTopButton={false}
+          />
+        </div>
+      )}
 
       {currentMilestone?.additionalbutton &&
         currentMilestone?.additionalLink && (

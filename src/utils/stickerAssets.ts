@@ -126,5 +126,5 @@ export const resolveStickerAssetInfo = (
 
 export const hasStickerAnimation = (info: StickerAssetInfo) => Boolean(info.animationPath);
 
-export const STICKER_ANIMATION_DURATION_MS = 4000;
+export const STICKER_ANIMATION_DURATION_MS = 3600;
 

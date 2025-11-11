@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useCallback, memo, useMemo, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import NavigationButton from "@/components/general/NavigationButton";
 import Modal from "@/components/general/Modal";
 import Header from "@/components/general/Header";
 import "./MilestonePage.css";
@@ -44,7 +43,6 @@ const MilestonePage: React.FC = () => {
   } = useDictionary();
 
   // Local state
-  const [showChat, setShowChat] = useState(false);
   const [isStickerRevealing, setIsStickerRevealing] = useState(false);
   const [mainButtonDisabled, setMainButtonDisabled] = useState(false);
 
@@ -94,17 +92,13 @@ const MilestonePage: React.FC = () => {
     }
   }, [mainButtonDisabled, shouldAnimateSticker, completeMilestone]);
 
-  const handleChatFinish = useCallback(async () => {
-    await runCompletionFlow();
-  }, [runCompletionFlow]);
-
-  const handleShowChat = useCallback(() => {
-    setShowChat(true);
-  }, []);
-
   const handleBack = useCallback(() => {
     router.back();
   }, [router]);
+
+  const handleComplete = useCallback(async () => {
+    await runCompletionFlow();
+  }, [runCompletionFlow]);
 
   // Loading state
   if (loading) {
@@ -134,19 +128,7 @@ const MilestonePage: React.FC = () => {
     );
   }
 
-  let mainButtonText = "סיימתי";
-  let onMainButtonClick: () => Promise<void> = handleChatFinish;
-
-  if (showChat) {
-    mainButtonText = "סיימתי";
-    onMainButtonClick = handleChatFinish;
-  } else if (currentMilestone?.help?.type === "chat") {
-    mainButtonText = "הבא";
-    onMainButtonClick = async () => { handleShowChat(); };
-  } else if (currentMilestone?.button) {
-    mainButtonText = currentMilestone.button;
-    onMainButtonClick = handleChatFinish;
-  }
+  const mainButtonText = currentMilestone?.button || "סיימתי";
 
   return (
     <>
@@ -163,13 +145,10 @@ const MilestonePage: React.FC = () => {
           <MemoizedMilestoneContent
             currentMilestone={currentMilestone}
             userGender={userGender}
-            showChat={showChat}
             topic={topic}
             normalizedTopic={normalizedTopic}
             processTextWithTerms={processTextWithTerms}
             handleTermClick={handleTermClick}
-            onChatFinish={handleChatFinish}
-            onShowChat={handleShowChat}
             isStickerRevealing={isStickerRevealing}
             isMilestoneCompleted={isCurrentMilestoneCompleted}
           />
@@ -177,7 +156,7 @@ const MilestonePage: React.FC = () => {
 
         <MilestoneActions
           mainButtonText={mainButtonText}
-          onMainButtonClick={onMainButtonClick}
+          onMainButtonClick={handleComplete}
           mainButtonDisabled={mainButtonDisabled}
           showMainButton={true}
           topic={topic}

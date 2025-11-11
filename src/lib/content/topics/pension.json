@@ -200,7 +200,7 @@
           { "from": "אני", "text": "אוקי מעולה. טוב לדעת. אני אצור קשר בהמשך במידה ואחליט ללכת על זה. תודה רבה!" }
         ]
       },        
-        "button": "הבא",
+        "button": "סיימתי",
         "link": "@app/[topic]/investment_options",
         "sticker": "/stickers/littleStickersDrawing/drawing_pension.svg"
       },
