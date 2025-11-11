@@ -19,8 +19,7 @@ export default function Home() {
           />
 
           <p className={styles.description}>
-            {/* אם את.ה רוצה ללמוד על תהליך כלכלי נכון תרים.י את היד! (או לחצ.י על הכפתור) */}
-            רוצים ללמוד על תהליך כלכלי נכון? הרימו יד! (או לחצו על הכפתור)
+           מסדרים את העניינים עכשיו, דואגים לעתיד בקלות.
           </p>
 
           <div className={styles.buttonContainer}>

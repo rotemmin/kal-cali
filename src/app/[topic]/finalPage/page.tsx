@@ -116,6 +116,14 @@ export default function FinalPage() {
     return null;
   }
 
+  const handleReturnHomeClick = () => {
+    if (typeof window !== 'undefined') {
+      window.location.href = '/homePage';
+    } else {
+      router.push('/homePage');
+    }
+  };
+
   return (
     <div className="rtl">
       <Header />
@@ -151,7 +159,7 @@ export default function FinalPage() {
           />
 
           <button 
-            onClick={() => router.push('/homePage')}
+            onClick={handleReturnHomeClick}
             className="return-button"
           >
             בחזרה לדף הבית
