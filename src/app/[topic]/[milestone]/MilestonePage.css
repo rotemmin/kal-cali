@@ -9,7 +9,7 @@
   margin-left: calc(30 / 393 * 100vw);
   margin-bottom: calc(300 / 852 * 100vw);
 
-  padding: 0;
+  padding-bottom: 50px;
   flex-direction: column;
   gap: 4px;
 }
