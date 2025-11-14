@@ -185,7 +185,6 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  /* margin-top: calc(30 / 852 * 100vh); */
 }
 
 .inputRow {
@@ -268,7 +267,6 @@
   text-decoration: underline;
 }
 
-/* Personal Details Form Specific Styles */
 .personalDetailsForm {
   display: flex;
   flex-direction: column;
@@ -284,7 +282,7 @@
   margin-top: calc(-10 / 852 * 100vh);
   position: relative;
   padding-left: calc(46 / 393 * 100vw);
-  gap: calc(10 / 393 * 100vw); /* המרחק בין השדות: 209 - 46 = 163 */
+  gap: calc(10 / 393 * 100vw); 
 }
 
 .personalInputContainer {
@@ -411,7 +409,6 @@
   transform: translateX(53px);
 }
 
-/* הטקסט בתוך המתג */
 .personalToggleSlider::after {
   content: 'נקבה';
   position: absolute;

@@ -4,7 +4,6 @@ import { useSignup } from '@/context/SignupContext';
 export default function IntroText() {
   const { signupMethod, showEmailForm } = useSignup();
   
-  // אם אנחנו בעמוד personal details (showEmailForm הוא false)
   if (!showEmailForm) {
     return (
       <>

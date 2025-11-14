@@ -17,7 +17,6 @@ export default function PersonalDetailsForm() {
   } = useSignup();
   const { user } = useAuth();
 
-  // בדיקה אם שדות החובה מלאים
   const isFormValid = firstName.trim() && familyName.trim();
 
   return (

@@ -1,6 +1,3 @@
-// קובץ זה משמש לבדיקת ה-endpoint של ניקוי משתמשים
-// אפשר להריץ אותו באופן ידני או להגדיר אותו כ-Cron job
-
 async function testCleanupEndpoint() {
   try {
     const response = await fetch('http://localhost:3000/api/cleanup-users', {
@@ -25,7 +22,6 @@ async function testCleanupEndpoint() {
   }
 }
 
-// הרצת הבדיקה
 if (require.main === module) {
   testCleanupEndpoint()
     .then(result => {

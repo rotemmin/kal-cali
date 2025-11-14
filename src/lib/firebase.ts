@@ -24,7 +24,6 @@ import {
   serverTimestamp, 
 } from 'firebase/firestore';
 
-// תצורת Firebase
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -101,14 +100,12 @@ export const signInWithGoogle = async (): Promise<User> => {
             budget: 0,
           });
         } else {
-          // עדכון זמן התחברות אחרון
           await setDoc(userMetadataRef, {
             lastLogin: serverTimestamp()
           }, { merge: true });
         }
     } catch (firestoreError) {
     console.error("שגיאה בשמירת נתוני משתמש:", firestoreError);
-    // לא זורקים שגיאה כאן די לא לחסום את תהליך ההתחברות
     }
     
     return result.user;
@@ -120,7 +117,6 @@ export const signInWithGoogle = async (): Promise<User> => {
   }
 };
 
-// פונקציה להתנתקות
 export const logoutUser = async (): Promise<boolean> => {
   try {
     await signOut(auth);
@@ -131,12 +127,10 @@ export const logoutUser = async (): Promise<boolean> => {
   }
 };
 
-// פונקציה להאזנה לשינויים במצב ההתחברות
 export const onAuthStateChange = (callback: (user: User | null) => void) => {
   return onAuthStateChanged(auth, callback);
 };
 
-// פונקציה לבדיקה אם פרופיל המשתמש מלא
 export const isProfileComplete = async (userId: string): Promise<boolean> => {
   try {
     const userMetadataRef = doc(db, 'user_metadata', userId);
@@ -171,7 +165,6 @@ export const updateUserProfile = async (userId: string, userData: any): Promise<
 
 export { app, auth, db };
 
-// strong password requirements
 export const PASSWORD_MIN_LENGTH = 8;
 export const PASSWORD_REQUIRES_NUMBERS = true;
 export const PASSWORD_REQUIRES_SPECIAL_CHARS = true;

@@ -8,12 +8,10 @@ const BurgerMenuPage: React.FC = () => {
   const router = useRouter();
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Define handleClose
   const handleClose = useCallback(() => {
     router.back();
   }, [router]);
 
-  // Define handleClickOutside
   const handleClickOutside = useCallback(
     (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -23,7 +21,6 @@ const BurgerMenuPage: React.FC = () => {
     [handleClose]
   );
 
-  // Add/remove event listener
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {

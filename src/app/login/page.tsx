@@ -14,7 +14,7 @@ function LoginContent() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [loginMethod, setLoginMethod] = useState('google'); // 'email' או 'google'
+  const [loginMethod, setLoginMethod] = useState('google'); 
   const [showToggle, setShowToggle] = useState(true); 
 
   const router = useRouter();
@@ -102,7 +102,6 @@ function LoginContent() {
         setEmail(decodeURIComponent(verifiedEmail));
       }
       
-      // זה עוזר לפיירבייס לעדכן את סטטוס אימות
       const currentUser = auth.currentUser;
       if (currentUser) {
         currentUser.getIdToken(true)

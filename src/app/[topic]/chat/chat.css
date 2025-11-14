@@ -1,6 +1,6 @@
 .chat-container {
   width: 100%;
-  max-width: 337px; /* להתאים לרוחב של content-container */
+  max-width: 337px; 
   margin: 0;
   padding: 0;
   background-color: transparent;

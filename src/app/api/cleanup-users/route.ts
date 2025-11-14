@@ -1,12 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cleanupInactiveUsers } from '@/lib/firebase-admin';
 
-// מפתח API בסיסי לאבטחה
 const API_KEY = process.env.CLEANUP_API_KEY;
 
 export async function POST(request: NextRequest) {
   try {
-    // בדיקת הרשאות
     const authHeader = request.headers.get('authorization');
     if (!authHeader || authHeader !== `Bearer ${API_KEY}`) {
       return NextResponse.json(
@@ -15,10 +13,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // הפעלת פונקציית הניקוי
     const result = await cleanupInactiveUsers();
 
-    // שליחת תשובה עם סיכום התוצאות
     return NextResponse.json({
       success: true,
       ...result,

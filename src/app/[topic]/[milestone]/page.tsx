@@ -12,7 +12,6 @@ import { useDictionary } from "@/hooks/useDictionary";
 import MilestoneActions from "./MilestoneActions";
 import { hasStickerAnimation, resolveStickerAssetInfo } from "@/utils/stickerAssets";
 
-// Memoized components for better performance
 const MemoizedMilestoneContent = memo(MilestoneContent);
 const MemoizedProgressBar = memo(ProgressBar);
 const MemoizedModal = memo(Modal);
@@ -23,7 +22,6 @@ const MilestonePage: React.FC = () => {
   const { topic, milestone } = params as { topic: string; milestone: string };
   const normalizedTopic = topic.replace(/-/g, "_");
 
-  // Custom hooks
   const {
     currentMilestone,
     milestoneCompleted,
@@ -42,11 +40,9 @@ const MilestonePage: React.FC = () => {
     closeTermModal
   } = useDictionary();
 
-  // Local state
   const [isStickerRevealing, setIsStickerRevealing] = useState(false);
   const [mainButtonDisabled, setMainButtonDisabled] = useState(false);
 
-  // Memoized handlers
   const stickerForDisplay = useMemo(() => {
     if (!currentMilestone?.sticker) {
       return undefined;
@@ -100,7 +96,6 @@ const MilestonePage: React.FC = () => {
     await runCompletionFlow();
   }, [runCompletionFlow]);
 
-  // Loading state
   if (loading) {
     return (
       <>
@@ -114,7 +109,6 @@ const MilestonePage: React.FC = () => {
     );
   }
 
-  // Error state
   if (!currentMilestone) {
     return (
       <>
@@ -170,21 +164,6 @@ const MilestonePage: React.FC = () => {
           <p>{selectedTerm?.description}</p>
         </MemoizedModal>
       </div>
-
-      {/* <div className="nav-buttons">
-        <NavigationButton
-          icon="/icons/dictionary.svg"
-          link="/dictionary"
-          position="right"
-          altText="Dictionary"
-        />
-        <NavigationButton
-          icon="/icons/notebook.svg"
-          link={`/personal_notebook?${topic ? `topic=${topic}` : ""}`}
-          position="left"
-          altText="Notebook"
-        />
-      </div> */}
     </>
   );
 };

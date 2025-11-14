@@ -54,7 +54,6 @@
   transform: translateX(53px);
 }
 
-/* הטקסט בתוך המתג */
 .toggleSlider::after {
   content: 'נקבה';
   position: absolute;
@@ -69,7 +68,6 @@
   left: 12px;
 }
 
-/* גדלים שונים */
 .small {
   width: 70px;
   height: 30px;
@@ -131,7 +129,6 @@
   transform: translateX(70px);
 }
 
-/* מצב disabled */
 .toggleSwitch input:disabled + .toggleSlider {
   opacity: 0.6;
   cursor: not-allowed;

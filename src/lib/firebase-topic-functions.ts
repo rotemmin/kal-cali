@@ -3,9 +3,7 @@
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db, auth } from "@/lib/firebase";
 
-/**
- * פונקציה המחזירה את סטטוס אבני הדרך של נושא ספציפי
- */
+
 export async function getTopicMilestonesStatus(topicId: string) {
   try {
     const user = auth.currentUser;
@@ -29,9 +27,7 @@ export async function getTopicMilestonesStatus(topicId: string) {
   }
 }
 
-/**
- * פונקציה לעדכון סטטוס של אבן דרך ספציפית
- */
+
 export async function updateMilestoneStatus(
   topicId: string,
   milestoneId: string,
@@ -52,7 +48,6 @@ export async function updateMilestoneStatus(
 
     const userData = docSnap.data();
     
-    // בדיקה שהנושא ואבן הדרך קיימים
     if (
       !userData.topics_and_milestones ||
       !userData.topics_and_milestones[topicId] ||
@@ -61,7 +56,6 @@ export async function updateMilestoneStatus(
       throw new Error(`Topic ${topicId} or its milestones not found`);
     }
 
-    // עדכון סטטוס אבן הדרך
     const updateData = {
       [`topics_and_milestones.${topicId}.milestones.${milestoneId}`]: status
     };
@@ -74,19 +68,15 @@ export async function updateMilestoneStatus(
   }
 }
 
-/**
- * פונקציה לבדיקה האם כל אבני הדרך של נושא הושלמו
- */
+
 export async function checkAllMilestonesCompleted(topicId: string) {
   try {
     const milestonesStatus = await getTopicMilestonesStatus(topicId);
     
-    // אם אין אבני דרך, מחזיר false
     if (Object.keys(milestonesStatus).length === 0) {
       return false;
     }
 
-    // בדיקה האם כל אבני הדרך הושלמו (סטטוס 1)
     const allCompleted = Object.values(milestonesStatus).every(
       (status) => status === 1
     );
@@ -98,9 +88,7 @@ export async function checkAllMilestonesCompleted(topicId: string) {
   }
 }
 
-/**
- * פונקציה להחזרת מגדר המשתמש הנוכחי
- */
+
 export async function getUserGender() {
   try {
     const user = auth.currentUser;
@@ -113,20 +101,18 @@ export async function getUserGender() {
 
     if (!docSnap.exists()) {
       console.warn("No user metadata document found");
-      return "female"; // ברירת מחדל - נקבה
+      return "female"; 
     }
 
     const userData = docSnap.data();
     return userData.gender === "male" ? "male" : "female";
   } catch (error) {
     console.error("Error fetching user gender:", error);
-    return "female"; // ברירת מחדל במקרה של שגיאה
+    return "female"; 
   }
 }
 
-/**
- * פונקציה לעדכון סטטוס של נושא שלם
- */
+
 export async function updateTopicStatus(topicId: string, status: number) {
   try {
     const user = auth.currentUser;
@@ -136,7 +122,6 @@ export async function updateTopicStatus(topicId: string, status: number) {
 
     const userActivityRef = doc(db, "user_activity", user.uid);
     
-    // עדכון סטטוס הנושא
     const updateData = {
       [`topics_and_milestones.${topicId}.status`]: status
     };

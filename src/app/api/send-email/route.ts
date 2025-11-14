@@ -3,7 +3,6 @@ import nodemailer from 'nodemailer';
 
 export async function POST(request: Request) {
   try {
-    // בדוק שמשתני הסביבה קיימים
     if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
       console.error('Missing email credentials in environment variables');
       return NextResponse.json(
@@ -21,23 +20,21 @@ export async function POST(request: Request) {
       );
     }
 
-    // הגדרת SMTP עם תיקון לשגיאת SSL
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 587,
-      secure: false, // false for port 587
+      secure: false, 
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASSWORD,
       },
       tls: {
-        rejectUnauthorized: false, // פתרון לשגיאת SSL
+        rejectUnauthorized: false,
         ciphers: 'SSLv3'
       },
       requireTLS: true
     });
 
-    // Email options
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: 'kalcali@mityaalim.org',
@@ -56,7 +53,6 @@ export async function POST(request: Request) {
       `,
     };
 
-    // Send the email
     const info = await transporter.sendMail(mailOptions);
     console.log('Email sent successfully:', info.messageId);
 

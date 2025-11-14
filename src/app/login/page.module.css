@@ -105,22 +105,18 @@
 
 /* Common footer elements */
 .registerQuestionGoogle {
-  /* position: absolute; */
-  /* top: calc(640 / 852 * 100vh); */
-  /* left: calc(61 / 393 * 100vw); */
+
   display: flex;
   gap: 0.5rem;
   align-items: center;
   justify-content: center;
   width: calc(286 / 393 * 100vw);
   white-space: nowrap;
-  margin-top: calc(120 / 852 * 100vh); /* ברירת מחדל למסך הבחירה */
+  margin-top: calc(120 / 852 * 100vh); 
 }
 
 .registerQuestionEmail {
-  /* position: absolute; */
-  /* top: calc(550 / 852 * 100vh); */
-  /* left: calc(61 / 393 * 100vw); */
+
   display: flex;
   gap: 0.5rem;
   align-items: center;
@@ -141,9 +137,7 @@
 }
 
 .orText {
-  /* position: absolute; */
-  /* top: calc(600 / 852 * 100vh); */
-  /* left: calc(180 / 393 * 100vw); */
+
   color: var(--color-text);
   text-align: center;
   width: 100%;
@@ -155,7 +149,6 @@
   margin-top: calc(30 / 852 * 100vh);
 }
 
-/* Main login container for both states */
 .loginContainer {
   display: flex;
   flex-direction: column;
@@ -163,7 +156,6 @@
   align-items: flex-start;
 }
 
-/* Common button styles */
 .buttonBase {
   display: flex;
   align-items: center;
@@ -190,7 +182,6 @@
   cursor: not-allowed;
 }
 
-/* Google login specific styles */
 .googleLoginState {
   composes: loginContainer;
 }
@@ -239,7 +230,6 @@
   justify-content: center;
 }
 
-/* Email login container - will be styled later */
 .emailLoginContainer {
   display: flex;
   flex-direction: column;
@@ -268,10 +258,9 @@
 }
 
 .forgotPassword {
-  /* position: absolute; */
-  /* top: calc(445 / 852 * 100vh); */
-  /* left: calc(270 / 393 * 100vw); */
-  margin-top: calc(-125 / 852 * 100vh); /* חזרה לערך השלילי */
+
+
+  margin-top: calc(-125 / 852 * 100vh);
   align-self: right;
 }
 
@@ -291,9 +280,7 @@
 
 .emailLoginGoogleButton {
   composes: googleButton;
-  /* position: absolute; */
-  /* top: calc(590 / 852 * 100vh); */
-  /* left: calc(0 / 393 * 100vw); */
+
   margin-top: calc(15 / 852 * 100vh);
 }
 
@@ -302,10 +289,7 @@
 }
 
 .errorMessage {
-  /* position: absolute; */
-  /* top: calc(490 / 852 * 100vh); */
-  /* left: calc(185 / 393 * 100vw); */
-  /* margin-top: calc(-20 / 852 * 100vh); */
+
   color: #F00;
   text-align: center;
   font-family: var(--font-family-primary);

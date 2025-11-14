@@ -11,7 +11,6 @@ export async function GET(
   try {
     const filePath = path.join(process.cwd(), 'src', 'lib', 'content', 'topics', `${normalizedTopic}.json`);
     
-    // בדיקה אם הקובץ קיים
     if (!fs.existsSync(filePath)) {
       return new NextResponse('Topic not found', { status: 404 });
     }

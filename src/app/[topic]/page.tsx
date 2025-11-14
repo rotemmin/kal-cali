@@ -75,7 +75,6 @@ const TopicPage = () => {
     fetchTopicData();
   }, [normalizedTopic]);
 
-  // הגדרת המילון
   useEffect(() => {
     const dict: { [key: string]: string } = {};
     dictionaryData.dictionary.forEach((entry) => {
@@ -84,7 +83,6 @@ const TopicPage = () => {
     setDictionary(dict);
   }, []);
 
-  // טעינת סטטוס אבני הדרך מ-Firebase
   useEffect(() => {
     const fetchMilestonesStatus = async () => {
       try {
@@ -120,29 +118,24 @@ const TopicPage = () => {
     fetchMilestonesStatus();
   }, [normalizedTopic]);
 
-  // בדיקת אבן הדרך הבאה להשלמה
   useEffect(() => {
     if (Object.keys(milestonesStatus).length === 0 || !data) return;
     
-    // מעבר על המיילסטונים לפי הסדר שלהם ב-data
     for (const milestone of data.milestones) {
       const milestoneId = topicNameToTopicId(milestone.title);
       
-      // אם המיילסטון הזה לא הושלם, זה המיילסטון הבא
       if (milestonesStatus[milestoneId] === 0) {
         setNextMilestoneToComplete(milestoneId);
         return;
       }
     }
     
-    // אם כל המיילסטונים הושלמו
     if (!didSeeFinalPage()) {
       router.push(`/${topic}/finalPage`);
       saveDidSeeFinalPage();
     }
   }, [milestonesStatus, data, router, topic]);
 
-  // טעינת מגדר המשתמש מ-Firebase
   useEffect(() => {
     const fetchGender = async () => {
       try {
@@ -171,12 +164,10 @@ const TopicPage = () => {
     fetchGender();
   }, []);
 
-  // המרת שם אבן דרך למזהה (מחליף רווחים בקווים תחתונים)
   const topicNameToTopicId = (topicName: string) => {
     return topicName.replace(/\s+/g, "_");
   };
 
-  // עיבוד הטקסט עם המונחים
   const processTextWithTerms = (text: string): string => {
     return text.replace(
       /<span data-term=['"]([^'"]+)['"]>([^<]+)<\/span>/g,
@@ -187,7 +178,6 @@ const TopicPage = () => {
     );
   };
 
-  // טיפול בלחיצה על מונח במילון
   const handleTermClick = (event: React.MouseEvent) => {
     const target = event.target as HTMLElement;
     if (target.hasAttribute("data-term")) {
@@ -201,7 +191,6 @@ const TopicPage = () => {
     }
   };
 
-  // מצבי טעינה ושגיאה
   if (loading) return <div className="loading-container">טוען נתונים...</div>;
   if (error) return <div className="error-container">שגיאה: {error}</div>;
   if (!data) return <div className="error-container">לא נמצאו נתונים עבור נושא זה</div>;
@@ -230,7 +219,6 @@ const TopicPage = () => {
               const isCompleted = milestonesStatus[milestoneId] === 1;
               const isNext = milestoneId === nextMilestoneToComplete;
               
-              // בדיקה האם כל המיילסטונים הקודמים הושלמו
               const previousMilestonesCompleted = data.milestones
                 .slice(0, index)
                 .every(prevMilestone => milestonesStatus[topicNameToTopicId(prevMilestone.title)] === 1);
@@ -241,7 +229,6 @@ const TopicPage = () => {
                   href={`/${topic}/${milestone.title}`}
                   style={{ textDecoration: "none" }}
                   onClick={(e) => {
-                    // מניעת ניווט אם הכפתור לא זמין
                     if (!isCompleted && !isNext) {
                       e.preventDefault();
                     }

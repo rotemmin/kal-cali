@@ -1,7 +1,6 @@
-/* Layout */
+
 .milestone-page {
   overflow: auto;
-  /* padding-bottom: 100px; */
 }
 
 .content-container {
@@ -15,7 +14,7 @@
   gap: 4px;
 }
 
-/* Typography */
+
 .title {
   margin-top: calc(-12 / 852 * 100vh);
   margin-bottom: calc(2 / 852 * 100vh);
@@ -28,7 +27,6 @@
   font-weight: 900;
   line-height: 125%;
   position: relative;
-  /* margin: 12px 0; */
   display: inline-block;
 }
 
@@ -49,7 +47,6 @@
   font-weight: 300;
 }
 
-/* Description Styles */
 .description,
 .description-text {
   margin-top: 0;
@@ -59,7 +56,6 @@
   text-align: right;
   font-family: var(--font-family-primary);
   font-size: 20px;
-  /* font-weight: 400; */
   font-style: normal;
   font-weight: 300;
   line-height: 130%;
@@ -74,7 +70,6 @@
 
 .description-text.indented {
   margin-right: 0.5rem;
-  /* margin-bottom: 2px; */
   position: relative;
   padding-right: 1.7rem;
 }
@@ -84,7 +79,6 @@
   margin-top: 4px;
   position: absolute;
   right: 0;
-  /* margin-top: calc(3 / 852 * 100vh); */
   width: 13px;
   height: 20px;
   background-image: url("data:image/svg+xml,%3Csvg width='13' height='20' viewBox='0 0 13 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10.7783 2L3.00015 9.77817L10.4248 17.2028' stroke='%23E6E4FF' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E");
@@ -92,7 +86,6 @@
   background-position: center;
 }
 
-/* Term Highlight */
 .term-highlight {
   color: #9895f4;
   font-family: var(--font-family-secondary);
@@ -121,7 +114,6 @@
   z-index: 2;
 }
 
-/* Note Section */
 .note {
   display: flex;
   flex-direction: column;
@@ -149,7 +141,6 @@
   font-style: normal;
 }
 
-/* Chat Section */
 .help-section {
   margin: 24px 0;
 }
@@ -168,7 +159,6 @@
   line-height: 130%;
 }
 
-/* Buttons */
 .button-container {
   display: flex;
   flex-direction: column;
@@ -176,7 +166,6 @@
   align-items: center;
   margin-top: 2rem;
   margin-bottom: 60px;
-  /* הוספת רווח תחתון כדי למנוע חיתוך */
 }
 
 .main-button,
@@ -217,8 +206,6 @@
   transform: scale(1.02);
 }
 
-/* Navigation */
-
 .navigation-buttons {
   position: fixed;
   bottom: clamp(16px, 4vh, 24px);
@@ -232,13 +219,11 @@
   z-index: 10;
 }
 
-/* Progress Bar */
 .progress-bar-container {
   margin: var(--spacing-4);
   text-align: right;
 }
 
-/* Close Button */
 .closeButtonMilestone {
   position: absolute;
   top: 6.5rem;
@@ -257,22 +242,3 @@
   bottom: calc(58 / 852 * 100vh);
   position: fixed;
 }
-
-/* Media Queries */
-/* @media (max-width: 393px) {
-  .milestone-page {
-    padding: 16px 8px;
-  }
-
-  .content-container {
-    gap: 16px;
-  }
-
-  .title {
-    margin: 4px 0;
-  }
-
-  .description {
-    margin-bottom: 24px;
-  }
-} */

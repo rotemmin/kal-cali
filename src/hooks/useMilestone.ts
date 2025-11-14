@@ -44,12 +44,10 @@ export const useMilestone = (topic: string, milestone: string, normalizedTopic: 
   const auth = getAuth();
   const router = useRouter();
   
-  // States - פחות states, יותר ביצועים
   const [userData, setUserData] = useState<UserData | null>(null);
   const [milestoneCompleted, setMilestoneCompleted] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Memoized data loading - טוען רק פעם אחת
   const { data, currentMilestone } = useMemo(() => {
     try {
       const topicData = require(`@/lib/content/topics/${normalizedTopic}.json`);
@@ -63,7 +61,6 @@ export const useMilestone = (topic: string, milestone: string, normalizedTopic: 
     }
   }, [normalizedTopic, milestone]);
 
-  // Computed values from userData
   const { totalMilestones, completedMilestones, userGender } = useMemo(() => {
     if (!userData?.topics_and_milestones?.[normalizedTopic]?.milestones) {
       return { totalMilestones: 0, completedMilestones: 0, userGender: "female" as const };
@@ -92,7 +89,6 @@ export const useMilestone = (topic: string, milestone: string, normalizedTopic: 
 
   const isCurrentMilestoneCompleted = isCurrentMilestoneCompletedFromData || milestoneCompleted;
 
-  // Single function to load all user data
   const loadUserData = useCallback(async (user: any) => {
     if (!user) {
       setLoading(false);
@@ -100,7 +96,6 @@ export const useMilestone = (topic: string, milestone: string, normalizedTopic: 
     }
 
     try {
-      // Load both documents in parallel
       const [userActivityDoc, userProfileDoc] = await Promise.all([
         getDoc(doc(db, "user_activity", user.uid)),
         getDoc(doc(db, "users", user.uid))
@@ -109,14 +104,12 @@ export const useMilestone = (topic: string, milestone: string, normalizedTopic: 
       const activityData = userActivityDoc.exists() ? userActivityDoc.data() : {};
       const profileData = userProfileDoc.exists() ? userProfileDoc.data() : {};
 
-      // Update current topic if needed
       if (activityData.curr_topic !== normalizedTopic) {
         updateDoc(doc(db, "user_activity", user.uid), {
           curr_topic: normalizedTopic
         }).catch(console.error);
       }
 
-      // Combine data
       setUserData({
         ...activityData,
         gender: profileData.gender || "female"
@@ -128,7 +121,6 @@ export const useMilestone = (topic: string, milestone: string, normalizedTopic: 
     }
   }, [normalizedTopic]);
 
-  // Complete milestone - optimized
   const completeMilestone = useCallback(async () => {
     if (milestoneCompleted || !currentMilestone || !userData) {
       return;
@@ -146,7 +138,6 @@ export const useMilestone = (topic: string, milestone: string, normalizedTopic: 
       const topicsAndMilestones = userData.topics_and_milestones ? { ...userData.topics_and_milestones } : {};
       let currentBudget = userData.budget || 0;
 
-      // Initialize topic if needed
       if (!topicsAndMilestones[normalizedTopic]) {
         topicsAndMilestones[normalizedTopic] = {
           status: 0,
@@ -161,34 +152,29 @@ export const useMilestone = (topic: string, milestone: string, normalizedTopic: 
 
       const milestoneKey = currentMilestone.title.replace(/\s/g, "_");
       
-      // Skip if already completed
       if (topicObj.milestones[milestoneKey] === 1) {
         return;
       }
 
       topicObj.milestones[milestoneKey] = 1;
 
-      // Check if all milestones completed
       const allComplete = Object.values(topicObj.milestones).every((val) => val === 1);
       if (allComplete) {
         topicObj.status = 1;
         currentBudget += 1;
       }
 
-      // Update database
       await updateDoc(doc(db, "user_activity", user.uid), {
         topics_and_milestones: topicsAndMilestones,
         budget: currentBudget
       });
 
-      // Update local state
       setUserData((prev: UserData | null) => ({
         ...prev,
         topics_and_milestones: topicsAndMilestones,
         budget: currentBudget
       }));
 
-      // Navigate
       if (allComplete) {
         router.push(`/${topic}/finalPage`);
       } else {
@@ -202,7 +188,6 @@ export const useMilestone = (topic: string, milestone: string, normalizedTopic: 
     }
   }, [milestoneCompleted, currentMilestone, userData, auth.currentUser, normalizedTopic, topic, router]);
 
-  // Auth effect - only runs once
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, loadUserData);
     return () => unsubscribe();

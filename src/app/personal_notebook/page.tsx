@@ -257,7 +257,6 @@ function PersonalNotebookContent() {
 
         setTopics(sortedTopics);
         
-        // עדכון currentTopic רק אם אין query parameter
         const topicFromQuery = searchParams.get("topic");
         if (!topicFromQuery) {
           if (!currentTopic || currentTopic === "O") {
@@ -471,7 +470,6 @@ function PersonalNotebookContent() {
     fetchUserGender();
   }, [user]);
 
-  // Determine the correct placeholder text
   const notePlaceholder =
     gender === "male"
       ? "רשום כאן את ההערות שלך..."
@@ -584,16 +582,12 @@ function PersonalNotebookContent() {
                       return null;
                     }
 
-                    // קביעת המיקום והגודל לפי index
                     let stickerClass = styles.sticker;
                     if (index === 2) {
-                      // sticker 3 - הגדולה, מצד ימין
                       stickerClass = `${styles.sticker} ${styles.stickerLarge}`;
                     } else if (index === 0) {
-                      // sticker 1 - משמאל, תחתונה
                       stickerClass = `${styles.sticker} ${styles.stickerSmall1}`;
                     } else if (index === 1) {
-                      // sticker 2 - משמאל, עליונה
                       stickerClass = `${styles.sticker} ${styles.stickerSmall2}`;
                     }
 
