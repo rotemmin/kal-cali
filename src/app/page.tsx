@@ -5,6 +5,28 @@ import styles from "./page.module.css";
 export default function Home() {
   return (
     <div className={styles.background}>
+      {/* Stickers */}
+      <div className={styles.stickerPension}>
+        <Image
+          src="/stickers/littleStickersDrawing/drawing_pension.svg"
+          alt="Pension sticker"
+          width={188}
+          height={147}
+          priority
+          className={styles.stickerImage}
+        />
+      </div>
+      <div className={styles.stickerInsurance}>
+        <Image
+          src="/stickers/littleStickersDrawing/drawing_insurance.svg"
+          alt="Insurance sticker"
+          width={153}
+          height={129}
+          priority
+          className={styles.stickerImage}
+        />
+      </div>
+
       <div className={styles.container}>
         <div className={styles.content}>
           <h1 className={styles.welcome}>ברוכ.ה הבא.ה ל-</h1>

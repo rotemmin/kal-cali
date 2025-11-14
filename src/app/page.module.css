@@ -5,6 +5,37 @@
   overflow: hidden;
 }
 
+.stickerPension,
+.stickerInsurance {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.stickerImage {
+  width: auto;
+  height: auto;
+  max-width: none;
+}
+
+.stickerPension {
+  left: calc(260px * (100vw / 393px));
+  top: calc(620px * (100vh / 852px));
+  --base-scale: clamp(0.5, calc(100vw / 852px), 1);
+  --size-factor: 1.5; 
+  transform: rotate(-23.19deg) scale(calc(var(--base-scale) * var(--size-factor)));
+  transform-origin: center;
+}
+
+.stickerInsurance {
+  left: calc(-100px * (100vw / 852px));
+  top: calc(45px * (100vh / 393px));
+  --base-scale: clamp(0.5, calc(100vw / 852px), 1);
+  --size-factor: 2; 
+  transform: rotate(25.59deg) scale(calc(var(--base-scale) * var(--size-factor)));
+  transform-origin: center;
+}
+
 .background::before {
   content: "";
   position: absolute;
@@ -107,6 +138,7 @@
   .description {
     font-size: var(--text-lg);
   }
+
 }
 
 @media (max-width: 480px) {
@@ -122,4 +154,5 @@
   .description {
     font-size: var(--text-base);
   }
+
 }
