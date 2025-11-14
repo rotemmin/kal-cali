@@ -25,6 +25,15 @@ const englishToHebrewTopics: { [key: string]: string } = {
   insurance: "ביטוחים",
 };
 
+const topicOrder: string[] = [
+  "national_insurance", 
+  "tax",                
+  "pension",            
+  "insurance",          
+  "salary",             
+  "credit_card",        
+];
+
 const topicFields = {
   pension: [
     { label: "חברת הפנסיה שלי", field: "company_advisor_name" },
@@ -180,11 +189,13 @@ function PersonalNotebookContent() {
 
   useEffect(() => {
     const topic = searchParams.get("topic");
-    if (!currentTopic) {
-      setCurrentTopic(topic);
+    if (topic) {
+      if (topic !== currentTopic) {
+        setCurrentTopic(topic);
+      }
     }
     window.history.replaceState(null, "", pathname);
-  }, [searchParams]);
+  }, [searchParams, currentTopic, pathname]);
 
   useEffect(() => {
     const textarea = document.querySelector(`.${styles.notesTextarea}`) as HTMLTextAreaElement;
@@ -233,11 +244,27 @@ function PersonalNotebookContent() {
           [] as Topic[]
         );
 
-        setTopics(mergedTopics);
-        if (!currentTopic || currentTopic === "O") {
-          setCurrentTopic("pension");
-        } else if (data?.curr_topic && !currentTopic) {
-          setCurrentTopic(data.curr_topic);
+        const sortedTopics = mergedTopics.sort((a, b) => {
+          const indexA = topicOrder.indexOf(a.curr_topic);
+          const indexB = topicOrder.indexOf(b.curr_topic);
+          
+          if (indexA === -1 && indexB === -1) return 0;
+          if (indexA === -1) return 1;
+          if (indexB === -1) return -1;
+          
+          return indexA - indexB;
+        });
+
+        setTopics(sortedTopics);
+        
+        // עדכון currentTopic רק אם אין query parameter
+        const topicFromQuery = searchParams.get("topic");
+        if (!topicFromQuery) {
+          if (!currentTopic || currentTopic === "O") {
+            setCurrentTopic("pension");
+          } else if (data?.curr_topic && !currentTopic) {
+            setCurrentTopic(data.curr_topic);
+          }
         }
       }
     } catch (error) {
@@ -246,7 +273,7 @@ function PersonalNotebookContent() {
     } finally {
       setLoading(false);
     }
-  }, [user?.uid, currentTopic]);
+  }, [user?.uid, currentTopic, searchParams]);
 
   const fetchNotes = useCallback(async () => {
     if (!user?.uid || !currentTopic) return;
@@ -557,12 +584,25 @@ function PersonalNotebookContent() {
                       return null;
                     }
 
+                    // קביעת המיקום והגודל לפי index
+                    let stickerClass = styles.sticker;
+                    if (index === 2) {
+                      // sticker 3 - הגדולה, מצד ימין
+                      stickerClass = `${styles.sticker} ${styles.stickerLarge}`;
+                    } else if (index === 0) {
+                      // sticker 1 - משמאל, תחתונה
+                      stickerClass = `${styles.sticker} ${styles.stickerSmall1}`;
+                    } else if (index === 1) {
+                      // sticker 2 - משמאל, עליונה
+                      stickerClass = `${styles.sticker} ${styles.stickerSmall2}`;
+                    }
+
                     return (
                       <img
                         key={`${stage.id}-${index}`}
                         src={imageSrc}
                         alt={`Sticker ${index + 1}`}
-                        className={styles.sticker}
+                        className={stickerClass}
                       />
                     );
                   })}

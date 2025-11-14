@@ -80,6 +80,8 @@
     justify-content: flex-start;
     align-items: stretch;
     gap: 15px;
+    margin-left: 20px;
+    margin-right: 10px;
 }
 
 .sectionHeader {
@@ -98,18 +100,42 @@
 
 .stickersArea {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    align-items: flex-start;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 70px 70px;
+    gap: 0;
+    align-items: center;
+    justify-items: center;
+    height: 140px;
+    width: fit-content;
+    max-width: 300px;
     overflow: visible;
     padding-bottom: 20px;
-    margin-bottom: env(safe-area-inset-bottom);
+    margin-bottom: 20px;
 }
 
 .sticker {
     object-fit: contain;
-    max-width: 100%;
-    height: auto;
+}
+
+.stickerLarge {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    width: 100%;
+    height: 140px;
+}
+
+.stickerSmall1 {
+    grid-column: 2;
+    grid-row: 2;
+    width: 80%;
+    height: 70px;
+}
+
+.stickerSmall2 {
+    grid-column: 2;
+    grid-row: 1;
+    width: 80%;
+    height: 70px;
 }
 
 .notesContainer {
@@ -223,13 +249,17 @@
     }
 
     .stickersArea {
-        gap: 5px;
+        gap: 0;
         padding-bottom: 30px;
+        height: 140px;
+        grid-template-rows: 70px 70px;
     }
 }
 
 @media screen and (max-width: 380px) {
     .stickersArea {
-        grid-template-columns: repeat(3, minmax(80px, 1fr));
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 70px 70px;
+        height: 140px;
     }
 }
