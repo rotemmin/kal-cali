@@ -243,6 +243,8 @@
   position: absolute;
   top: 6.5rem;
   left: 1rem;
+  height: 30px;
+  width: 30px;
   cursor: pointer;
   color: var(--color-disabled);
 }

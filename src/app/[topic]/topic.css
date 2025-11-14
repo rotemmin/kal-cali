@@ -1,8 +1,8 @@
 /* topic.css */
 .topic-container {
-  overflow-y: auto;
   overflow-x: hidden;
   height: 100vh;
+  position: relative;
 }
 
 .topic-page {
@@ -200,13 +200,14 @@
 }
 
 .close-button {
-  position: fixed;
+  position: absolute;
   height: 30px; 
   width: 30px;
-  top: calc(110 / 852 * 100vh);
+  top: 6.5rem;
   left: 1rem;
   cursor: pointer;
   z-index: 1001;
   color: var(--color-disabled);
+  pointer-events: auto;
 }
 
