@@ -19,21 +19,67 @@
 }
 
 .stickerPension {
-  left: calc(260px * (100vw / 393px));
-  top: calc(620px * (100vh / 852px));
+  --final-left: calc(260px * (100vw / 393px));
+  --final-top: calc(620px * (100vh / 852px));
   --base-scale: clamp(0.5, calc(100vw / 852px), 1);
-  --size-factor: 1.5; 
-  transform: rotate(-23.19deg) scale(calc(var(--base-scale) * var(--size-factor)));
+  --size-factor: 1.5;
+  --final-scale: calc(var(--base-scale) * var(--size-factor));
+  left: var(--final-left);
+  top: var(--final-top);
   transform-origin: center;
+  /* Animation: enters diagonally from bottom-right corner */
+  animation: flyInDiagonalBR 1.2s ease-out forwards;
+  opacity: 0;
 }
 
 .stickerInsurance {
-  left: calc(-100px * (100vw / 852px));
-  top: calc(45px * (100vh / 393px));
+  --final-left: calc(-100px * (100vw / 852px));
+  --final-top: calc(45px * (100vh / 393px));
   --base-scale: clamp(0.5, calc(100vw / 852px), 1);
-  --size-factor: 2; 
-  transform: rotate(25.59deg) scale(calc(var(--base-scale) * var(--size-factor)));
+  --size-factor: 2;
+  --final-scale: calc(var(--base-scale) * var(--size-factor));
+  left: var(--final-left);
+  top: var(--final-top);
   transform-origin: center;
+  /* Animation: enters diagonally from top-left corner */
+  animation: flyInDiagonalTL 1.2s ease-out 0.2s forwards;
+  opacity: 0;
+}
+
+/* Animation: Pension flies in diagonally from bottom-right corner */
+@keyframes flyInDiagonalBR {
+  0% {
+    opacity: 0;
+    transform: 
+      translate(150%, 150%) 
+      rotate(-23.19deg) 
+      scale(0.4);
+  }
+  100% {
+    opacity: 1;
+    transform: 
+      translate(0, 0) 
+      rotate(-23.19deg) 
+      scale(var(--final-scale, 1));
+  }
+}
+
+/* Animation: Insurance flies in diagonally from top-left corner */
+@keyframes flyInDiagonalTL {
+  0% {
+    opacity: 0;
+    transform: 
+      translate(-150%, -150%) 
+      rotate(25.59deg) 
+      scale(0.4);
+  }
+  100% {
+    opacity: 1;
+    transform: 
+      translate(0, 0) 
+      rotate(25.59deg) 
+      scale(var(--final-scale, 1));
+  }
 }
 
 .background::before {
