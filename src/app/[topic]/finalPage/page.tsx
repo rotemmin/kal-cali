@@ -62,22 +62,22 @@ export default function FinalPage() {
         const user = auth.currentUser;
         console.log('Current user:', user);
         if (user) {
-          const userDocRef = doc(db, 'users', user.uid);
-          const userDoc = await getDoc(userDocRef);
-          console.log('User doc exists:', userDoc.exists());
+          const userMetadataRef = doc(db, 'user_metadata', user.uid);
+          const userMetadataDoc = await getDoc(userMetadataRef);
+          console.log('User metadata doc exists:', userMetadataDoc.exists());
           
-          if (userDoc.exists()) {
-            const userData = userDoc.data();
+          if (userMetadataDoc.exists()) {
+            const userData = userMetadataDoc.data();
             console.log('User data:', userData);
             if (userData.gender) {
               setUserGender(userData.gender === 'male' ? 'male' : 'female');
             } else {
               setUserGender('male');
-              await setDoc(userDocRef, { gender: 'male' }, { merge: true });
+              await setDoc(userMetadataRef, { gender: 'male' }, { merge: true });
             }
           } else {
             setUserGender('male');
-            await setDoc(userDocRef, { gender: 'male' });
+            await setDoc(userMetadataRef, { gender: 'male' }, { merge: true });
           }
         }
       } catch (error) {

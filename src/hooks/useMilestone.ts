@@ -96,13 +96,13 @@ export const useMilestone = (topic: string, milestone: string, normalizedTopic: 
     }
 
     try {
-      const [userActivityDoc, userProfileDoc] = await Promise.all([
+      const [userActivityDoc, userMetadataDoc] = await Promise.all([
         getDoc(doc(db, "user_activity", user.uid)),
-        getDoc(doc(db, "users", user.uid))
+        getDoc(doc(db, "user_metadata", user.uid))
       ]);
 
       const activityData = userActivityDoc.exists() ? userActivityDoc.data() : {};
-      const profileData = userProfileDoc.exists() ? userProfileDoc.data() : {};
+      const metadataData = userMetadataDoc.exists() ? userMetadataDoc.data() : {};
 
       if (activityData.curr_topic !== normalizedTopic) {
         updateDoc(doc(db, "user_activity", user.uid), {
@@ -112,7 +112,7 @@ export const useMilestone = (topic: string, milestone: string, normalizedTopic: 
 
       setUserData({
         ...activityData,
-        gender: profileData.gender || "female"
+        gender: metadataData.gender || "female"
       });
     } catch (error) {
       console.error("Error loading user data:", error);
