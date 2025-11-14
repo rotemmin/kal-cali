@@ -10,11 +10,11 @@
 .grid-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: clamp(0.5rem, calc(1vh + 0.5rem), 2rem);
+  gap: clamp(1rem, calc(2vh + 1rem), 4rem);
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
-  padding: clamp(0.75rem, 2vh, 2rem) 0;
+  padding: clamp(1rem, 3vh, 2rem) 0;
 }
 
 .icon-container {
