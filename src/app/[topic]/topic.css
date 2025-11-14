@@ -67,6 +67,7 @@
 
 .milestones-container {
   padding-top: calc(15 / 852 * 100vh);
+  padding-bottom: calc(40 / 852 * 100vh);
   gap: calc(20 / 852 * 100vh) !important;
   display: flex;
   flex-direction: column;
