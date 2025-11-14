@@ -8,7 +8,7 @@ import NavigationButton from "@/components/general/NavigationButton";
 import dictionaryData from "@/lib/content/dictionary.json";
 import { X } from "lucide-react";
 import { doc, getDoc } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { db } from "@/lib/firebase";
 import "./topic.css";
 
@@ -84,16 +84,16 @@ const TopicPage = () => {
   }, []);
 
   useEffect(() => {
-    const fetchMilestonesStatus = async () => {
+    const auth = getAuth();
+    
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        console.error("User not authenticated");
+        setMilestonesStatus({});
+        return;
+      }
+      
       try {
-        const auth = getAuth();
-        const user = auth.currentUser;
-        
-        if (!user) {
-          console.error("User not authenticated");
-          return;
-        }
-        
         const userActivityRef = doc(db, "user_activity", user.uid);
         const docSnap = await getDoc(userActivityRef);
         
@@ -109,13 +109,15 @@ const TopicPage = () => {
           }
         } else {
           console.error("No user activity document found");
+          setMilestonesStatus({});
         }
       } catch (error) {
         console.error("Error fetching milestones status:", error);
+        setMilestonesStatus({});
       }
-    };
+    });
     
-    fetchMilestonesStatus();
+    return () => unsubscribe();
   }, [normalizedTopic]);
 
   useEffect(() => {
@@ -137,16 +139,15 @@ const TopicPage = () => {
   }, [milestonesStatus, data, router, topic]);
 
   useEffect(() => {
-    const fetchGender = async () => {
+    const auth = getAuth();
+    
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        console.error("User not authenticated");
+        return;
+      }
+      
       try {
-        const auth = getAuth();
-        const user = auth.currentUser;
-        
-        if (!user) {
-          console.error("User not authenticated");
-          return;
-        }
-        
         const userMetadataRef = doc(db, "user_metadata", user.uid);
         const docSnap = await getDoc(userMetadataRef);
         
@@ -159,9 +160,9 @@ const TopicPage = () => {
       } catch (error) {
         console.error("Error fetching user gender:", error);
       }
-    };
+    });
     
-    fetchGender();
+    return () => unsubscribe();
   }, []);
 
   const topicNameToTopicId = (topicName: string) => {
