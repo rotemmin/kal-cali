@@ -11,6 +11,7 @@ import HomeProgressBar from "./homePageProgressBar/page";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import OnboardingOverlay from "@/components/onboarding/OnboardingOverlay";
 
 const topics = [
   {
@@ -64,6 +65,8 @@ const HomePage = () => {
   const [completedTopics, setCompletedTopics] = useState<{
     [key: string]: boolean;
   }>({});
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const menuButtonRef = React.useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const auth = getAuth();
@@ -72,13 +75,10 @@ const HomePage = () => {
       if (!user) {
         console.error("User not logged in");
         setLoading(false);
-        // Optional: Redirect to login page
-        // router.push('/login');
         return;
       }
 
       try {
-        // Fetch user metadata from Firestore
         const userMetadataRef = doc(db, "user_metadata", user.uid);
         const userMetadataSnap = await getDoc(userMetadataRef);
         
@@ -90,53 +90,85 @@ const HomePage = () => {
           console.error("User metadata not found");
         }
 
-        // Fetch user activity data from Firestore
         const userActivityRef = doc(db, "user_activity", user.uid);
         const userActivitySnap = await getDoc(userActivityRef);
         
         if (userActivitySnap.exists()) {
           const activityData = userActivitySnap.data();
           
-          // Log the raw data to debug
           console.log(
             "Raw topics_and_milestones data:",
             activityData.topics_and_milestones
           );
           
           const completedTopicsObj: { [key: string]: boolean } = {};
+          let hasCompletedMilestone = false;
           
-          // Check if topics_and_milestones exists
           if (activityData.topics_and_milestones) {
             Object.entries(activityData.topics_and_milestones).forEach(
               ([topic, data]) => {
-                // Cast data to any to access status
                 completedTopicsObj[topic] = (data as any).status === 1;
-                // Log each topic's completion status
                 console.log(`Topic ${topic} status:`, (data as any).status);
+                
+                const milestones = (data as any)?.milestones;
+                if (milestones) {
+                  const milestoneValues = Object.values(milestones);
+                  if (milestoneValues.some((status: any) => status === 1)) {
+                    hasCompletedMilestone = true;
+                  }
+                }
               }
             );
           }
           
-          // Log the final completed topics object
           console.log("Completed topics:", completedTopicsObj);
           setCompletedTopics(completedTopicsObj);
+          
+          const hasSeenGuide = localStorage.getItem("hasSeenGuide") === "true";
+          
+          if (!hasCompletedMilestone && !hasSeenGuide) {
+            setShowOnboarding(true);
+          } else {
+            setShowOnboarding(false);
+          }
         } else {
           console.error("User activity data not found");
+          const hasSeenGuide = localStorage.getItem("hasSeenGuide") === "true";
+          if (!hasSeenGuide) {
+            setShowOnboarding(true);
+          } else {
+            setShowOnboarding(false);
+          }
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
+        const hasSeenGuide = localStorage.getItem("hasSeenGuide") === "true";
+        if (!hasSeenGuide) {
+          setShowOnboarding(true);
+        } else {
+          setShowOnboarding(false);
+        }
       } finally {
         setLoading(false);
       }
     });
 
-    // Cleanup subscription on unmount
     return () => unsubscribe();
   }, []);
 
+  const handleOnboardingComplete = () => {
+    setShowOnboarding(false);
+  };
+
   return (
     <>
-      <Header />
+      <Header menuButtonRef={menuButtonRef} />
+      {showOnboarding && (
+        <OnboardingOverlay 
+          onComplete={handleOnboardingComplete}
+          menuButtonRef={menuButtonRef}
+        />
+      )}
       <main className="main-container">
         <div className="page-header">
           {loading ? (

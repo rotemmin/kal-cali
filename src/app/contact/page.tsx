@@ -56,7 +56,6 @@ const ContactUs = () => {
     }
   };
 
-  // Default to female if gender is null
   const userGender = gender || "female";
   
   const contactText = userGender === "male" ? "צור קשר" : "צרי קשר";

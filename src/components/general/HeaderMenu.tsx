@@ -57,17 +57,25 @@ const HeaderMenu: React.FC<HeaderMenuProps> = ({ isOpen, onClose, anchorRef }) =
   const contactText = gender === "male" ? "צור קשר" : "צרי קשר";
   const logoutText = gender === "male" ? "התנתק" : "התנתקי";
 
+  const handleGuide = () => {
+    router.push("/guide");
+    onClose();
+  };
+
   return (
     <div ref={dropdownRef} className={styles.menuContainer}>
       <div className={styles.menuContent}>
-        <MenuButton onClick={() => handleNavigation("/contact")}>
-          {contactText}
+        <MenuButton onClick={handleGuide}>
+          המדריך לקלכלי
+        </MenuButton>
+        <MenuButton onClick={handleAbout}>
+          אודות
         </MenuButton>
         <MenuButton onClick={handlePersonalDetails}>
           פרטים אישיים
         </MenuButton>
-        <MenuButton onClick={handleAbout}>
-          אודות
+        <MenuButton onClick={() => handleNavigation("/contact")}>
+          {contactText}
         </MenuButton>
         <MenuButton onClick={handleLogout}>
           {logoutText}

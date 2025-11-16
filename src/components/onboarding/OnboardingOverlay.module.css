@@ -1,0 +1,77 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.highlight {
+  position: fixed;
+  border: 3px solid var(--color-accent);
+  border-radius: var(--radius-full);
+  box-shadow: 0 0 0 9999px rgba(159, 159, 159, 0.1);
+  pointer-events: none;
+  animation: pulse 2s ease-in-out infinite;
+  z-index: 10000;
+  box-sizing: border-box;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5), 0 0 0 0 var(--color-accent);
+  }
+  50% {
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5), 0 0 20px 5px var(--color-accent);
+  }
+}
+
+.tooltip {
+  position: fixed;
+  background-color: var(--color-background);
+  border: 2px solid var(--color-accent);
+  border-radius: var(--radius-lg);
+  padding: 12px 20px;
+  min-width: 200px;
+  max-width: 280px;
+  z-index: 10001;
+  pointer-events: auto;
+  transform: translateX(-80%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.tooltipText {
+  margin: 0 0 2px 0;
+  color: var(--color-text);
+  font-family: var(--font-family-primary);
+  font-size: 18px;
+  text-align: center;
+  line-height: 100%;
+}
+
+.arrow {
+  position: absolute;
+  top: -10px;
+  transform: translateX(10%);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid var(--color-accent);
+}
+
+.arrow::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid var(--color-background);
+}
+
