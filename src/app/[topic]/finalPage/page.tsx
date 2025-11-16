@@ -35,6 +35,18 @@ export default function FinalPage() {
   const [shouldPlayAnimation, setShouldPlayAnimation] = useState(false);
 
   useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    const originalHeight = document.body.style.height;
+    document.body.style.overflow = 'auto';
+    document.body.style.height = 'auto';
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      document.body.style.height = originalHeight;
+    };
+  }, []);
+
+  useEffect(() => {
     const loadTopicData = async () => {
       try {
         console.log('Loading topic data for:', normalizedTopic);

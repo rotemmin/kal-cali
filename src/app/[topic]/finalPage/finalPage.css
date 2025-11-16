@@ -1,6 +1,5 @@
 .final-page {
     position: relative;
-    min-height: 100vh;
     background-image: url("/pattern");
     background-size: cover;
     background-position: center;
@@ -116,15 +115,19 @@
       width: 16rem;
       height: 16rem;
     }
-  
+
     .placeholder-container {
       width: 12rem;
       height: 12rem;
       top: 40%;
     }
-  
+
     .final-message {
       margin-top: var(--spacing-4);
+    }
+
+    .content-container {
+      padding-bottom: calc(clamp(16px, 4vh, 24px) + 20px);
     }
   }
   
@@ -132,27 +135,31 @@
     .final-page {
       padding-top: var(--spacing-6);
     }
-  
+
     .cochevet-container {
       width: 18rem;
       height: 14rem;
     }
-  
+
     .placeholder-container {
       width: 18rem;
       height: 18rem;
       top: 42%;
     }
-  
+
     .final-message {
       margin-top: 10rem;
       padding: var(--spacing-2) var(--spacing-2);
       font-size: var(--text-l);
     }
-  
+
     .return-button {
       font-size: var(--text-base);
       padding: var(--spacing-2) var(--spacing-6);
+    }
+
+    .content-container {
+      padding-bottom: clamp(16px, 4vh, 24px);
     }
   }
 

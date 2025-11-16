@@ -115,7 +115,7 @@ const MilestoneContent: React.FC<MilestoneContentProps> = ({
         </div>
       )}
 
-      {currentMilestone?.additionalbutton &&
+      {/* {currentMilestone?.additionalbutton &&
         currentMilestone?.additionalLink && (
           <div className="text-center my-4">
             <button
@@ -125,7 +125,9 @@ const MilestoneContent: React.FC<MilestoneContentProps> = ({
               {currentMilestone.additionalbutton}
             </button>
           </div>
-        )}
+        )} */}
+                {/*"additionalbutton": "למידע נוסף על מסלולי ההשקעה",*/
+                /*"additionalLink": "/[topic]/investment_options",*/}
 
       {currentMilestone?.note?.[userGender] && (
         <div className="note">
