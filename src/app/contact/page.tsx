@@ -68,6 +68,10 @@ const ContactUs = () => {
     ? "כתוב כאן את ההודעה שלך..."
     : "כתבי כאן את ההודעה שלך...";
 
+  const consultationText = userGender === "male"
+    ? "אנו מציעים ייעוץ דיגיטלי בעלות סמלית, בזמן שנוח לך. <a href=\"https://mityaalim.org/product/digital-financial-advice/\" target=\"_blank\" rel=\"noopener noreferrer\">לחץ כאן</a>.<br> <span class='note-highlight'>ההכנסות נתרמות חזרה לקהילה!</span>"
+    : "אנו מציעים ייעוץ דיגיטלי בעלות סמלית, בזמן שנוח לך. <a href=\"https://mityaalim.org/product/digital-financial-advice/\" target=\"_blank\" rel=\"noopener noreferrer\">לחצי כאן</a>.<br> <span class='note-highlight'>ההכנסות נתרמות חזרה לקהילה!</span>";
+
   return (
     <div className={styles.container}>
       <Header />
@@ -102,6 +106,11 @@ const ContactUs = () => {
             </div>
           </form>
         )}
+        
+        <div 
+          className={styles.consultationText}
+          dangerouslySetInnerHTML={{ __html: consultationText }}
+        />
       </div>
     </div>
   );

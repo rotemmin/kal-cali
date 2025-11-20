@@ -9,6 +9,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  overflow-y: auto;
 }
 
 .content {
@@ -147,4 +148,33 @@
   font-weight: 400;
   line-height: normal;
   margin-top: -10px;
+}
+
+.consultationText {
+  margin-top: calc(40 / 852 * 100vh);
+  padding: 16px;
+  text-align: right;
+  color: var(--color-text);
+  font-family: var(--font-family-primary);
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 130%;
+  letter-spacing: 0.2px;
+  text-align: center;
+}
+
+.consultationText :global(.note-highlight) {
+  font-weight: 400;
+  font-size: 20px;
+  font-family: var(--font-family-secondary);
+  font-style: normal;
+}
+
+.consultationText :global(a) {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.consultationText :global(a:hover) {
+  text-decoration: none;
 }
