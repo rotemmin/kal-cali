@@ -215,7 +215,7 @@
           "type": "indented"
         },
         {
-          "text": "אנו ממליצים ליצור קשר עם יועץ פיננסי מטעם העמותה, אשר יסייע לך וידאג לתהליך נכון.",
+          "text": "אנו מציעים ייעוץ דיגיטלי בעלות סמלית, בזמן שנוח לך. <a href=\"https://mityaalim.org/product/digital-financial-advice/\" target=\"_blank\" rel=\"noopener noreferrer\">לחץ כאן</a>.<br> <span class='note-highlight'>ההכנסות נתרמות חזרה לקהילה!</span>",
           "type": "regular"
         }
       ],
@@ -249,14 +249,10 @@
             "type": "indented"
           },
           {
-            "text": "אנו ממליצים ליצור קשר עם יועץ פיננסי מטעם העמותה, אשר יסייע לך וידאג לתהליך נכון.",
+            "text": "אנו מציעים ייעוץ דיגיטלי בעלות סמלית, בזמן שנוח לך. <a href=\"https://mityaalim.org/product/digital-financial-advice/\" target=\"_blank\" rel=\"noopener noreferrer\">לחצי כאן</a>.<br> <span class='note-highlight'>ההכנסות נתרמות חזרה לקהילה!</span>",
             "type": "regular"
           }
         ]
-      },
-      "note": {
-        "male": "שקול לעבור למסלול עמלות קבוע או לנהל משא ומתן עם הבנק להוזלת עלויות.",
-        "female": "שקלי לעבור למסלול עמלות קבוע או לנהל משא ומתן עם הבנק להוזלת עלויות."
       },
       "button": "סיימתי!",
       "link": "/[topic]"

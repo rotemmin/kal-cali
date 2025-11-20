@@ -103,6 +103,10 @@
           {
             "text": "מה התוספת שאקבל על שעות נוספות?",
             "type": "regular"
+          },
+          {
+            "text": "אנו מציעים ייעוץ דיגיטלי בעלות סמלית, בזמן שנוח לך. <a href=\"https://mityaalim.org/product/digital-financial-advice/\" target=\"_blank\" rel=\"noopener noreferrer\">לחץ כאן</a>.<br> <span class='note-highlight'>ההכנסות נתרמות חזרה לקהילה!</span>",
+            "type": "regular"
           }
         ],
           "female": [
@@ -136,6 +140,10 @@
             },
             {
               "text": "מה התוספת שאקבל על שעות נוספות?",
+              "type": "regular"
+            },
+            {
+              "text": "אנו מציעים ייעוץ דיגיטלי בעלות סמלית, בזמן שנוח לך. <a href=\"https://mityaalim.org/product/digital-financial-advice/\" target=\"_blank\" rel=\"noopener noreferrer\">לחצי כאן</a>.<br> <span class='note-highlight'>ההכנסות נתרמות חזרה לקהילה!</span>",
               "type": "regular"
             }
           ]

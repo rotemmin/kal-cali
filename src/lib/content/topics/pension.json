@@ -241,7 +241,7 @@
               "type": "indented"
             },
             {
-              "text": "אנו ממליצים ליצור קשר עם סוכן פנסיוני מטעם העמותה, אשר יסייע לך וידאג לתהליך נכון. <br> <span class='note-highlight'>ההכנסות נתרמות חזרה לקהילה!</span>",
+              "text": "אנו ממליצים ליצור קשר עם סוכן פנסיוני מטעם העמותה, אשר יסייע לך וידאג לתהליך נכון. <a href=\"https://mityaalim.org/free-meeting-with-a-private-agent/\" target=\"_blank\" rel=\"noopener noreferrer\">לחץ כאן</a>. <br> <span class='note-highlight'>ההכנסות נתרמות חזרה לקהילה!</span>",
               "type": "regular"
             }
             ],
@@ -279,15 +279,11 @@
                 "type": "indented"
               },
               {
-                "text": "אנו ממליצים ליצור קשר עם סוכן פנסיוני מטעם העמותה, אשר יסייע לך וידאג לתהליך נכון. <br> <span class='note-highlight'>ההכנסות נתרמות חזרה לקהילה!</span>",
+                "text": "אנו ממליצים ליצור קשר עם סוכן פנסיוני מטעם העמותה, אשר יסייע לך וידאג לתהליך נכון. <a href=\"https://mityaalim.org/free-meeting-with-a-private-agent/\" target=\"_blank\" rel=\"noopener noreferrer\">לחצי כאן</a>. <br> <span class='note-highlight'>ההכנסות נתרמות חזרה לקהילה!</span>",
                 "type": "regular"
               }
             ]
           },
-        "note": {
-        "male": "<span class='note-highlight'>שים לב</span><br> שמנו לך במחברת את כל הנקודות החשובות כדי שתוכל לכתוב לעצמך את ההצעות שקיבלת, על מנת להשוות עם הצעות אחרות. ",
-        "female":"<span class='note-highlight'>שימי לב</span><br>שמנו לך במחברת את כל הנקודות החשובות כדי שתוכלי לכתוב לעצמך את ההצעות שקיבלת, על מנת להשוות עם הצעות אחרות."
-        },
 
         "button": "סיימתי!",
         "type": "info",

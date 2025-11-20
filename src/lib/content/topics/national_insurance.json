@@ -280,6 +280,10 @@
           },
           {
             "text": "למה אני זכאי מביטוח לאומי?",
+            "type": "indented"
+          },
+          {
+            "text": "אנו מציעים ייעוץ דיגיטלי בעלות סמלית, בזמן שנוח לך. <a href=\"https://mityaalim.org/product/digital-financial-advice/\" target=\"_blank\" rel=\"noopener noreferrer\">לחץ כאן</a>.<br> <span class='note-highlight'>ההכנסות נתרמות חזרה לקהילה!</span>",
             "type": "regular"
           }
           ],
@@ -318,6 +322,10 @@
             },
             {
               "text": "למה אני זכאית מביטוח לאומי?",
+              "type": "indented"
+            },
+            {
+              "text": "אנו מציעים ייעוץ דיגיטלי בעלות סמלית, בזמן שנוח לך. <a href=\"https://mityaalim.org/product/digital-financial-advice/\" target=\"_blank\" rel=\"noopener noreferrer\">לחצי כאן</a>.<br> <span class='note-highlight'>ההכנסות נתרמות חזרה לקהילה!</span>",
               "type": "regular"
             }
           ]
