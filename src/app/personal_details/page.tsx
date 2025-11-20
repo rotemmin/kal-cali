@@ -341,9 +341,9 @@ const PersonalDetails = () => {
               {isEditing ? (
                 <div className={styles.value}>
                   <ToggleSwitch
-                    checked={(editForm.gender || user.gender) === 'female'}
+                    checked={(editForm.gender || user.gender) === 'male'}
                     onChange={(checked) =>
-                      setEditForm(prev => ({ ...prev, gender: checked ? 'female' : 'male' }))
+                      setEditForm(prev => ({ ...prev, gender: checked ? 'male' : 'female' }))
                     }
                   />
                 </div>
